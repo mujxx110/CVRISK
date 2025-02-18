@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
     <title>MHF Cardiovascular Risk Score Calculator</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -11,6 +12,49 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
+
+@media (max-width: 768px) {
+    body {
+        padding: 10px;  /* Reduce padding on smaller screens */
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    .section {
+        padding: 15px;
+        max-width: 95%;
+    }
+
+    h1, h2 {
+        font-size: 20px; /* Make headings smaller */
+    }
+
+    .video-title {
+        font-size: 18px; /* Reduce title size on mobile */
+        text-align: center;
+    }
+
+    .nav-container {
+        flex-direction: column; /* Stack navigation buttons on top of each other */
+    }
+
+    .nav-button {
+        width: 100%; /* Make navigation buttons full-width */
+        margin: 5px 0; /* Add spacing */
+    }
+
+    .activity-item {
+        flex-direction: column; /* Stack exercise inputs */
+        gap: 5px;
+    }
+
+    .progress-container {
+        height: 6px; /* Make the progress bar thinner on mobile */
+    }
+}
+
 .video-title {
     text-align: center;
     color: #ee8e00; /* Orange text color */
