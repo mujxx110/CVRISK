@@ -12,6 +12,152 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
+#video-bubble {
+    position: fixed;
+    bottom: 20px;
+    right: 60px;
+    width: 60px;
+    height: 60px;
+    background-color: #ee8e00; /* Orange */
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+    z-index: 1000;
+    position: relative; /* Needed for tooltip positioning */
+}
+
+#video-bubble::after {
+    content: "Not sure how to proceed?\AWatch this quick tutorial.";
+    position: absolute;
+    bottom: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 4px;
+    white-space: pre-wrap;
+    font-size: 12px;
+    opacity: 1;
+    pointer-events: none;
+    text-align: center;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+    z-index: 1001;
+    min-width: 100px; /* Add this to increase the width */
+}
+
+
+
+
+#exercise-summary-container {
+    background-color: #a3cdfb !important; /* Change this to your preferred color */
+    color: black !important; /* Ensures text remains visible */
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    border: 3px solid #fff; /* Optional: Adds a border */
+}
+
+/* Floating Bubble Button */
+#video-bubble {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background-color: #ee8e00; /* Orange */
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+    z-index: 1000;
+}
+
+/* Video Modal Styling */
+#video-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+}
+
+#video-modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 90%;
+    max-height: 80%;
+    position: relative;
+}
+
+#close-video-modal {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+
+
+#final-risk-score {
+    background-color: #72b5f8 !important; /* Change this to your preferred color */
+    color: white !important; /* Ensures text remains visible */
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 20px;
+    border: 3px solid #fff; /* Optional: Border color */
+}
+
+
+#comparison-box {
+    background-color: #FFD700; /* Change this to your preferred color */
+    color: black; /* Adjust text color for contrast */
+    padding: 20px;
+    border-radius: 8px;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+    border: 3px solid #cc0000; /* Optional: Red border */
+}
+
+        
+
+        .logo-container {
+    text-align: center; /* Centers the image */
+    margin-bottom: 20px; /* Space between logo and heading */
+}
+
+.logo-container img {
+    max-width: 800px; /* Adjust the logo size */
+    height: auto; /* Maintain aspect ratio */
+}
+
 
         #risk-change-box {
     background-color: #eee;
@@ -176,7 +322,7 @@ summary {
 }
 
 details[open] {
-    background-color: #fff5f5;
+    background-color: #fbaf4c73;
     border-left: 3px solid #ee8e00;
 }
 
@@ -184,7 +330,7 @@ details[open] {
             font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 20px;
-            background-color: #FFF0E6;
+            background-color: #e3f0fe;
             background-image: url('https://www.transparenttextures.com/patterns/heart-pattern.png');
             background-size: contain;
         }
@@ -242,7 +388,7 @@ details[open] {
 
         h1 {
             text-align: center;
-            color: #ee8e00;
+            color: #000000;
             font-weight: 600;
         }
 
@@ -259,7 +405,7 @@ details[open] {
             display: block;
             margin: 10px 0 5px;
             color: #333;
-            font-weight: 500;
+            font-weight: bold;
         }
 
         input[type="number"],
@@ -276,7 +422,7 @@ details[open] {
         button {
             width: 100%;
             padding: 12px;
-            background-color: #ee8e00;
+            background-color: #fbae4c;
             color: #fff;
             border: none;
             border-radius: 4px;
@@ -355,7 +501,7 @@ details[open] {
             margin-bottom: 20px;
             line-height: 1.4;
             padding: 10px;
-            border-left: 3px solid #ee8e00;
+            border-left: 3px solid #dc3545;
             background-color: #fff5f5;
         }
 
@@ -397,7 +543,7 @@ details[open] {
 /* Progress Bar Container */
 .progress-container {
     width: 100%;
-    background-color: #f3f3f3;
+    background-color: #fff;
     height: 10px;
     border-radius: 5px;
     margin-bottom: 20px;
@@ -408,7 +554,7 @@ details[open] {
 .progress-bar {
     width: 0%;
     height: 100%;
-    background-color: #ee8e00; /* Orange progress color */
+    background-color: #fbae4c; /* Orange progress color */
     transition: width 0.5s ease-in-out;
 }
 
@@ -419,13 +565,20 @@ details[open] {
         <div class="progress-bar" id="progress-bar"></div>
     </div>
     
-
+    <div class="logo-container">
+        <img src="/Users/mujtaba/Desktop/Jobs/MHF/CVrisk/CV Tool Banner Draft 1.png" alt="MHF Logo">
+    </div>
+    
 
 
 
     <div class="calculator-component section active" id="calculator-component">
         <div class="container">
-            <h1>MHF Cardiovascular Risk Calculator</h1>
+            <h1>Cardiovascular Risk Calculator</h1>
+            <div class="disclaimer">
+                <p><strong>Data Privacy Notice:</strong> Your data is stored securely and used solely for educational and personal wellness purposes. We do not share or sell your information. For more details, contact us at support@mhfcare.ca.</p>
+            </div>
+            
             
             <div id="input-section">
             <details>
@@ -438,6 +591,8 @@ details[open] {
                     <option value="" selected disabled hidden> Click to Select</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
+                    <option value="prefer_not_to_say">Prefer Not to Say</option>
+
                 </select>
             
             </details>
@@ -471,6 +626,14 @@ details[open] {
 
                     <div>
                         <p>Your BMI (Body Mass Index) is: <span id="calculated-bmi">0</span></p>
+                        <p style="font-size: 14px; color: #666;">
+                            BMI is a measure derived from your height and weight to classify weight categories such as underweight, normal, overweight, and obese.<br>
+                            <a href="https://www.heartandstroke.ca/healthy-living/healthy-weight/healthy-weight-and-waist#:~:text=Calculate%20your%20BMI%20yourself.,divide%20by%20your%20height%20again." target="_blank">
+                                Learn more about calculating your BMI.
+                            </a>
+                        </p>
+                        
+
                     </div>
                 
                 </details>
@@ -543,21 +706,25 @@ details[open] {
             
                 <div>
                     <p>Total MET-minutes: <span id="total-met-minutes">0</span></p>
+                    <p style="font-size: 14px; color: #666;">MET stands for Metabolic Equivalent of Task, a way to measure the energy cost of physical activities. Higher MET minutes reflect higher levels of activity.</p>
+
                 </div>
             
             </details>
         </div>
 
             
-        <button id="next-button">Next</button>
+        <button id="next-button"> Let’s see your results </button>
+    
+
         <!-- Container for both boxes; it is hidden initially -->
         <div id="risk-score-container" style="display: none; margin-top: 20px; gap: 20px; justify-content: center; align-items: center;">
           <!-- Risk Score Box (shows your risk score) -->
-          <div id="risk-box" style="background-color: red; color: white; padding: 20px; text-align: center; font-size: 24px; font-weight: bold;">
+          <div id="risk-box" style="background-color: red; color: rgb(0, 0, 0); padding: 20px; text-align: center; font-size: 24px; font-weight: bold;">
               Your Calculated 10-year risk of heart attack, stroke, or death is : <span id="risk-score">0</span>%
           </div>
           <!-- Risk Category Box (shows your risk category) -->
-          <div id="risk-category-box"  style="background-color: red; color: white; padding: 20px; text-align: center; font-size: 24px; font-weight: bold;">
+          <div id="risk-category-box"  style="background-color: red; color: rgb(0, 0, 0); padding: 20px; text-align: center; font-size: 24px; font-weight: bold;">
               Risk Category: <span id="risk-category">N/A</span>
           </div>
         </div>
@@ -569,18 +736,35 @@ details[open] {
 
         </div>
         
-        <button id="comparison-next-button" style="display: none;">Next</button>
+        <button id="comparison-next-button" style="display: none;"> Check how your results stack up to the national average </button>
+        
+
 
         <div id="comparison-box" style="display: none; background-color: red; color: white; padding: 20px; text-align: center; font-size: 24px; font-weight: bold; margin-top: 20px;">
             <span id="comparison-result">0</span>
+            
+            <p>The graph below compares your survival probability (red) to the average survival probability of Canadians (blue).</p>
+
+            <p>It illustrates how your survival probability changes with age, assuming no changes in disease status, stress levels, or other health factors.</p>
+        
+            <p>Hover over the red line to view your survival probability at each age.</p>
+
+            
             <canvas id="survivalChart" width="800" height="400" style="display: none; margin: 20px auto;"></canvas>
+            <div id="risk-legend" style="text-align: center; margin-top: 10px; font-size: 16px; color: #333;">
+                <p><strong>Risk Classifications:</strong></p>
+                <p>Low Risk: &lt;10% &nbsp; | &nbsp; Intermediate Risk: 10–20% &nbsp; | &nbsp; High Risk: &gt;20%</p>
+            </div>
+            
 
         </div>
         
         
         
         
-        <button id="met-next-button" style="display: none;">Next</button>
+        <button id="met-next-button" style="display: none;"> Find out how your score changes with more activity .</button>
+        
+
         <div id="met-box" style="display: none; background-color: red; color: white; padding: 20px; text-align: center; font-size: 24px; font-weight: bold; margin-top: 20px;">
             Your Total MET Minutes: <span id="met-minutes-result">0</span>
         </div>
@@ -590,7 +774,7 @@ details[open] {
 
 
             <!-- New Orange Box for the Heading -->
-            <div style="background-color: #ee8e00; padding: 10px; border-radius: 4px; margin-bottom: 20px;">
+            <div style="background-color: #72b5f8; padding: 10px; border-radius: 4px; margin-bottom: 20px;">
                 <h2 style="text-align: center; color: white; margin: 0;">Your Current Exercise Details</h2>
                 
                 <!-- Column Titles -->
@@ -622,13 +806,12 @@ details[open] {
        
         <div id="exercise-improvement-section">
             <h2 style="text-align: center; color: #ee8e00; margin-top: 20px;">
-                See how exercise can improve your Risk Score:
+                Update the total number of minutes you exercise each week (not just the additional amount), and we’ll recalculate your risk score. (For example, if you exercised 90 minutes last week and now do 120 minutes, enter 120—not just the extra 30.)
             </h2>
         
             <!-- New Exercise Calculator Section -->
             <div id="new-exercise-calculator" style="margin-top: 20px; background-color: #fff; padding: 20px 40px; border-radius: 8px;">
-                <h2 style="text-align: center; color: #ee8e00;">Try adding more activity to see the benefits</h2>
-                <label for="new-met_minutes">Physical Activity (MET-minutes Calculator)</label>
+                <label for="new-met_minutes">Exercise Calculator</label>
                 <div id="new-activities-container"></div>
                 <button type="button" onclick="addNewActivity()">Add Activity</button>
                 <div>
@@ -636,7 +819,7 @@ details[open] {
                 </div>
             </div>
         
-            <button id="calculate-new-risk-button" style="margin-top: 20px;">See your new risk score</button>
+            <button id="calculate-new-risk-button" style="margin-top: 20px;">See the change in your score</button>
         
             <div id="risk-change-box" style="display: none; padding: 20px; text-align: center; font-size: 22px; font-weight: bold; margin-top: 20px; border-radius: 8px;">
                 <p>Based on the change in your exercise, your risk score has <span id="risk-change-text"></span> by <span id="risk-change-value">0</span>%.</p>
@@ -656,7 +839,7 @@ details[open] {
                     <!-- New Risk Score (Right) -->
                     <div style="display: flex; flex-direction: column; align-items: center;">
                         <p style="font-size: 18px; font-weight: bold; margin-bottom: 5px;">New Risk Score</p>
-                        <div id="new-risk-box" style="padding: 20px; border-radius: 8px; font-size: 22px; font-weight: bold; color: white; min-width: 120px;">
+                        <div id="new-risk-box" style="padding: 20px; border-radius: 8px; font-size: 22px; font-weight: bold; color: rgb(0, 0, 0); min-width: 120px;">
                             <span id="new-risk-score-value">0</span>%
                         </div>
                     </div>
@@ -668,13 +851,13 @@ details[open] {
         
             <details id="health-benefits" style="margin-top: 20px; background-color: #fff; padding: 20px 40px; border-radius: 8px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);">
                 <summary style="font-size: 18px; font-weight: 600; color: #ee8e00; cursor: pointer;">
-                    Increasing your physical activity can lower your risk of cancer, depression, and heart failure. Click here to see your potential risk reduction in these areas.
+                    Increasing your exercise can lower your risk of cancer, depression, and heart failure. Click here to see your potential risk reduction in these areas.
                 </summary>
                 <div id="health-benefits-content" style="margin-top: 10px; font-size: 20px;">
                     <ul style="list-style-type: disc; padding-left: 20px;">
-                        <li>Reduces cancer risk by: <span id="cancer-risk-benefit">0</span>%</li>
-                        <li>Reduces risk of depression by: <span id="depression-risk-benefit">0</span>%</li>
-                        <li>Reduces risk of heart failure by: <span id="hf-risk-benefit">0</span>%</li>
+                        <li> <span id="cancer-risk-benefit">0</span></li>
+                        <li> <span id="depression-risk-benefit">0</span></li>
+                        <li> <span id="hf-risk-benefit">0</span></li>
                     </ul>
                 </div>
             </details>
@@ -717,6 +900,11 @@ details[open] {
                  
 
     </div>
+    <button id="submit-data-button" onclick="handleFinalStep()" style="display: none; margin-top: 20px;">
+        Click here to learn more about this from our cardiologist Dr. David Alter
+    </button>
+    
+    
 
 </div> <!-- End of calculator-component -->
 
@@ -729,9 +917,6 @@ details[open] {
 
     <div id="video-container"></div>
     
-    <!-- Survival Graph -->
-    <canvas id="survivalChart" width="800" height="400" style="display: block; margin: 20px auto;"></canvas>
-    
     <!-- Registration Form -->
     <div class="form-container" id="form-container">
         <div class="_form_18"></div>
@@ -739,8 +924,170 @@ details[open] {
     </div>
 </div>
 
+<!-- Floating Bubble -->
+<div id="video-bubble" onclick="openVideoModal()">
+    ▶
+</div>
+
+<!-- Video Modal -->
+<div id="video-modal" style="display:none;">
+    <div id="video-modal-content">
+        <span id="close-video-modal" onclick="closeVideoModal()">×</span>
+        <iframe id="dynamic-video" width="100%" height="315" frameborder="0" allowfullscreen></iframe>
+    </div>
+</div>
+
 
     <script>
+
+
+function openVideoModal() {
+    const videoModal = document.getElementById("video-modal");
+    const videoFrame = document.getElementById("dynamic-video");
+
+    // Set the video link dynamically based on page step
+    let videoUrl = "";
+
+    if (currentStep === 1) {
+        videoUrl = "https://www.youtube.com/embed/qRCU54MwYYw"; // Example for Step 1
+    } else if (currentStep === 2) {
+        videoUrl = "https://www.youtube.com/embed/ZlGFt6sliv0"; // Step 2
+    } else if (currentStep === 3) {
+        videoUrl = "https://www.youtube.com/embed/ZlGFt6sliv0"; // Step 3
+    } else if (currentStep === 4) {
+        videoUrl = "https://www.youtube.com/embed/axBtxAl0lhU"; // Step 4
+    } else {
+        videoUrl = "https://www.youtube.com/embed/LFpLcttUhgQ"; // Default
+    }
+
+    videoFrame.src = videoUrl;
+    videoModal.style.display = "flex";
+}
+
+function closeVideoModal() {
+    const videoModal = document.getElementById("video-modal");
+    const videoFrame = document.getElementById("dynamic-video");
+    videoModal.style.display = "none";
+    videoFrame.src = ""; // Clear the video to stop it from playing
+}
+
+        function handleFinalStep() {
+    // Submit data to Google Sheets first
+    sendDataToGoogleSheets();
+
+    // Then, progress to the final page with video
+    setTimeout(() => {
+        document.getElementById("exercise-summary").style.display = "none";
+        document.getElementById("submit-data-button").style.display = "none";
+        document.getElementById("final-results").style.display = "block";
+
+        // Render the video
+        const resultContainer = document.getElementById('video-container');
+        const root = ReactDOM.createRoot(resultContainer);
+        root.render(React.createElement(RiskResultsWithVideo));
+
+        // Show the form
+        document.getElementById("form-container").style.display = "block";
+    }, 1000); // Delay to ensure data submission
+}
+
+
+
+function sendDataToGoogleSheets() {
+    const data = {
+        age: document.getElementById('age').value,
+        gender: document.getElementById('gender').value,
+        height: document.getElementById('height-cm').value || 
+                (document.getElementById('height-ft').value * 30.48 + document.getElementById('height-in').value * 2.54),
+        weight: document.getElementById('weight').value,
+        bmi: document.getElementById('calculated-bmi').innerText,
+        cvd: document.getElementById('cvd').value,
+        systolic_bp: document.getElementById('systolic_bp').value,
+        bp_medication: document.getElementById('bp_medication').value,
+        diabetes: document.getElementById('diabetes').value,
+        smoker: document.getElementById('smoker').value,
+        initial_met: document.getElementById('total-met-minutes').innerText,
+        initial_risk: document.getElementById('final-risk-score-value').innerText,
+        new_met: document.getElementById('new-total-met-minutes').innerText,
+        new_risk: document.getElementById('new-risk-score-value').innerText
+    };
+
+    fetch("https://script.google.com/macros/s/AKfycbzombToWQPY-x3nN9-KSGfAwB6L5GHFLpri-_iEuQlXoFaE0tVLPIvuiP64hSxbxo3u/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    }).then(() => {
+        alert("Data successfully sent!");
+    }).catch(error => {
+        console.error("Error:", error);
+    });
+}
+
+
+let currentStep = 1; // Track the current step
+
+function updateStep(step) {
+    currentStep = step;
+
+    // Hide all sections initially
+    document.getElementById("input-section").style.display = "none";
+    document.getElementById("risk-score-container").style.display = "none";
+    document.getElementById("comparison-box").style.display = "none";
+    document.getElementById("met-box").style.display = "none";
+    document.getElementById("exercise-summary").style.display = "none";
+    document.getElementById("final-results").style.display = "none";
+    document.getElementById("submit-data-button").style.display = "none"; // Hide button initially
+
+    document.getElementById("next-button").style.display = "none";
+    document.getElementById("comparison-next-button").style.display = "none";
+    document.getElementById("met-next-button").style.display = "none";
+    document.getElementById("final-next-button").style.display = "none";
+
+    if (currentStep === 1) {
+        document.getElementById("input-section").style.display = "block";
+        document.getElementById("next-button").style.display = "block";
+    } else if (currentStep === 2) {
+        document.getElementById("risk-score-container").style.display = "flex";
+        document.getElementById("comparison-next-button").style.display = "block";
+    } else if (currentStep === 3) {
+        document.getElementById("comparison-box").style.display = "block";
+        document.getElementById("met-next-button").style.display = "block";
+    } else if (currentStep === 4) {
+        document.getElementById("exercise-summary").style.display = "block";
+
+        // Show the button ONLY on step 4 (after health benefits dropdown)
+        document.getElementById("submit-data-button").style.display = "block";
+    } else if (currentStep === 5) {
+        document.getElementById("final-results").style.display = "block";
+    }
+
+    updateProgress(currentStep);
+}
+
+
+
+// Attach event listeners to buttons
+document.getElementById("next-button").addEventListener("click", function() {
+    updateStep(2);
+});
+
+document.getElementById("comparison-next-button").addEventListener("click", function() {
+    updateStep(3);
+});
+
+document.getElementById("met-next-button").addEventListener("click", function() {
+    updateStep(4);
+});
+
+document.getElementById("final-next-button").addEventListener("click", function() {
+    updateStep(5);
+});
+
+
+
 document.getElementById("health-benefits").addEventListener("toggle", function() {
     // When the details element is open, show the final next button; otherwise hide it.
     if (this.open) {
@@ -1087,7 +1434,7 @@ document.getElementById("final-next-button").addEventListener("click", function(
                             borderRadius: '8px',
                             boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
                         },
-                        src: 'https://www.youtube.com/embed/1fqtx9IO3us',
+                        src: 'https://www.youtube.com/embed/lqLjrglpQS0?si=bi7PRkZiudS7wj0k',
                         title: 'Understanding Your Cardiovascular Risk',
                         allow: 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture',
                         allowFullScreen: true
@@ -1096,50 +1443,53 @@ document.getElementById("final-next-button").addEventListener("click", function(
             );
         };
         
+        
+    
         document.getElementById("next-button").addEventListener("click", function() {
-    let riskScore = calculateRisk(); // Calculate the risk score
-    window.globalRiskScore = riskScore; // Store it globally so we can use it later
+    let riskScore = calculateRisk(); // Calculate risk score
+    window.globalRiskScore = riskScore; // Store for later use
 
-    // Hide the input fields and the Next button
-    document.getElementById("input-section").style.display = "none";
-    document.getElementById("next-button").style.display = "none";
-
-    // Update the risk score box with the calculated score
+    // Update the displayed risk score
     document.getElementById("risk-score").innerText = riskScore.toFixed(2);
 
-    // Determine the risk category and assign the corresponding color
+    // Also set this value as the "Old Risk Score" since it's the first recorded value
+    document.getElementById("old-risk-score-value").innerText = riskScore.toFixed(2); 
+
+    // Store the old risk score so that it can be compared later
+    window.oldRiskScore = riskScore; 
+
     let riskCategory = "";
     let color = "";
+    let borderColor = "";
 
     if (riskScore <= 1) {
         riskCategory = "Very Low Risk";
-        color = "green";
+        color = "#f3fadc";
+        borderColor = "#78ce00"; // Green border
     } else if (riskScore > 1 && riskScore <= 10) {
         riskCategory = "Low Risk";
-        color = "green";
+        color = "#f3fadc";
+        borderColor = "#78ce00"; 
     } else if (riskScore > 10 && riskScore <= 20) {
         riskCategory = "Intermediate Risk";
-        color = "blue";
+        color = "#fff4e4";
+        borderColor = "#ffac4c"; // Fixed typo in border color
     } else if (riskScore > 20) {
         riskCategory = "High Risk";
-        color = "red";
+        color = "#fab6b6";
+        borderColor = "#ff2020"; 
     }
 
-    // Update the risk category text
     document.getElementById("risk-category").innerText = riskCategory;
-
-    // Update the background color of the risk category box
     let riskCategoryBox = document.getElementById("risk-category-box");
     riskCategoryBox.style.backgroundColor = color;
+    riskCategoryBox.style.border = `3px solid ${borderColor}`;
 
-    // Also update the risk score box for consistency
     let riskBox = document.getElementById("risk-box");
     riskBox.style.backgroundColor = color;
+    riskBox.style.border = `3px solid ${borderColor}`;
 
-    // Make the container visible
     document.getElementById("risk-score-container").style.display = "flex";
-
-    // Show the next button for the comparison step
     document.getElementById("comparison-next-button").style.display = "block";
 });
 
@@ -1183,7 +1533,10 @@ document.getElementById("comparison-next-button").addEventListener("click", func
     document.getElementById("comparison-result").innerText = message;
     
     // Display the comparison box
-    document.getElementById("comparison-box").style.display = "block";
+    document.getElementById("comparison-box").style.backgroundColor = "#fff4e5"; // Change to your preferred color
+    document.getElementById("comparison-box").style.color = "black"; // Adjust text color
+    document.getElementById("comparison-box").style.border = "3px solid #fbae4c"; // Optional: Red border
+
 
     // Generate and show the survival graph
     generateSurvivalChart(userAge, riskScore, gender);
@@ -1326,40 +1679,46 @@ function calculateNewRisk() {
 
     return adjusted_risk;
 }
-document.getElementById("calculate-new-risk-button").addEventListener("click", function(){
-    let newRiskScore = calculateNewRisk();
-    let oldRiskScore = window.globalRiskScore || 0; // Get stored old risk score
-    let riskDifference = (newRiskScore - oldRiskScore).toFixed(2); // Calculate the difference
+document.getElementById("calculate-new-risk-button").addEventListener("click", function() {
+    let newRiskScore = calculateNewRisk(); // Get new risk score
+    let oldRiskScore = window.oldRiskScore || 0; // Retrieve stored old risk
 
-    // Determine if the risk score increased, decreased, or stayed the same
-    let changeText, color;
+    let riskDifference = (newRiskScore - oldRiskScore).toFixed(2); // Difference
+
+    let changeText, color, borderColor;
 
     if (riskDifference > 0) {
         changeText = "increased";
-        color = "red"; // Risk increased → Red
+        color = "#fab6b6"; // Red for increased risk
+        borderColor = "#ff2020"; 
     } else if (riskDifference < 0) {
         changeText = "decreased";
-        color = "green"; // Risk decreased → Green
+        color = "#f3fadc"; // Green for decreased risk
+        borderColor = "#78ce00";
     } else {
         changeText = "remained the same";
-        color = "blue"; // No change → Blue
+        color = "#f3fadc"; 
+        borderColor = "#78ce00"; 
     }
 
-    // Update the risk change text and color
+    // Update UI elements
     document.getElementById("risk-change-text").innerText = changeText;
-    document.getElementById("risk-change-value").innerText = Math.abs(riskDifference); // Remove negative sign
-    document.getElementById("risk-change-box").style.color = "white"; // Make text white for contrast
-    document.getElementById("risk-change-box").style.backgroundColor = color;
-
-    // Update risk score values
+    document.getElementById("risk-change-value").innerText = Math.abs(riskDifference);
+    
+    // Update the old and new risk score values in the UI
     document.getElementById("old-risk-score-value").innerText = oldRiskScore.toFixed(2);
     document.getElementById("new-risk-score-value").innerText = newRiskScore.toFixed(2);
 
-    // Apply background color to the new risk box based on increase/decrease
-    document.getElementById("new-risk-box").style.backgroundColor = color;
+    // Update styling
+    let riskChangeBox = document.getElementById("risk-change-box");
+    riskChangeBox.style.color = "black";
+    riskChangeBox.style.backgroundColor = color;
+    riskChangeBox.style.border = `3px solid ${borderColor}`;
+    
+    document.getElementById("new-risk-box").style.border = `3px solid ${borderColor}`;
 
-    // Display the updated section
-    document.getElementById("risk-change-box").style.display = "block";
+    // Make the section visible
+    riskChangeBox.style.display = "block";
 
     // Compute additional health benefits
     computeHealthBenefits();
@@ -1370,53 +1729,48 @@ document.getElementById("calculate-new-risk-button").addEventListener("click", f
 
 
 
+
+
 function computeHealthBenefits() {
-    // Get initial and new MET minutes from their respective elements.
+    // Get initial and new MET minutes
     let initialMET = parseFloat(document.getElementById("total-met-minutes").innerText) || 0;
     let newMET = parseFloat(document.getElementById("new-total-met-minutes").innerText) || 0;
-    let difference = newMET - initialMET; // Positive if the new value is higher
+    let difference = newMET - initialMET; // Positive if increase, negative if decrease
 
-    // Initialize our benefit variables.
+    // Initialize benefit variables
     let cancerRiskReduction = 0;
     let depressionReduction = 0;
     let hfRiskReduction = 0;
 
-    // Only compute if there is an increase.
-    if (difference > 0) {
-        // First segment: if initial MET is between 0 and 299.
-        if (initialMET >= 0 && initialMET <= 299) {
-            let rangeDifference = Math.min(difference, 299 - initialMET);
-            cancerRiskReduction += rangeDifference * 0.02341;
-            depressionReduction += rangeDifference * 0.060200669;
-            hfRiskReduction += rangeDifference * 0.033444816;
-        }
-        // Second segment: if initial MET is less than 600 and new MET is above 300.
-        if (initialMET < 600 && newMET > 300) {
-            let start = Math.max(300, initialMET);
-            let end = Math.min(600, newMET);
-            if (start < end) {
-                cancerRiskReduction += (end - start) * 0.01667;
-                depressionReduction += (end - start) * 0.023333333;
-                hfRiskReduction += (end - start) * 0.02;
-            }
-        }
-        // Third segment: if initial MET is less than 1000 and new MET is above 600.
-        if (initialMET < 1000 && newMET > 600) {
-            let start = Math.max(601, initialMET);
-            let end = Math.min(1000, newMET);
-            if (start < end) {
-                cancerRiskReduction += (end - start) * 0.00752;
-                depressionReduction += (end - start) * 0.007518797;
-                hfRiskReduction += (end - start) * 0.01754386;
-            }
+    // Apply risk reduction (positive for increase, negative for decrease)
+    if (difference !== 0) {
+        let adjustmentFactor = difference / 1000; // Scale based on 1000 MET-minutes
+
+        // Coefficients for reductions based on literature
+        cancerRiskReduction = (23.41 * adjustmentFactor).toFixed(2);
+        depressionReduction = (60.20 * adjustmentFactor).toFixed(2);
+        hfRiskReduction = (33.44 * adjustmentFactor).toFixed(2);
+    }
+
+    // Function to format the message dynamically
+    function getFormattedMessage(percentage, condition) {
+        let absPercentage = Math.abs(percentage); // Remove the sign for display
+        if (percentage < 0) {
+            return `By decreasing your activity, your risk of developing ${condition} has <strong style="color: red;">increased</strong> by ${absPercentage}%.`;
+        } else if (percentage > 0) {
+            return `By increasing your activity, your risk of developing ${condition} has <strong style="color: green;">decreased</strong> by ${absPercentage}%.`;
+        } else {
+            return `No change in your risk of developing ${condition}.`;
         }
     }
 
-    // Update the HTML elements with the computed values (formatted to 4 decimal places).
-    document.getElementById("cancer-risk-benefit").innerText = cancerRiskReduction.toFixed(4);
-    document.getElementById("depression-risk-benefit").innerText = depressionReduction.toFixed(4);
-    document.getElementById("hf-risk-benefit").innerText = hfRiskReduction.toFixed(4);
+    // Update UI dynamically
+    document.getElementById("cancer-risk-benefit").innerHTML = getFormattedMessage(cancerRiskReduction, "cancer");
+    document.getElementById("depression-risk-benefit").innerHTML = getFormattedMessage(depressionReduction, "depression");
+    document.getElementById("hf-risk-benefit").innerHTML = getFormattedMessage(hfRiskReduction, "heart failure");
 }
+
+
 
 
 
@@ -1588,7 +1942,7 @@ function calculateRisk() {
                     pointRadius: 0,
                 },
                 {
-                    label: 'Your Predicted Probability',
+                    label: 'Your Predicted Probability of Survival',
                     data: adjustedProbabilities,
                     borderColor: 'red',
                     backgroundColor: 'rgba(255, 0, 0, 0.1)',  // Light red fill
@@ -1613,7 +1967,7 @@ function calculateRisk() {
                         display: true,
                         text: 'Probability of Survival (%)',
                     },
-                    min: 85,
+                    min: 90,
                     max: 100,
                 },
 
