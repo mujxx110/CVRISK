@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,6 +13,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
+
+#dynamic-video {
+    width: 100%;
+    height: 70vh; /* Takes 70% of screen height */
+    border: none;
+    border-radius: 8px;
+}
+
+
 #video-bubble {
     position: fixed;
     bottom: 20px;
@@ -102,12 +112,14 @@
 
 #video-modal-content {
     background-color: white;
-    padding: 20px;
+    padding: 0;
     border-radius: 8px;
-    max-width: 90%;
-    max-height: 80%;
+    width: 90vw; /* Use viewport width instead of max-width */
+    max-width: 1200px; /* Set a sensible max */
+    height: auto;
     position: relative;
 }
+
 
 #close-video-modal {
     position: absolute;
@@ -718,25 +730,24 @@ details[open] {
     
 
         <!-- Container for both boxes; it is hidden initially -->
-        <div id="risk-score-container" style="display: none; margin-top: 20px; gap: 20px; justify-content: center; align-items: center;">
-          <!-- Risk Score Box (shows your risk score) -->
-          <div id="risk-box" style="background-color: red; color: rgb(0, 0, 0); padding: 20px; text-align: center; font-size: 24px; font-weight: bold;">
-              Your Calculated 10-year risk of heart attack, stroke, or death is : <span id="risk-score">0</span>%
-          </div>
-          <!-- Risk Category Box (shows your risk category) -->
-          <div id="risk-category-box"  style="background-color: red; color: rgb(0, 0, 0); padding: 20px; text-align: center; font-size: 24px; font-weight: bold;">
-              Risk Category: <span id="risk-category">N/A</span>
-          </div>
+        <div id="risk-score-container" style="display: none; margin-top: 20px; gap: 20px; flex-direction: column; align-items: center;">
+            <!-- Risk Score Box -->
+            <div id="risk-box" style="background-color: red; color: black; padding: 20px; text-align: center; font-size: 24px; font-weight: bold;">
+                Your Calculated 10-year risk of heart attack, stroke, or death is : <span id="risk-score">0</span>%
+            </div>
+        
+            <!-- Risk Category Box -->
+            <div id="risk-category-box" style="background-color: red; color: black; padding: 20px; text-align: center; font-size: 24px; font-weight: bold;">
+                Risk Category: <span id="risk-category">N/A</span>
+            </div>
+        
+            <!-- Legend (Only for Step 2) -->
+            <div id="risk-classification-legend" style="margin-top: 10px; text-align: center; font-size: 16px; color: #333;">
+                <strong>Risk Classifications:</strong><br>
+                Low Risk: &lt;10% &nbsp; | &nbsp; Intermediate Risk: 10–20% &nbsp; | &nbsp; High Risk: &gt;20%
+            </div>
         </div>
-                    <!-- New Risk Classification Legend -->
-                <div id="risk-classification-legend" style="margin-top: 10px; text-align: center; font-size: 16px; color: #333;">
-                    <strong>Risk Classifications:</strong>
-                    <p style="margin-top: 5px;">Low Risk: &lt;10% &nbsp; | &nbsp; Intermediate Risk: 10–20% &nbsp; | &nbsp; High Risk: &gt;20%</p>
-                </div>
-
-            </div> <!-- Close of #risk-score-container -->
-
-
+        
         
 
         
@@ -814,9 +825,10 @@ details[open] {
             </div>
        
         <div id="exercise-improvement-section">
-            <h2 style="text-align: center; color: #ee8e00; margin-top: 20px;">
+            <p style="text-align: center; color: #ee8e00; margin-top: 20px; font-size: 16px;">
                 Update the total number of minutes you exercise each week (not just the additional amount), and we’ll recalculate your risk score. (For example, if you exercised 90 minutes last week and now do 120 minutes, enter 120—not just the extra 30.)
-            </h2>
+            </p>
+            
         
             <!-- New Exercise Calculator Section -->
             <div id="new-exercise-calculator" style="margin-top: 20px; background-color: #fff; padding: 20px 40px; border-radius: 8px;">
@@ -925,7 +937,18 @@ details[open] {
     <h2 class="video-title">Learn about what this means from our cardiologist</h2>
 
     <div id="video-container"></div>
-    
+    <!-- Testimonial Section -->
+    <div style="background-color: #fffaf3; padding: 25px; margin: 30px auto; border-left: 5px solid #ee8e00; max-width: 800px; border-radius: 10px; font-size: 16px; line-height: 1.7; color: #333; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);">
+    <h3 style="color: #ee8e00; font-weight: 600; margin-top: 0; margin-bottom: 10px;">Participant Testimonial</h3>
+    <p style="font-style: italic; margin: 0;">
+        “After working six days a week, and commuting 2 hrs+ each day, for 25 years plus, I became very sedentary. 
+        And after a couple of years with health issues and not being able to change my sedentary ways, I had become 
+        very weak. I am now walking an hour or more a day on hiking trails and I am no longer experiencing daily chest pain. 
+        I understand the importance of adding resistance training as tolerated within my personal limitations. 
+        The program has taught me that being physically active in life is not the same as participating in daily exercise.”
+    </p>
+</div>
+
     <!-- Registration Form -->
     <div class="form-container" id="form-container">
         <div class="_form_18"></div>
@@ -954,24 +977,25 @@ function openVideoModal() {
     const videoModal = document.getElementById("video-modal");
     const videoFrame = document.getElementById("dynamic-video");
 
-    // Set the video link dynamically based on page step
     let videoUrl = "";
 
     if (currentStep === 1) {
-        videoUrl = "https://www.youtube.com/embed/qRCU54MwYYw"; // Example for Step 1
+        videoUrl = "https://www.youtube.com/embed/qRCU54MwYYw?autoplay=1&mute=1&rel=0";
     } else if (currentStep === 2) {
-        videoUrl = "https://www.youtube.com/embed/ZlGFt6sliv0"; // Step 2
+        videoUrl = "https://www.youtube.com/embed/ZlGFt6sliv0?autoplay=1&mute=1&rel=0";
     } else if (currentStep === 3) {
-        videoUrl = "https://www.youtube.com/embed/ZlGFt6sliv0"; // Step 3
+        videoUrl = "https://www.youtube.com/embed/ZlGFt6sliv0?autoplay=1&mute=1&rel=0";
     } else if (currentStep === 4) {
-        videoUrl = "https://www.youtube.com/embed/axBtxAl0lhU"; // Step 4
+        videoUrl = "https://www.youtube.com/embed/axBtxAl0lhU?autoplay=1&mute=1&rel=0";
     } else {
-        videoUrl = "https://www.youtube.com/embed/LFpLcttUhgQ"; // Default
+        videoUrl = "https://www.youtube.com/embed/LFpLcttUhgQ?autoplay=1&mute=1&rel=0";
     }
 
-    videoFrame.src = videoUrl;
+    // Add autoplay=1
+    videoFrame.src = videoUrl + "?autoplay=1";
     videoModal.style.display = "flex";
 }
+
 
 function closeVideoModal() {
     const videoModal = document.getElementById("video-modal");
@@ -1048,7 +1072,7 @@ function updateStep(step) {
     document.getElementById("met-box").style.display = "none";
     document.getElementById("exercise-summary").style.display = "none";
     document.getElementById("final-results").style.display = "none";
-    document.getElementById("submit-data-button").style.display = "none"; // Hide button initially
+    document.getElementById("submit-data-button").style.display = "none";
 
     document.getElementById("next-button").style.display = "none";
     document.getElementById("comparison-next-button").style.display = "none";
@@ -1066,15 +1090,17 @@ function updateStep(step) {
         document.getElementById("met-next-button").style.display = "block";
     } else if (currentStep === 4) {
         document.getElementById("exercise-summary").style.display = "block";
-
-        // Show the button ONLY on step 4 (after health benefits dropdown)
         document.getElementById("submit-data-button").style.display = "block";
     } else if (currentStep === 5) {
         document.getElementById("final-results").style.display = "block";
     }
 
     updateProgress(currentStep);
+
+    // ✅ Automatically show the modal
+    openVideoModal();
 }
+
 
 
 
@@ -2083,6 +2109,9 @@ function calculateRisk() {
     });
 });
 
+window.addEventListener("DOMContentLoaded", () => {
+    updateStep(1);
+});
 
     </script>
 <div class="disclaimer">
