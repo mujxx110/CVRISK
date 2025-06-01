@@ -1,60 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Welcome to My Heart Fitness</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f5f5f5;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+  <meta charset="UTF-8">
+  <title>Welcome to My Heart Fitness</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-        img {
-            max-width: 90%;
-            height: auto;
-            margin-bottom: 40px;
-        }
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      background-color: #f5f5f5;
+    }
 
-        h1 {
-            font-size: 28px;
-            color: #333;
-            margin-bottom: 20px;
-        }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      text-align: center;
+      padding: 10px 20px;
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
 
-        .start-button {
-            padding: 15px 30px;
-            font-size: 18px;
-            font-weight: bold;
-            color: #fff;
-            background-color: #ee8e00;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            text-decoration: none;
-        }
+    img.banner {
+      width: 100%;
+      max-height: 15vh;
+      object-fit: contain;
+    }
 
-        .start-button:hover {
-            background-color: #cc7200;
-        }
-    </style>
+    video {
+      width: 100%;
+      max-height: 40vh;
+      object-fit: contain;
+      border-radius: 8px;
+      flex-grow: 1;
+      margin: 10px 0;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      color: #333;
+      margin: 0.5em 0;
+    }
+
+    #unmuteBtn, #startBtn {
+      padding: 1em 2em;
+      font-size: 1rem;
+      font-weight: bold;
+      color: #fff;
+      background-color: #ee8e00;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      text-decoration: none;
+      width: 90%;
+      max-width: 360px;
+      margin: 0.5em 0;
+    }
+
+    #unmuteBtn:hover, #startBtn:hover {
+      background-color: #cc7200;
+    }
+
+    .fade-out {
+      opacity: 0;
+      transform: translateY(-40px);
+    }
+  </style>
 </head>
 <body>
 
-    <!-- Replace with your uploaded image URL -->
-    <img src="MHF Community Email Headers.png" alt="Welcome to My Heart Fitness">
+  <!-- Top Banner Image -->
+  <img src="MHF Community Email Headers.png" alt="My Heart Fitness Banner" class="banner">
 
-    <h1>Welcome to the My Heart Fitness Community!</h1>
-    <a href="index.html" class="start-button">Get Started</a>
+  <!-- Enable Audio Button -->
+  <button id="unmuteBtn">🔊 Enable Audio</button>
+
+  <!-- Video Banner -->
+  <video id="welcomeVideo" src="welcome-video.mp4" autoplay muted loop playsinline></video>
+
+  <!-- Get Started Button -->
+  <a href="#" class="start-button" id="startBtn">Get Started</a>
+
+  <!-- Heading -->
+  <h1>Welcome to the My Heart Fitness Community!</h1>
+
+  <script>
+    const video = document.getElementById('welcomeVideo');
+    const unmuteBtn = document.getElementById('unmuteBtn');
+    const startBtn = document.getElementById('startBtn');
+
+    unmuteBtn.addEventListener('click', () => {
+      video.muted = false;
+      video.play();
+      unmuteBtn.style.display = 'none';
+    });
+
+    startBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      document.body.classList.add('fade-out');
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 600);
+    });
+  </script>
 
 </body>
 </html>
