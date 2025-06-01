@@ -21,6 +21,13 @@
     border-radius: 8px;
 }
 
+@media (max-width: 500px) {
+    #floating-video-container {
+        width: 240px;
+        height: 135px;
+    }
+}
+
 
 #video-bubble {
     position: fixed;
@@ -956,45 +963,30 @@ details[open] {
     </div>
 </div>
 
-<!-- Floating Bubble -->
-<div id="video-bubble" onclick="openVideoModal()">
-    ▶
-</div>
 
-<!-- Video Modal -->
-<div id="video-modal" style="display:none;">
-    <div id="video-modal-content">
-        <span id="close-video-modal" onclick="closeVideoModal()">×</span>
-        <iframe id="dynamic-video" width="100%" height="315" frameborder="0" allowfullscreen></iframe>
-    </div>
-</div>
 
 
     <script>
 
 
 function openVideoModal() {
-    const videoModal = document.getElementById("video-modal");
-    const videoFrame = document.getElementById("dynamic-video");
+    const videoFrame = document.getElementById("floating-video-frame");
 
     let videoUrl = "";
 
     if (currentStep === 1) {
-        videoUrl = "https://www.youtube.com/embed/qRCU54MwYYw?autoplay=1&mute=1&rel=0";
-    } else if (currentStep === 2) {
-        videoUrl = "https://www.youtube.com/embed/ZlGFt6sliv0?autoplay=1&mute=1&rel=0";
-    } else if (currentStep === 3) {
-        videoUrl = "https://www.youtube.com/embed/ZlGFt6sliv0?autoplay=1&mute=1&rel=0";
+        videoUrl = "https://www.youtube.com/embed/qRCU54MwYYw?rel=0";
+    } else if (currentStep === 2 || currentStep === 3) {
+        videoUrl = "https://www.youtube.com/embed/ZlGFt6sliv0?rel=0";
     } else if (currentStep === 4) {
-        videoUrl = "https://www.youtube.com/embed/axBtxAl0lhU?autoplay=1&mute=1&rel=0";
+        videoUrl = "https://www.youtube.com/embed/axBtxAl0lhU?rel=0";
     } else {
-        videoUrl = "https://www.youtube.com/embed/LFpLcttUhgQ?autoplay=1&mute=1&rel=0";
+        videoUrl = "https://www.youtube.com/embed/LFpLcttUhgQ?rel=0";
     }
 
-    // Add autoplay=1
-    videoFrame.src = videoUrl + "?autoplay=1";
-    videoModal.style.display = "flex";
+    videoFrame.src = videoUrl;
 }
+
 
 
 function closeVideoModal() {
@@ -2120,5 +2112,27 @@ window.addEventListener("DOMContentLoaded", () => {
     </p>
   </div>
   
+<!-- Floating Video in Bottom-Right Corner -->
+<div id="floating-video-container" style="
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 320px;
+    height: 180px;
+    background-color: black;
+    border-radius: 8px;
+    overflow: hidden;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+    <iframe id="floating-video-frame"
+            width="320" height="180"
+            frameborder="0"
+            allowfullscreen
+            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            style="width:100%; height:100%; border:none; border-radius: 8px;">
+    </iframe>
+</div>
+
+
 </body>
 </html>
