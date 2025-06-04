@@ -14,6 +14,30 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
 
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    50% { transform: translateX(4px); }
+    75% { transform: translateX(-4px); }
+    100% { transform: translateX(0); }
+}
+
+.input-error-shake {
+    animation: shake 0.3s ease-in-out;
+}
+
+
+.input-error {
+    border: 2px solid red !important;
+}
+
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+
 #dynamic-video {
     width: 100%;
     height: 70vh; /* Takes 70% of screen height */
@@ -606,7 +630,7 @@ details[open] {
                 <input type="number" id="age" placeholder="Enter your age" required>
             
                 <label for="gender">Select Your Gender</label>
-                <select id="gender">
+                <select id="gender" required>
                     <option value="" selected disabled hidden> Click to Select</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
@@ -668,6 +692,7 @@ details[open] {
                         <option value="" selected disabled hidden> Click to Select</option>
                         <option value="yes">Yes</option>
                         <option value="no">No</option>
+                        <option value="unknown">I don't know</option>
                     </select>
                 
                 <label for="systolic_bp">Systolic Blood Pressure (mmHg) Note: Systolic blood pressure is the top number of a blood pressure reading </label>
@@ -678,6 +703,7 @@ details[open] {
                     <option value="" selected disabled hidden> Click to Select</option>
                     <option value="yes">Yes</option>
                     <option value="no">No</option>
+                    <option value="unknown">I don't know</option>
                 </select>
             
                 
@@ -702,6 +728,7 @@ details[open] {
                     <option value="" selected disabled hidden> Click to Select</option>
                     <option value="yes">Yes</option>
                     <option value="no">No</option>
+                    <option value="unknown">I don't know</option>
                 </select>
                 
 
@@ -956,6 +983,13 @@ details[open] {
     </p>
 </div>
 
+<div id="missing-fields-warning" style="display: none; background-color: #fff3cd; color: #856404; padding: 20px; border: 2px solid #ffeeba; border-radius: 8px; font-size: 16px; margin-top: 20px;">
+    <strong>Heads up!</strong>
+    <p id="missing-fields-list" style="margin-top: 10px;"></p>
+    <p style="margin-top: 10px;">Understanding these values is important for assessing your cardiovascular health. <strong>Joining My Heart Fitness (MHF)</strong> can help you learn more about your blood pressure, cholesterol, and overall risk—and how to improve it.</p>
+  </div>
+  
+
     <!-- Registration Form -->
     <div class="form-container" id="form-container">
         <div class="_form_18"></div>
@@ -967,6 +1001,38 @@ details[open] {
 
 
     <script>
+
+function showMissingFieldWarnings() {
+    const missingItems = [];
+
+    // Get values
+    const cvd = document.getElementById("cvd").value;
+    const bpMedication = document.getElementById("bp_medication").value;
+    const diabetes = document.getElementById("diabetes").value;
+    const systolicBP = document.getElementById("systolic_bp").value;
+    const bmi = parseFloat(document.getElementById("calculated-bmi").innerText);
+
+    // Only add items if "I don't know" was selected (not just left blank)
+    if (cvd === "unknown") missingItems.push("History of heart disease (CVD)");
+    if (bpMedication === "unknown") missingItems.push("Whether you're on blood pressure medication");
+    if (diabetes === "unknown") missingItems.push("Diabetes status");
+
+    // Also check for missing numeric fields
+    if (!systolicBP) missingItems.push("Systolic blood pressure");
+    if (isNaN(bmi) || bmi === 0) missingItems.push("Body Mass Index (BMI)");
+
+    // Show message if anything is missing or marked unknown
+    if (missingItems.length > 0) {
+        document.getElementById("missing-fields-list").innerHTML =
+            "We noticed you didn’t provide information for the following:<ul>" +
+            missingItems.map(item => `<li>${item}</li>`).join("") + "</ul>";
+        document.getElementById("missing-fields-warning").style.display = "block";
+    } else {
+        document.getElementById("missing-fields-warning").style.display = "none";
+    }
+}
+
+
 
 
 function openVideoModal() {
@@ -1005,6 +1071,8 @@ function closeVideoModal() {
         document.getElementById("exercise-summary").style.display = "none";
         document.getElementById("submit-data-button").style.display = "none";
         document.getElementById("final-results").style.display = "block";
+        showMissingFieldWarnings();
+
 
         // Render the video
         const resultContainer = document.getElementById('video-container');
@@ -1094,12 +1162,67 @@ function updateStep(step) {
 }
 
 
+function validateRequiredFields() {
+    const fields = [
+        { id: "age", label: "Age" },
+        { id: "gender", label: "Gender" },
+        { id: "cvd", label: "CVD history" },
+        { id: "bp_medication", label: "Blood pressure medication" },
+        { id: "diabetes", label: "Diabetes status" },
+        { id: "smoker", label: "Smoking status" }
+    ];
+
+    let isValid = true;
+
+    fields.forEach(field => {
+        const element = document.getElementById(field.id);
+        const value = element.value.trim();
+        const parent = element.parentElement;
+
+        // Remove previous errors
+        element.classList.remove("input-error", "input-error-shake");
+        const existingError = parent.querySelector(".error-message");
+        if (existingError) existingError.remove();
+
+        // Show error for blank fields
+        if (value === "") {
+            isValid = false;
+            element.classList.add("input-error", "input-error-shake");
+
+            const error = document.createElement("div");
+            error.classList.add("error-message");
+            error.textContent = `Please enter/select ${field.label.toLowerCase()}.`;
+            parent.appendChild(error);
+
+            // Remove shake after it's done so it can be triggered again
+            setTimeout(() => {
+                element.classList.remove("input-error-shake");
+            }, 400);
+        }
+    });
+
+    // Scroll to first invalid field
+    if (!isValid) {
+        const firstErrorField = document.querySelector(".input-error");
+        if (firstErrorField) {
+            firstErrorField.scrollIntoView({ behavior: "smooth", block: "center" });
+            firstErrorField.focus(); // Brings attention to dropdown, especially on Chrome/Edge
+        }
+    }
+
+    return isValid;
+}
+
+
 
 
 // Attach event listeners to buttons
-document.getElementById("next-button").addEventListener("click", function() {
-    updateStep(2);
+document.getElementById("next-button").addEventListener("click", function () {
+    if (validateRequiredFields()) {
+        updateStep(2);
+    }
 });
+
 
 document.getElementById("comparison-next-button").addEventListener("click", function() {
     updateStep(3);
@@ -1472,18 +1595,15 @@ document.getElementById("final-next-button").addEventListener("click", function(
         
         
     
-        document.getElementById("next-button").addEventListener("click", function() {
-    let riskScore = calculateRisk(); // Calculate risk score
-    window.globalRiskScore = riskScore; // Store for later use
+        document.getElementById("next-button").addEventListener("click", function () {
+    if (!validateRequiredFields()) return; // ⛔ Stop here if fields are incomplete
 
-    // Update the displayed risk score
+    let riskScore = calculateRisk(); // ✅ Only runs if validation passes
+    window.globalRiskScore = riskScore;
+
     document.getElementById("risk-score").innerText = riskScore.toFixed(2);
-
-    // Also set this value as the "Old Risk Score" since it's the first recorded value
-    document.getElementById("old-risk-score-value").innerText = riskScore.toFixed(2); 
-
-    // Store the old risk score so that it can be compared later
-    window.oldRiskScore = riskScore; 
+    document.getElementById("old-risk-score-value").innerText = riskScore.toFixed(2);
+    window.oldRiskScore = riskScore;
 
     let riskCategory = "";
     let color = "";
@@ -1492,34 +1612,30 @@ document.getElementById("final-next-button").addEventListener("click", function(
     if (riskScore <= 1) {
         riskCategory = "Very Low Risk";
         color = "#f3fadc";
-        borderColor = "#78ce00"; // Green border
+        borderColor = "#78ce00";
     } else if (riskScore > 1 && riskScore <= 10) {
         riskCategory = "Low Risk";
         color = "#f3fadc";
-        borderColor = "#78ce00"; 
+        borderColor = "#78ce00";
     } else if (riskScore > 10 && riskScore <= 20) {
         riskCategory = "Intermediate Risk";
         color = "#fff4e4";
-        borderColor = "#ffac4c"; // Fixed typo in border color
-    } else if (riskScore > 20) {
+        borderColor = "#ffac4c";
+    } else {
         riskCategory = "High Risk";
         color = "#fab6b6";
-        borderColor = "#ff2020"; 
+        borderColor = "#ff2020";
     }
 
     document.getElementById("risk-category").innerText = riskCategory;
-    let riskCategoryBox = document.getElementById("risk-category-box");
-    riskCategoryBox.style.backgroundColor = color;
-    riskCategoryBox.style.border = `3px solid ${borderColor}`;
-
-    let riskBox = document.getElementById("risk-box");
-    riskBox.style.backgroundColor = color;
-    riskBox.style.border = `3px solid ${borderColor}`;
+    document.getElementById("risk-category-box").style.backgroundColor = color;
+    document.getElementById("risk-category-box").style.border = `3px solid ${borderColor}`;
+    document.getElementById("risk-box").style.backgroundColor = color;
+    document.getElementById("risk-box").style.border = `3px solid ${borderColor}`;
 
     document.getElementById("risk-score-container").style.display = "flex";
     document.getElementById("comparison-next-button").style.display = "block";
 });
-
 
 
 
@@ -1676,15 +1792,15 @@ function calculateNewRisk() {
     const gender = document.getElementById('gender').value;
     const smoker = document.getElementById('smoker').value === 'yes';
     const systolic_bp = parseFloat(document.getElementById('systolic_bp').value) || 0;
-    const bp_medication = document.getElementById('bp_medication').value === 'yes';
-    const diabetes = document.getElementById('diabetes').value === 'yes';
+    const bp_medication = document.getElementById('bp_medication').value === 'yes' ? true : false;
+    const diabetes = document.getElementById('diabetes').value === 'yes' ? true : false;
     const has_cholesterol = document.getElementById('cholesterol').value === 'yes';
     const total_cholesterol = has_cholesterol ? parseFloat(document.getElementById('total_cholesterol').value) || 0 : 0;
     const hdl_cholesterol = has_cholesterol ? parseFloat(document.getElementById('hdl_cholesterol').value) || 0 : 0;
     const bmi = calculateBMI() || 0;
     // Get the new MET minutes from the new exercise section:
     const met_minutes = parseFloat(document.getElementById('new-total-met-minutes').innerText) || 0;
-    const has_cvd = document.getElementById('cvd').value === 'yes';
+    const has_cvd = document.getElementById('cvd').value === 'yes' ? true : false;
 
     let risk_score = 0;
 
