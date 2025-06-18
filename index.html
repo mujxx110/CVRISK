@@ -13,6 +13,71 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
+.total-met-box {
+    background-color: #ee8e00;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 15px;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2); /* Stronger shadow */
+}
+
+
+.activity-card {
+    background-color: #ffdcac;
+    border: 2px solid #ee8e00;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0px 4px 6px rgba(0,0,0,0.05);
+}
+
+.activity-card label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.activity-card input[type="number"],
+.activity-card select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.intensity-options {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.intensity-options label {
+    font-weight: normal;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.activity-card button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.activity-card button:hover {
+    background-color: #c82333;
+}
+
 
 @keyframes shake {
     0% { transform: translateX(0); }
@@ -223,7 +288,7 @@
 
 @media (max-width: 768px) {
     body {
-        padding: 10px;  /* Reduce padding on smaller screens */
+        padding: 0px;  /* Reduce padding on smaller screens */
     }
 
     .container {
@@ -436,13 +501,13 @@ details[open] {
         }
 
         .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px 40px;
-            border-radius: 8px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        }
+  background-color: transparent;
+  padding: 0;
+  box-shadow: none;
+  border-radius: 0;
+  max-width: 100%;
+}
+
 
         label {
             display: block;
@@ -601,8 +666,6 @@ details[open] {
     transition: width 0.5s ease-in-out;
 }
 
-
-        
     </style>
 </head>
 <body>
@@ -631,12 +694,11 @@ details[open] {
                 <label for="age">Age (How old are you?) </label>
                 <input type="number" id="age" placeholder="Enter your age" required>
             
-                <label for="gender">Select Your Gender</label>
+                <label for="gender">Select Your Sex</label>
                 <select id="gender" required>
                     <option value="" selected disabled hidden> Click to Select</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
-                    <option value="prefer_not_to_say">Prefer Not to Say</option>
 
                 </select>
             
@@ -750,13 +812,19 @@ details[open] {
             
                 <label for="met_minutes">Exercise (MET Minute Calculator)</label>
                 <div id="activities-container"></div>
-                <button type="button" onclick="addActivity()">Add Activity</button>
-            
-                <div>
-                    <p>Total MET-minutes: <span id="total-met-minutes">0</span></p>
-                    <p style="font-size: 14px; color: #666;">MET (Metabolic Equivalent of Task) is used to estimate how much energy your body uses during physical activity. The higher the MET value, the more intense the exercise and the more energy your body uses .</p>
+                <button type="button" id="add-exercise-button" onclick="addActivity()">Add Exercise</button>
+                <div id="activity-summary-container"></div>
 
+                <div class="total-met-box">
+                    Total MET-minutes: <span id="total-met-minutes">0</span>
                 </div>
+                
+                <p style="font-size: 14px; color: #666; margin-top: 10px;">
+                    MET (Metabolic Equivalent of Task) is used to estimate how much energy your body uses during physical activity. 
+                    The higher the MET value, the more intense the exercise and the more energy your body uses.
+                </p>
+                
+                
             
             </details>
         </div>
@@ -829,20 +897,10 @@ details[open] {
 
 
 
-            <!-- New Orange Box for the Heading -->
-            <div style="background-color: #72b5f8; padding: 10px; border-radius: 4px; margin-bottom: 20px;">
-                <h2 style="text-align: center; color: white; margin: 0;">Your Current Exercise Details</h2>
-                
-                <!-- Column Titles -->
-                <div style="display: flex; justify-content: space-between; padding: 10px; font-weight: bold; color: white; text-align: center;">
-                    <div style="flex: 1;">Type of Exercise</div>
-                    <div style="flex: 1;">Times/Week</div>
-                    <div style="flex: 1;">Minutes/Session</div>
-                    <div style="flex: 1;">Intensity</div>
-                </div>
-            </div>
             
-            <div id="exercise-summary-container"></div>
+            
+            
+            
           
             <div id="final-risk-score" style="display: none;">
 
@@ -861,19 +919,26 @@ details[open] {
             </div>
        
         <div id="exercise-improvement-section">
-            <p style="text-align: center; color: #ee8e00; margin-top: 20px; font-size: 16px;">
-                Update the total number of minutes you exercise each week (not just the additional amount), and we’ll recalculate your risk score. (For example, if you exercised 90 minutes last week and now do 120 minutes, enter 120—not just the extra 30.)
-            </p>
-            
-        
             <!-- New Exercise Calculator Section -->
             <div id="new-exercise-calculator" style="margin-top: 20px; background-color: #fff; padding: 20px 40px; border-radius: 8px;">
-                <label for="new-met_minutes">Exercise Calculator</label>
+                <h3>Exercise Calculator</h3>
+                    <p style="margin-top: -10px; margin-bottom: 20px;">
+                        We’ve autofilled your exercise inputs from earlier below. Try increasing or decreasing your activity to see how it affects your risk score.
+                    </p>
+
                 <div id="new-activities-container"></div>
-                <button type="button" onclick="addNewActivity()">Add Activity</button>
-                <div>
-                    <p>Total MET-minutes: <span id="new-total-met-minutes">0</span></p>
-                </div>
+<button type="button" onclick="addNewActivity()">Add Activity</button>
+<div id="new-activity-summary-container"></div>
+
+<div class="total-met-box">
+    Total MET-minutes: <span id="new-total-met-minutes">0</span>
+</div>
+
+<p style="font-size: 14px; color: #666; margin-top: 10px;">
+    MET (Metabolic Equivalent of Task) is used to estimate how much energy your body uses during physical activity. 
+    The higher the MET value, the more intense the exercise and the more energy your body uses.
+</p>
+
             </div>
         
             <button id="calculate-new-risk-button" style="margin-top: 20px;">See the change in your score</button>
@@ -1193,7 +1258,7 @@ function validateRequiredFields() {
 
             const error = document.createElement("div");
             error.classList.add("error-message");
-            error.textContent = `Please enter/select ${field.label.toLowerCase()}.`;
+            error.textContent = ``;
             parent.appendChild(error);
 
             // Remove shake after it's done so it can be triggered again
@@ -1231,6 +1296,7 @@ document.getElementById("comparison-next-button").addEventListener("click", func
 });
 
 document.getElementById("met-next-button").addEventListener("click", function() {
+    preloadExerciseForStep4(); // ⬅️ add this line BEFORE updateStep
     updateStep(4);
 });
 
@@ -1476,41 +1542,128 @@ document.getElementById("final-next-button").addEventListener("click", function(
         <!-- Add this inside the script tags, after the activityCount variable -->
 
         function addActivity() {
-            const container = document.getElementById("activities-container");
+    const formContainer = document.getElementById("activities-container");
+    const summaryContainer = document.getElementById("activity-summary-container");
 
-            const div = document.createElement("div");
-            div.className = "activity-item";
-            div.id = `activity-${activityCount}`;
+    // Wrapper for the card
+    const wrapper = document.createElement("div");
+    wrapper.className = "activity-wrapper";
+    wrapper.id = `activity-wrapper-${activityCount}`;
 
-            div.innerHTML = `
-                <select id="activity-${activityCount}-type" onchange="updateIntensityOptions(${activityCount}); calculateMETMinutes();">
-                    ${Object.keys(activityList).map(activity => `<option value="${activity}">${activity}</option>`).join("")}
-                </select>
-                <input type="number" id="activity-${activityCount}-frequency" placeholder="Times/Week" oninput="calculateMETMinutes();">
-                <input type="number" id="activity-${activityCount}-duration" placeholder="Minutes/Session" oninput="calculateMETMinutes();">
-                <select id="activity-${activityCount}-intensity" onchange="calculateMETMinutes();"></select>
-                <button type="button" onclick="removeActivity(${activityCount})">Remove</button>
-            `;
+    const div = document.createElement("div");
+    div.className = "activity-card";
+    div.id = `activity-${activityCount}`;
 
-            container.appendChild(div);
-            updateIntensityOptions(activityCount);
-            activityCount++;
-        }
+    div.innerHTML = `
+        <label>Select the type of exercise you perform:</label>
+        <select id="activity-${activityCount}-type" onchange="updateIntensityOptions(${activityCount}); calculateMETMinutes();">
+            ${Object.keys(activityList).map(activity => `<option value="${activity}">${activity}</option>`).join("")}
+        </select>
 
-        function updateIntensityOptions(activityIndex) {
-            const activityType = document.getElementById(`activity-${activityIndex}-type`).value;
-            const intensitySelect = document.getElementById(`activity-${activityIndex}-intensity`);
+        <label>How many days per week do you usually perform this exercise?</label>
+        <input type="number" id="activity-${activityCount}-frequency" placeholder="e.g., 3" oninput="calculateMETMinutes();">
 
-            intensitySelect.innerHTML = '';
+        <label>On days when you perform this exercise, how many minutes do you typically spend doing it?</label>
+        <input type="number" id="activity-${activityCount}-duration" placeholder="e.g., 45" oninput="calculateMETMinutes();">
 
-            const intensities = activityList[activityType];
-            for (let intensity in intensities) {
-                const option = document.createElement('option');
-                option.value = intensity;
-                option.textContent = intensity.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
-                intensitySelect.appendChild(option);
-            }
-        }
+        <label>How would you rate the intensity of this exercise?</label>
+        <div class="intensity-options" id="activity-${activityCount}-intensity-options"></div>
+
+        <button type="button" onclick="doneActivity(${activityCount})">Done</button>
+    `;
+
+    const editDiv = document.createElement("div");
+    editDiv.id = `edit-activity-${activityCount}`;
+    editDiv.style.display = "none";
+    const selectedActivity = document.getElementById(`activity-${activityCount}-type`)?.value || "Not selected";
+
+editDiv.innerHTML = `
+    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 16px; font-weight: 500; padding: 8px 4px;">
+        <span style="color: #000;">Exercise Entry: <span id="summary-activity-${activityCount}">${selectedActivity}</span></span>
+        <a href="#" onclick="editActivity(${activityCount}); return false;" style="color: #ee8e00; font-style: italic; text-decoration: none;">Edit this activity</a>
+    </div>
+`;
+
+
+    wrapper.appendChild(div);
+    formContainer.appendChild(wrapper);       // The form (stays above Add)
+    summaryContainer.appendChild(editDiv);    // Summary line (below Add)
+
+    updateIntensityOptions(activityCount);
+    activityCount++;
+
+    // Change button text after the first activity is added
+const addButton = document.getElementById("add-exercise-button");
+if (activityCount === 1) {
+    addButton.textContent = "Add Another Exercise";
+}
+
+}
+
+
+const originalActivitiesData = [];
+
+
+
+function doneActivity(index) {
+    const activityCard = document.getElementById(`activity-${index}`);
+    activityCard.style.display = "none";
+
+    const editLink = document.getElementById(`edit-activity-${index}`);
+    if (editLink) {
+        editLink.style.display = "block";
+    }
+
+    // ✅ NEW: Store the data for reuse in step 4
+    const type = document.getElementById(`activity-${index}-type`).value;
+    const frequency = document.getElementById(`activity-${index}-frequency`).value;
+    const duration = document.getElementById(`activity-${index}-duration`).value;
+    const intensityInput = document.querySelector(`input[name="activity-${index}-intensity"]:checked`);
+    const intensity = intensityInput ? intensityInput.value : null;
+
+    // Ensure intensity exists before storing
+    if (type && frequency && duration && intensity) {
+        originalActivitiesData.push({ type, frequency, duration, intensity });
+    }
+
+    calculateMETMinutes();
+    document.getElementById(`summary-activity-${index}`).textContent =
+    document.getElementById(`activity-${index}-type`).value;
+
+}
+
+
+function editActivity(index) {
+    const activityCard = document.getElementById(`activity-${index}`);
+    activityCard.style.display = "block";
+
+    const editLink = document.getElementById(`edit-activity-${index}`);
+    if (editLink) {
+        editLink.style.display = "none";
+    }
+}
+
+
+
+function updateIntensityOptions(activityIndex) {
+    const activityType = document.getElementById(`activity-${activityIndex}-type`).value;
+    const intensityContainer = document.getElementById(`activity-${activityIndex}-intensity-options`);
+
+    intensityContainer.innerHTML = ''; // Clear existing options
+
+    const intensities = activityList[activityType];
+    for (let intensity in intensities) {
+        const id = `activity-${activityIndex}-intensity-${intensity}`;
+        const radio = `
+            <label>
+                <input type="radio" name="activity-${activityIndex}-intensity" value="${intensity}" onchange="calculateMETMinutes();" required>
+                ${intensity.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())} effort
+            </label>
+        `;
+        intensityContainer.innerHTML += radio;
+    }
+}
+
 
         function removeActivity(index) {
             const div = document.getElementById(`activity-${index}`);
@@ -1524,7 +1677,7 @@ document.getElementById("final-next-button").addEventListener("click", function(
                 const activityType = document.getElementById(`activity-${i}-type`);
                 const frequency = document.getElementById(`activity-${i}-frequency`);
                 const duration = document.getElementById(`activity-${i}-duration`);
-                const intensity = document.getElementById(`activity-${i}-intensity`);
+                const intensity = document.querySelector(`input[name="activity-${i}-intensity"]:checked`);
 
                 if (activityType && frequency && duration && intensity) {
                     const metValue = activityList[activityType.value][intensity.value];
@@ -1533,6 +1686,7 @@ document.getElementById("final-next-button").addEventListener("click", function(
                     const metMinutes = metValue * freqValue * durValue;
                     totalMETMinutes += isNaN(metMinutes) ? 0 : metMinutes;
                 }
+
             }
 
             document.getElementById("total-met-minutes").innerText = totalMETMinutes.toFixed(2);
@@ -1730,41 +1884,157 @@ document.getElementById("met-next-button").addEventListener("click", function() 
     document.getElementById("final-risk-score").style.display = "block";
 });
 
+function preloadExerciseForStep4() {
+    const container = document.getElementById("new-activities-container");
+    container.innerHTML = ""; // Clear previous entries
+    newActivityCount = 0;
+
+    originalActivitiesData.forEach((data) => {
+        const div = document.createElement("div");
+        div.className = "activity-card";
+        div.id = `new-activity-${newActivityCount}`;
+
+        div.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 16px; font-weight: 600; margin-bottom: 10px;">
+                <span style="color: #000;">Exercise Entry #${newActivityCount + 1}</span>
+                <a href="#" onclick="editNewActivity(${newActivityCount}); return false;" style="color: #ee8e00; font-style: italic; text-decoration: none;">Edit this activity</a>
+            </div>
+
+            <label>Select the type of physical activity you perform:</label>
+            <select id="new-activity-${newActivityCount}-type">
+                ${Object.keys(activityList).map(activity => `
+                    <option value="${activity}" ${activity === data.type ? "selected" : ""}>${activity}</option>
+                `).join("")}
+            </select>
+
+            <label>How many days per week do you usually perform this activity?</label>
+            <input type="number" id="new-activity-${newActivityCount}-frequency" value="${data.frequency}" placeholder="e.g., 3" oninput="calculateNewMETMinutes();">
+
+            <label>On days when you perform this activity, how many minutes do you typically spend doing it?</label>
+            <input type="number" id="new-activity-${newActivityCount}-duration" value="${data.duration}" placeholder="e.g., 45" oninput="calculateNewMETMinutes();">
+
+            <label>How would you rate the typical intensity of this activity?</label>
+            <div class="intensity-options" id="new-activity-${newActivityCount}-intensity-options"></div>
+
+            <button type="button" onclick="doneNewActivity(${newActivityCount})">Done</button>
+        `;
+
+        container.appendChild(div);
+
+        // Add listener manually
+        const selectEl = document.getElementById(`new-activity-${newActivityCount}-type`);
+        selectEl.addEventListener("change", () => {
+            updateNewIntensityOptions(newActivityCount);
+            calculateNewMETMinutes();
+        });
+
+        // Manually call with preselected intensity
+        updateNewIntensityOptions(newActivityCount, data.intensity);
+        console.log("Selected intensity for entry", newActivityCount, "is", data.intensity);
+
+        newActivityCount++;
+    });
+
+    calculateNewMETMinutes();
+}
+
+
+
+
+
 let newActivityCount = 0;
-function addNewActivity() {
+function addNewActivity(prefill = {}) {
     const container = document.getElementById("new-activities-container");
 
     const div = document.createElement("div");
-    div.className = "activity-item";
+    div.className = "activity-card";
     div.id = `new-activity-${newActivityCount}`;
 
+    const activityOptions = Object.keys(activityList)
+        .map(activity => `<option value="${activity}" ${prefill.type === activity ? 'selected' : ''}>${activity}</option>`)
+        .join("");
+
     div.innerHTML = `
-        <select id="new-activity-${newActivityCount}-type" onchange="updateNewIntensityOptions(${newActivityCount}); calculateNewMETMinutes();">
-            ${Object.keys(activityList).map(activity => `<option value="${activity}">${activity}</option>`).join("")}
+        <label>Select the type of physical activity you perform:</label>
+        <select id="new-activity-${newActivityCount}-type">
+            ${activityOptions}
         </select>
-        <input type="number" id="new-activity-${newActivityCount}-frequency" placeholder="Times/Week" oninput="calculateNewMETMinutes();">
-        <input type="number" id="new-activity-${newActivityCount}-duration" placeholder="Minutes/Session" oninput="calculateNewMETMinutes();">
-        <select id="new-activity-${newActivityCount}-intensity" onchange="calculateNewMETMinutes();"></select>
-        <button type="button" onclick="removeNewActivity(${newActivityCount})">Remove</button>
+
+        <label>How many days per week do you usually perform this activity?</label>
+        <input type="number" id="new-activity-${newActivityCount}-frequency" placeholder="e.g., 3" value="${prefill.frequency || ''}" oninput="calculateNewMETMinutes();">
+
+        <label>On days when you perform this activity, how many minutes do you typically spend doing it?</label>
+        <input type="number" id="new-activity-${newActivityCount}-duration" placeholder="e.g., 45" value="${prefill.duration || ''}" oninput="calculateNewMETMinutes();">
+
+        <label>How would you rate the typical intensity of this activity?</label>
+        <div class="intensity-options" id="new-activity-${newActivityCount}-intensity-options"></div>
+
+        <button type="button" onclick="doneNewActivity(${newActivityCount})">Done</button>
     `;
 
     container.appendChild(div);
     updateNewIntensityOptions(newActivityCount);
+
+    // Set intensity AFTER rendering options
+    if (prefill.intensity) {
+        setTimeout(() => {
+            const intensityRadio = document.querySelector(`input[name="new-activity-${newActivityCount}-intensity"][value="${prefill.intensity}"]`);
+            if (intensityRadio) intensityRadio.checked = true;
+            calculateNewMETMinutes();
+        }, 0);
+    }
+
     newActivityCount++;
 }
-function updateNewIntensityOptions(activityIndex) {
+
+
+function doneNewActivity(index) {
+    const activityCard = document.getElementById(`new-activity-${index}`);
+    if (activityCard) {
+        activityCard.style.display = "none";
+    }
+    calculateNewMETMinutes();
+}
+
+
+function updateNewIntensityOptions(activityIndex, selectedIntensity = null) {
     const activityType = document.getElementById(`new-activity-${activityIndex}-type`).value;
-    const intensitySelect = document.getElementById(`new-activity-${activityIndex}-intensity`);
-    intensitySelect.innerHTML = '';
+    const container = document.getElementById(`new-activity-${activityIndex}-intensity-options`);
+    container.innerHTML = "";
 
     const intensities = activityList[activityType];
     for (let intensity in intensities) {
-        const option = document.createElement('option');
-        option.value = intensity;
-        option.textContent = intensity.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
-        intensitySelect.appendChild(option);
+        const id = `new-activity-${activityIndex}-intensity-${intensity}`;
+        const isChecked = selectedIntensity === intensity ? 'checked' : '';
+        const radio = `
+            <label>
+                <input type="radio" name="new-activity-${activityIndex}-intensity" value="${intensity}" onchange="calculateNewMETMinutes();" required ${isChecked}>
+                ${intensity.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())} effort
+            </label>
+        `;
+        container.innerHTML += radio;
     }
 }
+
+
+
+function doneNewActivity(index) {
+    const card = document.getElementById(`new-activity-${index}`);
+    card.style.display = "none";
+    const editLink = document.getElementById(`new-edit-activity-${index}`);
+    if (editLink) editLink.style.display = "block";
+    calculateNewMETMinutes();
+}
+
+function editNewActivity(index) {
+    const card = document.getElementById(`new-activity-${index}`);
+    card.style.display = "block";
+    const editLink = document.getElementById(`new-edit-activity-${index}`);
+    if (editLink) editLink.style.display = "none";
+}
+
+
+
 function removeNewActivity(index) {
     const div = document.getElementById(`new-activity-${index}`);
     div.remove();
@@ -1776,7 +2046,8 @@ function calculateNewMETMinutes() {
         const activityType = document.getElementById(`new-activity-${i}-type`);
         const frequency = document.getElementById(`new-activity-${i}-frequency`);
         const duration = document.getElementById(`new-activity-${i}-duration`);
-        const intensity = document.getElementById(`new-activity-${i}-intensity`);
+        const intensity = document.querySelector(`input[name="new-activity-${i}-intensity"]:checked`);
+
 
         if (activityType && frequency && duration && intensity) {
             const metValue = activityList[activityType.value][intensity.value];
@@ -1785,6 +2056,7 @@ function calculateNewMETMinutes() {
             const metMinutes = metValue * freqValue * durValue;
             totalMETMinutes += isNaN(metMinutes) ? 0 : metMinutes;
         }
+
     }
     document.getElementById("new-total-met-minutes").innerText = totalMETMinutes.toFixed(2);
     return totalMETMinutes;
