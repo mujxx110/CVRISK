@@ -876,22 +876,193 @@ input:focus, select:focus {
   opacity: 0.6;
 }
 
+.fade-slide-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeSlideIn 1.2s ease-out forwards;
+}
+
+@keyframes fadeSlideIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+h1 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  letter-spacing: -0.5px;
+  color: #222;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  letter-spacing: -0.5px;
+  color: #222;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.05);
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #555;
+  font-weight: 400;
+  margin-top: -0.5rem;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Freeze animations before Begin is clicked */
+.hold-animations * {
+  animation-play-state: paused !important;
+  transition: none !important;
+}
+
+/* Fullscreen popup with frosted-glass style */
+/* Light blue frosted overlay */
+#welcome-popup {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(232, 235, 252, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transition: opacity 0.5s ease;
+}
+
+/* Glassy inner card */
+.popup-content {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 20px;
+  width: 80vw;         /* NEW: 80% of screen width */
+  height: 80vh;        /* NEW: 80% of screen height */
+  padding: 40px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  color: #333;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  display: flex;           /* Enable flex layout */
+  flex-direction: column;
+  justify-content: center; /* Vertically center content */
+  align-items: center;     /* Horizontally center content */
+}
+
+
+.popup .popup-heading h1 {
+  font-size: clamp(7.2rem, 8vw, 6rem) !important;
+  letter-spacing: -0.5px !important;
+  font-weight: 700 !important;
+  margin: 0 !important;
+}
+
+
+
+
+
+
+.popup-content h1 span {
+  color: #f7941e; /* MHF orange */
+}
+
+/* Body text */
+.popup-content p {
+  font-size: clamp(14px, 2vw, 20px);
+  max-width: 90%;
+  margin-bottom: 30px;
+  color: #333;
+}
+/* Begin button */
+.popup-content button {
+  padding: 12px 30px;
+  font-size: 16px;
+  background-color: #ffb152d8;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  padding: 16px 32px;
+  font-size: clamp(16px, 2vw, 20px);
+  width: 12%;
+}
+
+.popup-content button:hover {
+  background-color: #cc5200;
+}
+
+<style>
+  #main-popup-heading {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: clamp(7rem, 8vw, 6rem);
+    line-height: 1.1;
+    letter-spacing: -7px;
+    margin: 0;
+    color: #222;
+  }
+
+  #main-popup-subheading {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: clamp(7rem, 10vw, 7rem);
+    line-height: 1.1;
+    letter-spacing: -7px;
+    margin: 0;
+    color: #f7931e; /* MHF orange */
+  }
+
+  
+</style>
+
+
+
     </style>
 </head>
 <body>
-    
-    
-    
-    
 
-
+    <div id="welcome-popup">
+        <div class="popup-content">      
+            <div class="popup-heading">
+                <h1 id="main-popup-heading">Welcome to</h1>
+                <h1 id="main-popup-subheading">Calculate My Risk</h1>
+              </div>
+              <br> 
+          <p>
+            Powered by <strong>My Heart Fitness</strong><br><br>
+            Learn how your habits affect your cardiovascular risk <br> and how small changes can make a big difference.
+          </p>
+          <button onclick="closePopup()">Begin</button>
+        </div>
+      </div>
+      
 
     <div class="calculator-component section active" id="calculator-component">
         <div class="container">
-            <h1>Cardiovascular Risk Calculator</h1>
-            <div class="disclaimer">
-                <p><strong>Data Privacy Notice:</strong> Your data is stored securely and used solely for educational and personal wellness purposes. We do not share or sell your information. For more details, contact us at support@mhfcare.ca.</p>
-            </div>
+            <h1 class="fade-slide-in"><span>Cardiovascular Risk Calculator</span></h1>
+            <p class="subtitle fade-slide-in">
+                Get a personalized score and actionable steps to improve your heart health.
+              </p>
+              
+
+        
             
             <div id="progress-bar-container">
   <div class="progress-steps">
@@ -2824,8 +2995,26 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+window.onload = function () {
+    document.body.classList.add("hold-animations");
+    document.getElementById("welcome-popup").style.display = "flex";
+  };
 
+  function closePopup() {
+    const popup = document.getElementById("welcome-popup");
+    popup.style.opacity = "0";
+    popup.style.pointerEvents = "none";
+    setTimeout(() => {
+      popup.style.display = "none";
+      document.body.classList.remove("hold-animations");
+    }, 500); // Match transition time
+  }
     </script>
+
+<div class="disclaimer">
+    <p><strong>Data Privacy Notice:</strong> Your data is stored securely and used solely for educational and personal wellness purposes. We do not share or sell your information. For more details, contact us at support@mhfcare.ca.</p>
+</div>
+
 <details class="disclaimer" style="max-width: 800px; margin: 30px auto;">
     <summary><strong style="color: #ee8e00;">Disclaimer: Click to Read</strong></summary>
     <div style="padding-top: 10px;">
