@@ -1,0 +1,2862 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MHF Cardiovascular Risk Score Calculator</title>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+
+
+
+       .nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.glass-next-button,
+.glass-back-button {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-weight: 600;
+  font-size: 16px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  border: none;
+  background-clip: padding-box;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Orange "Next" button */
+.glass-next-button {
+  background: rgba(255, 165, 0, 0.15);
+  color: #ee8e00;
+}
+
+.glass-next-button:hover {
+  background: rgba(255, 165, 0, 0.25);
+}
+
+/* Blue "Back" button */
+.glass-back-button {
+  background: rgba(70, 130, 180, 0.15); /* SteelBlue tint */
+  color: #4682b4;
+}
+
+.glass-back-button:hover {
+  background: rgba(70, 130, 180, 0.25);
+}
+
+
+
+.glass-next-button:hover {
+  background: rgba(255, 165, 0, 0.2);
+  transform: translateY(-1px);
+}
+
+.next-button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+
+.card {
+  background-color: #fff;
+  padding: 20px 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(1, 84, 95, 0.5);  /* ✅ Move the shadow here */
+  transition: box-shadow 2s ease
+}
+
+
+    .section {
+    position: relative;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.section.hidden {
+    transform: translateX(100%);
+    opacity: 0;
+    pointer-events: none;
+    height: 0;
+    overflow: hidden;
+    margin: 0; /* Optional: Remove margin if you used any */
+    padding: 0; /* Optional: Remove padding if applied *
+}
+
+
+
+
+.total-met-box {
+    background-color: #ee8e00;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 15px;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2); /* Stronger shadow */
+}
+
+
+.activity-card {
+    background-color: #ffdcac;
+    border: 2px solid #ee8e00;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0px 4px 6px rgba(0,0,0,0.05);
+}
+
+.activity-card label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.activity-card input[type="number"],
+.activity-card select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.intensity-options {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.intensity-options label {
+    font-weight: normal;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.activity-card button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.activity-card button:hover {
+    background-color: #c82333;
+}
+
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    50% { transform: translateX(4px); }
+    75% { transform: translateX(-4px); }
+    100% { transform: translateX(0); }
+}
+
+.input-error-shake {
+    animation: shake 0.3s ease-in-out;
+}
+
+
+.input-error {
+    border: 2px solid red !important;
+}
+
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+
+#dynamic-video {
+    width: 100%;
+    height: 70vh; /* Takes 70% of screen height */
+    border: none;
+    border-radius: 8px;
+}
+
+@media (max-width: 500px) {
+    #floating-video-container {
+        width: 240px;
+        height: 135px;
+    }
+}
+
+
+#video-bubble {
+    position: fixed;
+    bottom: 20px;
+    right: 60px;
+    width: 60px;
+    height: 60px;
+    background-color: #ee8e00; /* Orange */
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+    z-index: 1000;
+    position: relative; /* Needed for tooltip positioning */
+}
+
+#video-bubble::after {
+    content: "Not sure how to proceed?\AWatch this quick tutorial.";
+    position: absolute;
+    bottom: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 4px;
+    white-space: pre-wrap;
+    font-size: 12px;
+    opacity: 1;
+    pointer-events: none;
+    text-align: center;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+    z-index: 1001;
+    min-width: 100px; /* Add this to increase the width */
+}
+
+
+
+
+#exercise-summary-container {
+    background-color: #a3cdfb !important; /* Change this to your preferred color */
+    color: black !important; /* Ensures text remains visible */
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    border: 3px solid #fff; /* Optional: Adds a border */
+}
+
+/* Floating Bubble Button */
+#video-bubble {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background-color: #ee8e00; /* Orange */
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+    z-index: 1000;
+}
+
+/* Video Modal Styling */
+#video-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+}
+
+#video-modal-content {
+    background-color: white;
+    padding: 0;
+    border-radius: 8px;
+    width: 90vw; /* Use viewport width instead of max-width */
+    max-width: 1200px; /* Set a sensible max */
+    height: auto;
+    position: relative;
+}
+
+
+#close-video-modal {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+
+
+#final-risk-score {
+    background-color: #72b5f8 !important; /* Change this to your preferred color */
+    color: white !important; /* Ensures text remains visible */
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 20px;
+    border: 3px solid #fff; /* Optional: Border color */
+}
+
+
+#comparison-box {
+    background-color: #FFD700; /* Change this to your preferred color */
+    color: black; /* Adjust text color for contrast */
+    padding: 20px;
+    border-radius: 8px;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+    border: 3px solid #cc0000; /* Optional: Red border */
+}
+
+        
+
+        .logo-container {
+    text-align: center; /* Centers the image */
+    margin-bottom: 20px; /* Space between logo and heading */
+}
+
+.logo-container img {
+    max-width: 800px; /* Adjust the logo size */
+    height: auto; /* Maintain aspect ratio */
+}
+
+
+        #risk-change-box {
+    background-color: #eee;
+    border: 2px solid #333;
+    color: #333;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+@media (max-width: 600px) {
+    .progress-container {
+        height: 5px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 0px;  /* Reduce padding on smaller screens */
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    .section {
+        padding: 15px;
+        max-width: 95%;
+    }
+
+    h1, h2 {
+        font-size: 20px; /* Make headings smaller */
+    }
+
+    .video-title {
+        font-size: 18px; /* Reduce title size on mobile */
+        text-align: center;
+    }
+
+    .nav-container {
+        flex-direction: column; /* Stack navigation buttons on top of each other */
+    }
+
+    .nav-button {
+        width: 100%; /* Make navigation buttons full-width */
+        margin: 5px 0; /* Add spacing */
+    }
+
+    .activity-item {
+        flex-direction: column; /* Stack exercise inputs */
+        gap: 5px;
+    }
+
+    .progress-container {
+        height: 6px; /* Make the progress bar thinner on mobile */
+    }
+}
+
+.video-title {
+    text-align: center;
+    color: #ee8e00; /* Orange text color */
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+#final-next-button {
+    width: 400px; /* Adjust size as needed */
+    margin: 10px auto; /* Centers the button */
+    display: block; /* Ensures it's treated as a block element */
+    text-align: center; /* Ensures text inside the button is centered */
+}
+   
+#final-risk-score {
+    display: none;
+    margin-top: 20px;
+    background-color: #ee8e00; /* Orange background */
+    padding: 20px 40px;
+    border-radius: 8px;
+    text-align: center;
+    color: white; /* Make text white for contrast */
+    font-weight: bold;
+}
+
+#final-risk-score h2 {
+    color: white; /* Ensure the heading is also white */
+}
+
+#final-risk-score p {
+    font-size: 24px;
+    font-weight: bold;
+    color: white; /* Ensure the risk score is visible */
+}
+
+/* Apply orange background to exercise-summary-container */
+#exercise-summary-container {
+    background-color: #ee8e00; /* Orange background */
+    padding: 20px;
+    border-radius: 8px;
+    color: #fff; /* Make text readable */
+}
+
+/* Ensure text inside exercise-summary-container remains visible */
+#exercise-summary-container h2,
+#exercise-summary-container p,
+#exercise-summary-container label {
+    color: white;
+}
+
+
+#exercise-improvement-section {
+    margin-top: 20px;
+    padding: 20px 40px;
+    border-radius: 8px;
+    background-color: #fff;
+    border: 2px solid #ee8e00;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.disclaimer {
+  background-color: #fff5f5;       /* A light, subtle background */
+  border-left: 3px solid #ee8e00;    /* Your theme color accent */
+  padding: 15px 20px;
+  margin-top: 30px;                  /* Space above the disclaimer */
+  font-size: 0.9em;                  /* Slightly smaller text */
+  color: #666;                      /* A soft dark color for readability */
+  line-height: 1.6;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.section {
+  background-color: #fff;
+  padding: 20px 40px;
+  border-radius: 8px;
+  margin: 20px auto;
+  max-width: 800px;
+}
+
+        details {
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+summary {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ee8e00;
+    cursor: pointer;
+    padding: 5px;
+}
+
+details[open] {
+    background-color: #fbaf4c73;
+    border-left: 3px solid #ee8e00;
+}
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #fff;
+            background-image: url('https://www.transparenttextures.com/patterns/heart-pattern.png');
+            background-size: contain;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .nav-button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            background-color: #f0f0f0;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button.active {
+            background-color: #ee8e00;
+            color: white;
+        }
+
+        .calculator-component, .graph-component {
+            display: none;
+        }
+
+        .calculator-component.active, .graph-component.active {
+            display: block;
+        }
+
+        .graph-controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .stored-risk {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 18px;
+            color: #ee8e00;
+        }
+
+        h1 {
+            text-align: center;
+            color: #000000;
+            font-weight: 600;
+        }
+
+        .container {
+  background-color: transparent;
+  padding: 0;
+  box-shadow: none;
+  border-radius: 0;
+  max-width: 100%;
+}
+
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        input[type="number"],
+select {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+  background-color: #fff;
+  appearance: none;
+  height: 48px;
+}
+
+
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #fbae4c;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        button:hover {
+            background-color: #cc0000;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 20px;
+            text-align: center;
+            color: #ee8e00;
+            font-weight: 600;
+        }
+
+        .activity-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .activity-item select,
+        .activity-item input {
+            width: 23%;
+            margin-right: 1%;
+            box-sizing: border-box;
+        }
+
+        .activity-item button {
+            width: auto;
+            padding: 5px 10px;
+            background-color: #dc3545;
+            margin-top: -5px;
+        }
+
+        .activity-item button:hover {
+            background-color: #c82333;
+        }
+
+        .signup-message {
+            margin-top: 20px;
+            font-size: 16px;
+            text-align: center;
+            display: none;
+        }
+
+        .form-container {
+            margin-top: 10px;
+            display: none;
+            text-align: center;
+        }
+
+        #survivalChart {
+            max-width: 800px;
+            margin: 20px auto;
+            display: none;
+        }
+
+        #height-ft-in {
+            display: none;
+        }
+
+        .disclaimer {
+            font-size: 0.8rem;
+            color: #666;
+            text-align: left;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            line-height: 1.4;
+            padding: 10px;
+            border-left: 3px solid #dc3545;
+            background-color: #fff5f5;
+        }
+
+        @media (max-width: 600px) {
+            .activity-item select,
+            .activity-item input {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .activity-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .activity-item button {
+                margin-top: 10px;
+            }
+        }
+
+       .risk-results-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        #video-container {
+            margin: 30px auto;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .video-wrapper {
+            background-color: #000;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+/* Progress Bar Container */
+.progress-container {
+    width: 100%;
+    background-color: #fff;
+    height: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+/* Progress Bar */
+.progress-bar {
+    width: 0%;
+    height: 100%;
+    background-color: #fbae4c; /* Orange progress color */
+    transition: width 0.5s ease-in-out;
+}
+
+input:focus, select:focus {
+  outline: none;
+  box-shadow: 0 0 6px rgba(238, 142, 0, 0.5); /* soft orange glow */
+  transition: box-shadow 0.3s ease;
+}
+
+.glass-next-button:active,
+.glass-back-button:active {
+  transform: scale(0.96);
+  transition: transform 1s ease;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card > * {
+  opacity: 0;
+  animation: fadeInUp 0.4s ease forwards;
+}
+
+/* Optional: stagger each element in the card */
+.card > *:nth-child(1) { animation-delay: 0.1s; }
+.card > *:nth-child(2) { animation-delay: 0.2s; }
+.card > *:nth-child(3) { animation-delay: 0.3s; }
+.card > *:nth-child(4) { animation-delay: 0.4s; }
+.card > *:nth-child(5) { animation-delay: 0.5s; }
+.card > *:nth-child(6) { animation-delay: 0.6s; }
+.card > *:nth-child(7) { animation-delay: 0.7s; }
+
+.progress-steps {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: relative;
+  padding: 10px 0;
+  counter-reset: step;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.step {
+  position: relative;
+  flex: 1;
+  text-align: center;
+  font-size: 13px;
+  color: #bbb;
+  font-weight: 500;
+  min-width: 90px;
+}
+
+.step::before {
+  content: counter(step);
+  counter-increment: step;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  background-color: white;
+  color: #ccc;
+  display: block;
+  margin: 0 auto 6px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.step::after {
+  content: '';
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  width: 100%;
+  height: 2px;
+  background-color: #e0e0e0;
+  z-index: -1;
+}
+
+.step:last-child::after {
+  display: none;
+}
+
+.step.active {
+  color: #ee8e00;
+}
+
+.step.active::before {
+  background-color: #ee8e00;
+  color: white;
+  border-color: #ee8e00;
+}
+
+.step.completed {
+  color: #72b5f8;
+}
+
+.step.completed::before {
+  background-color: #72b5f8;
+  color: white;
+  border-color: #72b5f8;
+}
+
+.step.active {
+  font-weight: bold;
+  color: #ee8e00;
+  border-bottom: 2px solid #ee8e00;
+}
+
+.step.completed {
+  color: #aaa;
+  opacity: 0.6;
+}
+
+    </style>
+</head>
+<body>
+    
+    
+    
+    
+
+
+
+    <div class="calculator-component section active" id="calculator-component">
+        <div class="container">
+            <h1>Cardiovascular Risk Calculator</h1>
+            <div class="disclaimer">
+                <p><strong>Data Privacy Notice:</strong> Your data is stored securely and used solely for educational and personal wellness purposes. We do not share or sell your information. For more details, contact us at support@mhfcare.ca.</p>
+            </div>
+            
+            <div id="progress-bar-container">
+  <div class="progress-steps">
+    <div class="step" data-step="1">Basic Information</div>
+    <div class="step" data-step="2">BMI</div>
+    <div class="step" data-step="3">Risk Factors</div>
+    <div class="step" data-step="4">Exercise</div>
+    <div class="step" data-step="5">Risk Score</div>
+    <div class="step" data-step="6">Risk Chart</div>
+    <div class="step" data-step="7">Benefits</div>
+    <div class="step" data-step="8">Learn More</div>
+  </div>
+</div>
+
+            <div id="input-section">
+            <div id="basic-info-card" class="section">
+                <div class="card">
+                <h2 style="color: #ee8e00; font-size: 20px;">Let's get started by collecting some basic information:</h2>
+                <label for="age">Age (How old are you?) </label>
+                <input type="number" id="age" placeholder="Enter your age" required>
+            
+                <label for="gender">Select Your Sex</label>
+                <select id="gender" required>
+                    <option value="" selected disabled hidden> Click to Select</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+
+                </select>
+                <div class="nav-buttons">
+  
+  <button id="basic-next-button" class="glass-next-button">Next →</button>
+</div>
+
+
+                </div>
+            </div>
+            
+            <div id="bmi-fields">
+                
+                <div id="height-weight-card" class="section hidden">
+                    <div class="card">
+                    <summary><strong>Please enter your Height and Weight below:</strong></summary>
+                
+                    <label for="height">Height (Click on the dropdown menu below to select your preferred units)</label>
+                    <select id="height-unit" onchange="toggleHeightFields()">
+                        <option value="cm">Centimeters (cm)</option>
+                        <option value="ft-in">Feet & Inches (ft, in)</option>
+                        <option value="in">Inches (in)</option>
+                    </select>
+                
+                    <div id="height-inputs">
+                        <input type="number" id="height-cm" placeholder="Height in cm" style="display: block;">
+                        <div id="height-ft-in" style="display: none;">
+                            <input type="number" id="height-ft" placeholder="Feet">
+                            <input type="number" id="height-in" placeholder="Inches">
+                        </div>
+                        <input type="number" id="height-inches" placeholder="Height in inches" style="display: none;">
+                    </div>
+                
+                    <label for="weight">Weight (Click on the dropdown menu below to select your preferred units) </label>
+                    <select id="weight-unit" onchange="toggleWeightFields()">
+                        <option value="kg">Kilograms (kg)</option>
+                        <option value="lb">Pounds (lb)</option>
+                    </select>
+                    <input type="number" id="weight" placeholder="Enter weight">
+
+                    <div>
+                        <p>Your BMI (Body Mass Index) is: <span id="calculated-bmi">0</span></p>
+                        <p style="font-size: 14px; color: #666;">
+                            BMI is a measure calculated using your height and weight. It helps categorize body weight into underweight, normal, overweight, and obese. <br>
+                            <a href="https://www.heartandstroke.ca/healthy-living/healthy-weight/healthy-weight-and-waist#:~:text=Calculate%20your%20BMI%20yourself.,divide%20by%20your%20height%20again." target="_blank">
+                                Learn more about calculating your BMI.
+                            </a>
+                        </p>
+                        
+                       <div class="nav-buttons">
+  <button id="bmi-back-button" class="glass-back-button">← Back</button>
+  <button id="bmi-next-button" class="glass-next-button">Next →</button>
+</div>
+
+
+                    </div>
+                
+                    </div>
+                </div>
+            </div>
+    
+
+            <div id="cvd-risk-card" class="section hidden">
+                <div class="card">
+                <summary><strong> Your doing great! Now just a couple questions on your Cardiovascular Health: </strong></summary>
+
+                <label for="cvd">Have you been diagnosed with blockages in your heart arteries, had a previous heart attack, received heart stents, or undergone heart bypass surgery (CABG)? Has a doctor or medical professional informed you that you have cardiovascular disease?</label>
+                    <select id="cvd">
+                        <option value="" selected disabled hidden> Click to Select</option>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                        <option value="unknown">I don't know</option>
+                    </select>
+                
+                <label for="systolic_bp">Systolic Blood Pressure (mmHg) Note: Systolic blood pressure is the top number of a blood pressure reading </label>
+                <input type="number" id="systolic_bp" placeholder="Enter systolic BP" required>
+            
+                <label for="bp_medication">Are you taking medication for high blood pressure?</label>
+                <select id="bp_medication">
+                    <option value="" selected disabled hidden> Click to Select</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                    <option value="unknown">I don't know</option>
+                </select>
+            
+                
+                <label for="cholesterol">Do you have a cholesterol test result (from a blood test report)?</label>
+                <select id="cholesterol">
+                    <option value="" selected disabled hidden> Click to Select</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            
+                <div id="cholesterol-fields" style="display: none;">
+                    <label for="total_cholesterol">Total Cholesterol (mmol/L)</label>
+                    <input type="number" id="total_cholesterol" step="0.1" placeholder="Enter total cholesterol">
+            
+                    <label for="hdl_cholesterol">HDL Cholesterol (mmol/L)</label>
+                    <input type="number" id="hdl_cholesterol" step="0.1" placeholder="Enter HDL cholesterol">
+                </div>
+                
+
+                    <label for="diabetes">Do you have diabetes?</label>
+                <select id="diabetes">
+                    <option value="" selected disabled hidden> Click to Select</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                    <option value="unknown">I don't know</option>
+                </select>
+                
+
+                    <label for="smoker">Do you currently smoke?</label>
+                    <select id="smoker">
+                        <option value="" selected disabled hidden> Click to Select</option>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+            
+                    <div class="nav-buttons">
+  <button id="cvd-back-button" class="glass-back-button">← Back</button>
+  <button id="cvd-next-button" class="glass-next-button">Next →</button>
+</div>
+
+
+
+            
+                </div>
+            </div>
+            
+
+            
+
+            <div id="exercise-calculator-card" class="section hidden">
+                <div class="card">
+                <summary><strong> Please Enter your exercise information below: </strong></summary>
+            
+                <label for="met_minutes">Exercise (MET Minute Calculator)</label>
+                <div id="activities-container"></div>
+                <button type="button" id="add-exercise-button" onclick="addActivity()">Add Exercise</button>
+                <div id="activity-summary-container"></div>
+
+                <div class="total-met-box">
+                    Total MET-minutes: <span id="total-met-minutes">0</span>
+                </div>
+                
+                <p style="font-size: 14px; color: #666; margin-top: 10px;">
+                    MET (Metabolic Equivalent of Task) is used to estimate how much energy your body uses during physical activity. 
+                    The higher the MET value, the more intense the exercise and the more energy your body uses.
+                </p>
+                
+                
+                <button id="next-button"> Let’s see your results </button>
+                <div class="nav-buttons">
+  <button id="exercise-back-button" class="glass-back-button">← Back</button>
+</div>
+                </div>
+
+            </div>
+        </div>
+
+            
+        
+    
+
+        <!-- Container for both boxes; it is hidden initially -->
+        <div id="risk-score-container" style="display: none; margin-top: 20px; gap: 20px; flex-direction: column; align-items: center;">
+            <!-- Risk Score Box -->
+            <div id="risk-box" style="background-color: red; color: black; padding: 20px; text-align: center; font-size: 24px; font-weight: bold;">
+                Your Calculated 10-year risk of heart attack, stroke, or death is : <span id="risk-score">0</span>%
+            </div>
+        
+            <!-- Risk Category Box -->
+            <div id="risk-category-box" style="background-color: red; color: black; padding: 20px; text-align: center; font-size: 24px; font-weight: bold;">
+                Risk Category: <span id="risk-category">N/A</span>
+            </div>
+        
+            <!-- Legend (Only for Step 2) -->
+            <div id="risk-classification-legend" style="margin-top: 10px; text-align: center; font-size: 16px; color: #333;">
+                <strong>Risk Classifications:</strong><br>
+                Low Risk: &lt;10% &nbsp; | &nbsp; Intermediate Risk: 10–20% &nbsp; | &nbsp; High Risk: &gt;20%
+            </div>
+        </div>
+        
+        
+
+        
+            
+
+
+        </div>
+        
+        <button id="comparison-next-button" style="display: none;"> Check how your results stack up to the national average </button>
+        
+
+
+        <div id="comparison-box" style="display: none; background-color: red; color: white; padding: 20px; text-align: center; font-size: 24px; font-weight: bold; margin-top: 20px;">
+            <span id="comparison-result">0</span>
+            
+            <p>The graph below compares your survival probability (red) to the average survival probability of Canadians (blue).</p>
+
+            <p>It illustrates how your survival probability changes with age, assuming no changes in disease status, stress levels, or other health factors.</p>
+        
+            <p>Hover over the red line to view your survival probability at each age.</p>
+
+            
+            <canvas id="survivalChart" width="800" height="400" style="display: none; margin: 20px auto;"></canvas>
+            <div id="risk-legend" style="text-align: center; margin-top: 10px; font-size: 16px; color: #333;">
+                <p><strong>Risk Classifications:</strong></p>
+                <p>Low Risk: &lt;10% &nbsp; | &nbsp; Intermediate Risk: 10–20% &nbsp; | &nbsp; High Risk: &gt;20%</p>
+            </div>
+            
+
+        </div>
+        
+        
+        
+        
+        <button id="met-next-button" style="display: none;"> Find out how your score changes with more activity .</button>
+        
+
+        <div id="met-box" style="display: none; background-color: red; color: white; padding: 20px; text-align: center; font-size: 24px; font-weight: bold; margin-top: 20px;">
+            Your Total MET Minutes: <span id="met-minutes-result">0</span>
+        </div>
+        <div id="exercise-summary" class="section" style="display: none; margin-top: 20px; padding: 20px 40px; border-radius: 8px; background-color: transparent; box-shadow: none;">
+
+
+
+
+            
+            
+            
+            
+          
+            <div id="final-risk-score" style="display: none;">
+
+                <h2 style="color: #fff; font-weight: 600;">Your Current Risk Score</h2>
+                <p style="font-size: 24px; font-weight: bold; color: rgb(255, 255, 255);">
+                    <span id="final-risk-score-value">0</span>%
+                </p>
+            
+
+                
+          
+
+  
+  
+    
+            </div>
+       
+        <div id="exercise-improvement-section">
+            <!-- New Exercise Calculator Section -->
+            <div id="new-exercise-calculator" style="margin-top: 20px; background-color: #fff; padding: 20px 40px; border-radius: 8px;">
+                <h3>Exercise Calculator</h3>
+                    <p style="margin-top: -10px; margin-bottom: 20px;">
+                        We’ve autofilled your exercise inputs from earlier below. Try increasing or decreasing your activity to see how it affects your risk score.
+                    </p>
+
+                <div id="new-activities-container"></div>
+<button type="button" onclick="addNewActivity()">Add Activity</button>
+<div id="new-activity-summary-container"></div>
+
+<div class="total-met-box">
+    Total MET-minutes: <span id="new-total-met-minutes">0</span>
+</div>
+
+<p style="font-size: 14px; color: #666; margin-top: 10px;">
+    MET (Metabolic Equivalent of Task) is used to estimate how much energy your body uses during physical activity. 
+    The higher the MET value, the more intense the exercise and the more energy your body uses.
+</p>
+
+            </div>
+        
+            <button id="calculate-new-risk-button" style="margin-top: 20px;">See the change in your score</button>
+        
+            <div id="risk-change-box" style="display: none; padding: 20px; text-align: center; font-size: 22px; font-weight: bold; margin-top: 20px; border-radius: 8px;">
+                <p>Based on the change in your exercise, your risk score has <span id="risk-change-text"></span> by <span id="risk-change-value">0</span>%.</p>
+            
+                <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 15px;">
+                    <!-- Old Risk Score (Left) -->
+                    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <p style="font-size: 18px; font-weight: bold; margin-bottom: 5px;">Old Risk Score</p>
+                        <div id="old-risk-box" style="background-color: grey; padding: 20px; border-radius: 8px; font-size: 22px; font-weight: bold; color: white; min-width: 120px;">
+                            <span id="old-risk-score-value">0</span>%
+                        </div>
+                    </div>
+            
+                    <!-- Arrow -->
+                    <div style="font-size: 30px; font-weight: bold; color: #333;">→</div>
+            
+                    <!-- New Risk Score (Right) -->
+                    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <p style="font-size: 18px; font-weight: bold; margin-bottom: 5px;">New Risk Score</p>
+                        <div id="new-risk-box" style="padding: 20px; border-radius: 8px; font-size: 22px; font-weight: bold; color: rgb(0, 0, 0); min-width: 120px;">
+                            <span id="new-risk-score-value">0</span>%
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+
+        
+            <details id="health-benefits" style="margin-top: 20px; background-color: #fff; padding: 20px 40px; border-radius: 8px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);">
+                <summary style="font-size: 18px; font-weight: 600; color: #ee8e00; cursor: pointer;">
+                    Increasing your exercise can lower your risk of cancer, depression, and heart failure. Click here to see your potential risk reduction in these areas.
+                </summary>
+                <div id="health-benefits-content" style="margin-top: 10px; font-size: 20px;">
+                    <ul style="list-style-type: disc; padding-left: 20px;">
+                        <li> <span id="cancer-risk-benefit">0</span></li>
+                        <li> <span id="depression-risk-benefit">0</span></li>
+                        <li> <span id="hf-risk-benefit">0</span></li>
+                    </ul>
+                </div>
+            </details>
+            
+        </div>
+        
+          
+        
+          
+        
+        <div id="new-met-calculator" style="display: none; text-align: center; margin-top: 20px;">
+            <h2>Recalculate Your MET-Minutes</h2>
+        
+            <label for="current-met">Current MET-Minutes:</label>
+            <input type="number" id="current-met" placeholder="e.g., 500" style="width: 200px; padding: 10px; font-size: 18px; margin-bottom: 10px;">
+        
+            <label for="goal-met">Goal MET-Minutes:</label>
+            <input type="number" id="goal-met" placeholder="e.g., 1000" style="width: 200px; padding: 10px; font-size: 18px; margin-bottom: 10px;">
+        
+            <button onclick="calculateDifference()" style="margin-top: 10px;">Calculate</button>
+        
+            <div id="met-results" style="margin-top: 20px; font-size: 18px; font-weight: bold;"></div>
+
+            
+
+        </div>
+
+        
+
+        <div id="risk-reduction-results" style="display: none; background-color: red; color: white; padding: 20px; text-align: center; font-size: 20px; font-weight: bold; margin-top: 20px;">
+            <p>Cancer Risk Reduction: <span id="cancer-risk">0</span>%</p>
+            <p>CVD Risk Reduction: <span id="cvd-risk">0</span>%</p>
+            <p>CHD Risk Reduction: <span id="chd-risk">0</span>%</p>
+            <p>Heart Failure Risk Reduction: <span id="hf-risk">0</span>%</p>
+            <p>All-Cause Mortality Reduction: <span id="acm-risk">0</span>%</p>
+            <p>CVD Mortality Reduction: <span id="cvd-mortality-risk">0</span>%</p>
+            <p>Cancer Mortality Reduction: <span id="cancer-mortality-risk">0</span>%</p>
+            <p>Depression Risk Reduction: <span id="depression-risk">0</span>%</p>
+        </div>
+                 
+
+    </div>
+    <button id="submit-data-button" onclick="handleFinalStep()" style="display: none; margin-top: 20px;">
+        Click here to learn more about this from our cardiologist Dr. David Alter
+    </button>
+    
+    
+
+</div> <!-- End of calculator-component -->
+
+<!-- Final Next Button and Final Results Container (now outside) -->
+<button id="final-next-button" style="margin-top: 10px; display: none;"> Click Here to learn more about this from our Cardiologist : Dr. David Alter</button>
+
+<div id="final-results" class="section" style="display: none;">
+    <!-- Video Container -->
+    <h2 class="video-title">Learn about what this means from our cardiologist</h2>
+
+    <div id="video-container"></div>
+    <!-- Testimonial Section -->
+    <div style="background-color: #fffaf3; padding: 25px; margin: 30px auto; border-left: 5px solid #ee8e00; max-width: 800px; border-radius: 10px; font-size: 16px; line-height: 1.7; color: #333; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);">
+    <h3 style="color: #ee8e00; font-weight: 600; margin-top: 0; margin-bottom: 10px;">Participant Testimonial</h3>
+    <p style="font-style: italic; margin: 0;">
+        “After working six days a week, and commuting 2 hrs+ each day, for 25 years plus, I became very sedentary. 
+        And after a couple of years with health issues and not being able to change my sedentary ways, I had become 
+        very weak. I am now walking an hour or more a day on hiking trails and I am no longer experiencing daily chest pain. 
+        I understand the importance of adding resistance training as tolerated within my personal limitations. 
+        The program has taught me that being physically active in life is not the same as participating in daily exercise.”
+    </p>
+</div>
+
+<div id="missing-fields-warning" style="display: none; background-color: #fff3cd; color: #856404; padding: 20px; border: 2px solid #ffeeba; border-radius: 8px; font-size: 16px; margin-top: 20px;">
+    <strong>Heads up!</strong>
+    <p id="missing-fields-list" style="margin-top: 10px;"></p>
+    <p style="margin-top: 10px;">Understanding these values is important for assessing your cardiovascular health. <strong>Joining My Heart Fitness (MHF)</strong> can help you learn more about your blood pressure, cholesterol, and overall risk—and how to improve it.</p>
+  </div>
+  
+
+    <!-- Registration Form -->
+    <div class="form-container" id="form-container">
+        <div class="_form_18"></div>
+        <script src="https://contactmyheartfitness.activehosted.com/f/embed.php?id=18" charset="utf-8"></script>
+    </div>
+</div>
+
+
+
+
+    <script>
+        
+        const stepMapping = {
+  "basic-info-card": "1",
+  "height-weight-card": "2",
+  "cvd-risk-card": "3",
+  "exercise-calculator-card": "4",
+  "risk-score-container": "5",
+  "chart-container": "6",
+  "benefits-section": "7",
+  "final-results": "8"
+};
+
+
+       // NEXT BUTTONS
+document.getElementById("basic-next-button").addEventListener("click", function () {
+    document.getElementById("basic-info-card").classList.add("hidden");
+    document.getElementById("height-weight-card").classList.remove("hidden");
+    updateProgressBar("height-weight-card");
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+document.getElementById("bmi-next-button").addEventListener("click", function () {
+    document.getElementById("height-weight-card").classList.add("hidden");
+    document.getElementById("cvd-risk-card").classList.remove("hidden");
+    updateProgressBar("cvd-risk-card");
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+document.getElementById("cvd-next-button").addEventListener("click", function () {
+    document.getElementById("cvd-risk-card").classList.add("hidden");
+    document.getElementById("exercise-calculator-card").classList.remove("hidden");
+    updateProgressBar("exercise-calculator-card");
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// BACK BUTTONS
+document.getElementById("bmi-back-button").addEventListener("click", function () {
+    document.getElementById("height-weight-card").classList.add("hidden");
+    document.getElementById("basic-info-card").classList.remove("hidden");
+    updateProgressBar("basic-info-card")
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+document.getElementById("cvd-back-button").addEventListener("click", function () {
+    document.getElementById("cvd-risk-card").classList.add("hidden");
+    document.getElementById("height-weight-card").classList.remove("hidden");
+    updateProgressBar("height-weight-card")
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+document.getElementById("exercise-back-button").addEventListener("click", function () {
+    document.getElementById("exercise-calculator-card").classList.add("hidden");
+    document.getElementById("cvd-risk-card").classList.remove("hidden");
+    updateProgressBar("cvd-risk-card")
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+
+
+
+function showMissingFieldWarnings() {
+    const missingItems = [];
+
+    // Get values
+    const cvd = document.getElementById("cvd").value;
+    const bpMedication = document.getElementById("bp_medication").value;
+    const diabetes = document.getElementById("diabetes").value;
+    const systolicBP = document.getElementById("systolic_bp").value;
+    const bmi = parseFloat(document.getElementById("calculated-bmi").innerText);
+
+    // Only add items if "I don't know" was selected (not just left blank)
+    if (cvd === "unknown") missingItems.push("History of heart disease (CVD)");
+    if (bpMedication === "unknown") missingItems.push("Whether you're on blood pressure medication");
+    if (diabetes === "unknown") missingItems.push("Diabetes status");
+
+    // Also check for missing numeric fields
+    if (!systolicBP) missingItems.push("Systolic blood pressure");
+    if (isNaN(bmi) || bmi === 0) missingItems.push("Body Mass Index (BMI)");
+
+    // Show message if anything is missing or marked unknown
+    if (missingItems.length > 0) {
+        document.getElementById("missing-fields-list").innerHTML =
+            "We noticed you didn’t provide information for the following:<ul>" +
+            missingItems.map(item => `<li>${item}</li>`).join("") + "</ul>";
+        document.getElementById("missing-fields-warning").style.display = "block";
+    } else {
+        document.getElementById("missing-fields-warning").style.display = "none";
+    }
+}
+
+
+
+
+function openVideoModal() {
+    const videoFrame = document.getElementById("floating-video-frame");
+
+    let videoUrl = "";
+
+    if (currentStep === 1) {
+        videoUrl = "https://www.youtube.com/embed/qRCU54MwYYw?rel=0";
+    } else if (currentStep === 2 || currentStep === 3) {
+        videoUrl = "https://www.youtube.com/embed/ZlGFt6sliv0?rel=0";
+    } else if (currentStep === 4) {
+        videoUrl = "https://www.youtube.com/embed/axBtxAl0lhU?rel=0";
+    } else {
+        videoUrl = "https://www.youtube.com/embed/LFpLcttUhgQ?rel=0";
+    }
+
+    videoFrame.src = videoUrl;
+}
+
+
+
+function closeVideoModal() {
+    const videoModal = document.getElementById("video-modal");
+    const videoFrame = document.getElementById("dynamic-video");
+    videoModal.style.display = "none";
+    videoFrame.src = ""; // Clear the video to stop it from playing
+}
+
+        function handleFinalStep() {
+    // Submit data to Google Sheets first
+    sendDataToGoogleSheets();
+
+    // Then, progress to the final page with video
+    setTimeout(() => {
+        document.getElementById("exercise-summary").style.display = "none";
+        document.getElementById("submit-data-button").style.display = "none";
+        document.getElementById("final-results").style.display = "block";
+        showMissingFieldWarnings();
+
+
+        // Render the video
+        const resultContainer = document.getElementById('video-container');
+        const root = ReactDOM.createRoot(resultContainer);
+        root.render(React.createElement(RiskResultsWithVideo));
+
+        // Show the form
+        document.getElementById("form-container").style.display = "block";
+    }, 1000); // Delay to ensure data submission
+}
+
+
+
+function sendDataToGoogleSheets() {
+    const data = {
+        age: document.getElementById('age').value,
+        gender: document.getElementById('gender').value,
+        height: document.getElementById('height-cm').value || 
+                (document.getElementById('height-ft').value * 30.48 + document.getElementById('height-in').value * 2.54),
+        weight: document.getElementById('weight').value,
+        bmi: document.getElementById('calculated-bmi').innerText,
+        cvd: document.getElementById('cvd').value,
+        systolic_bp: document.getElementById('systolic_bp').value,
+        bp_medication: document.getElementById('bp_medication').value,
+        diabetes: document.getElementById('diabetes').value,
+        smoker: document.getElementById('smoker').value,
+        initial_met: document.getElementById('total-met-minutes').innerText,
+        initial_risk: document.getElementById('final-risk-score-value').innerText,
+        new_met: document.getElementById('new-total-met-minutes').innerText,
+        new_risk: document.getElementById('new-risk-score-value').innerText
+    };
+
+    fetch("https://script.google.com/macros/s/AKfycbzombToWQPY-x3nN9-KSGfAwB6L5GHFLpri-_iEuQlXoFaE0tVLPIvuiP64hSxbxo3u/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    }).then(() => {
+        alert("Data successfully sent!");
+    }).catch(error => {
+        console.error("Error:", error);
+    });
+}
+
+
+let currentStep = 1; // Track the current step
+
+function updateStep(step) {
+    currentStep = step;
+
+    // Hide all sections initially
+    document.getElementById("input-section").style.display = "none";
+    document.getElementById("risk-score-container").style.display = "none";
+    document.getElementById("comparison-box").style.display = "none";
+    document.getElementById("met-box").style.display = "none";
+    document.getElementById("exercise-summary").style.display = "none";
+    document.getElementById("final-results").style.display = "none";
+    document.getElementById("submit-data-button").style.display = "none";
+
+    document.getElementById("next-button").style.display = "none";
+    document.getElementById("comparison-next-button").style.display = "none";
+    document.getElementById("met-next-button").style.display = "none";
+    document.getElementById("final-next-button").style.display = "none";
+
+    if (currentStep === 1) {
+        document.getElementById("input-section").style.display = "block";
+        document.getElementById("next-button").style.display = "block";
+    } else if (currentStep === 2) {
+        document.getElementById("risk-score-container").style.display = "flex";
+        document.getElementById("comparison-next-button").style.display = "block";
+    } else if (currentStep === 3) {
+        document.getElementById("comparison-box").style.display = "block";
+        document.getElementById("met-next-button").style.display = "block";
+    } else if (currentStep === 4) {
+        document.getElementById("exercise-summary").style.display = "block";
+        document.getElementById("submit-data-button").style.display = "block";
+    } else if (currentStep === 5) {
+        document.getElementById("final-results").style.display = "block";
+    }
+
+    updateProgress(currentStep);
+
+    // ✅ Automatically show the modal
+    openVideoModal();
+}
+
+
+function validateRequiredFields() {
+    const fields = [
+        { id: "age", label: "Age" },
+        { id: "gender", label: "Gender" },
+        { id: "cvd", label: "CVD history" },
+        { id: "bp_medication", label: "Blood pressure medication" },
+        { id: "diabetes", label: "Diabetes status" },
+        { id: "smoker", label: "Smoking status" }
+    ];
+
+    let isValid = true;
+
+    fields.forEach(field => {
+        const element = document.getElementById(field.id);
+        const value = element.value.trim();
+        const parent = element.parentElement;
+
+        // Remove previous errors
+        element.classList.remove("input-error", "input-error-shake");
+        const existingError = parent.querySelector(".error-message");
+        if (existingError) existingError.remove();
+
+        // Show error for blank fields
+        if (value === "") {
+            isValid = false;
+            element.classList.add("input-error", "input-error-shake");
+
+            const error = document.createElement("div");
+            error.classList.add("error-message");
+            error.textContent = ``;
+            parent.appendChild(error);
+
+            // Remove shake after it's done so it can be triggered again
+            setTimeout(() => {
+                element.classList.remove("input-error-shake");
+            }, 400);
+        }
+    });
+
+    // Scroll to first invalid field
+    if (!isValid) {
+        const firstErrorField = document.querySelector(".input-error");
+        if (firstErrorField) {
+            firstErrorField.scrollIntoView({ behavior: "smooth", block: "center" });
+            firstErrorField.focus(); // Brings attention to dropdown, especially on Chrome/Edge
+        }
+    }
+
+    return isValid;
+}
+
+
+
+
+// Attach event listeners to buttons
+document.getElementById("next-button").addEventListener("click", function () {
+    if (validateRequiredFields()) {
+        updateStep(2);
+    }
+});
+
+
+document.getElementById("comparison-next-button").addEventListener("click", function() {
+    updateStep(3);
+});
+
+document.getElementById("met-next-button").addEventListener("click", function() {
+    preloadExerciseForStep4(); // ⬅️ add this line BEFORE updateStep
+    updateStep(4);
+});
+
+document.getElementById("final-next-button").addEventListener("click", function() {
+    updateStep(5);
+});
+
+
+
+document.getElementById("health-benefits").addEventListener("toggle", function() {
+    // When the details element is open, show the final next button; otherwise hide it.
+    if (this.open) {
+        document.getElementById("final-next-button").style.display = "block";
+    } else {
+        document.getElementById("final-next-button").style.display = "none";
+    }
+});
+
+document.getElementById("final-next-button").addEventListener("click", function() {
+    // Hide the final next button as soon as it’s clicked
+    document.getElementById("final-next-button").style.display = "none";
+    
+    // Hide the calculator component and show final results, etc.
+    document.getElementById("calculator-component").style.display = "none";
+    document.getElementById("final-results").style.display = "block";
+    
+    // Render the video...
+    const resultContainer = document.getElementById('video-container');
+    const root = ReactDOM.createRoot(resultContainer);
+    root.render(React.createElement(RiskResultsWithVideo));
+    
+    // Generate the graph (if not already generated) and show the form
+    const age = parseFloat(document.getElementById('age').value) || 0;
+    const risk = window.globalRiskScore;
+    const gender = document.getElementById('gender').value;
+    generateSurvivalChart(age, risk, gender);
+    document.getElementById("form-container").style.display = "block";
+});
+
+
+
+        let storedRiskData = {
+            risk: null,
+            age: null,
+            gender: null
+        };
+
+        function showComponent(componentName) {
+            document.querySelectorAll('.nav-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            document.getElementById('calculator-component').classList.remove('active');
+            document.getElementById('graph-component').classList.remove('active');
+
+            if (componentName === 'calculator') {
+                document.getElementById('calculator-component').classList.add('active');
+            } else {
+                document.getElementById('graph-component').classList.add('active');
+            }
+        }
+
+        document.getElementById('cholesterol').addEventListener('change', function () {
+            if (this.value === 'yes') {
+                document.getElementById('cholesterol-fields').style.display = 'block';
+                document.getElementById('bmi-fields').style.display = 'none';
+            } else {
+                document.getElementById('cholesterol-fields').style.display = 'none';
+                document.getElementById('bmi-fields').style.display = 'block';
+            }
+        });
+
+        function toggleHeightFields() {
+            const unit = document.getElementById('height-unit').value;
+            document.getElementById('height-cm').style.display = unit === 'cm' ? 'block' : 'none';
+            document.getElementById('height-ft-in').style.display = unit === 'ft-in' ? 'flex' : 'none';
+            document.getElementById('height-inches').style.display = unit === 'in' ? 'block' : 'none';
+        }
+
+        function toggleWeightFields() {
+            const unit = document.getElementById('weight-unit').value;
+            const weightInput = document.getElementById('weight');
+            weightInput.placeholder = unit === 'kg' ? 'Enter weight in kg' : 'Enter weight in lb';
+        }
+
+        function calculateBMI() {
+            const weight = parseFloat(document.getElementById('weight').value);
+            const heightUnit = document.getElementById('height-unit').value;
+            const weightUnit = document.getElementById('weight-unit').value;
+
+            let heightInMeters;
+
+            if (heightUnit === 'cm') {
+                heightInMeters = parseFloat(document.getElementById('height-cm').value) / 100;
+            } else if (heightUnit === 'ft-in') {
+                const heightFt = parseFloat(document.getElementById('height-ft').value) || 0;
+                const heightIn = parseFloat(document.getElementById('height-in').value) || 0;
+                heightInMeters = ((heightFt * 12) + heightIn) * 0.0254;
+            } else {
+                heightInMeters = parseFloat(document.getElementById('height-inches').value) * 0.0254;
+            }
+
+            const weightInKg = weightUnit === 'kg' ? weight : weight * 0.453592;
+
+            if (!isNaN(weightInKg) && !isNaN(heightInMeters) && heightInMeters > 0) {
+                const bmi = weightInKg / (heightInMeters * heightInMeters);
+                document.getElementById('calculated-bmi').innerText = bmi.toFixed(2);
+                return bmi;
+            }
+            return null;
+        }
+        let progress = 0; // Initial progress
+
+function updateProgressBar(currentCardId) {
+  const stepMapping = {
+    "basic-info-card": "1",
+    "height-weight-card": "2",
+    "cvd-risk-card": "3",
+    "exercise-calculator-card": "4",
+    "risk-score-container": "5",
+    "chart-container": "6",
+    "benefits-section": "7",
+    "final-results": "8"
+  };
+
+  const currentStep = stepMapping[currentCardId];
+  const steps = document.querySelectorAll(".progress-steps .step");
+
+  steps.forEach((step) => {
+    const stepNum = step.getAttribute("data-step");
+
+    if (parseInt(stepNum) < parseInt(currentStep)) {
+      step.classList.add("completed");
+      step.classList.remove("active");
+    } else if (stepNum === currentStep) {
+      step.classList.add("active");
+      step.classList.remove("completed");
+    } else {
+      step.classList.remove("active", "completed");
+    }
+  });
+}
+
+
+        const activityList = {
+            "Walking": {
+                "light": 3,
+                "moderate": 4.5,
+                "vigorous": 7.5
+            },
+            "Jogging/Running": {
+                "vigorous": 7.5,
+                "very_vigorous": 10.5
+            },
+            "Bicycling (outdoors)": {
+                "light": 3,
+                "moderate": 4.5,
+                "vigorous": 7.5,
+                "very_vigorous": 10.5
+            },
+            "Aerobic workout": {
+                "moderate": 4.5,
+                "vigorous": 7.5
+            },
+            "Stationary Bike": {
+                "light": 3,
+                "moderate": 4.5,
+                "vigorous": 7.5,
+                "very_vigorous": 10.5
+            },
+            "Rower/Elliptical": {
+                "moderate": 4.5,
+                "vigorous": 7.5,
+                "very_vigorous": 10.5
+            },
+            "Arm/Leg ergometer": {
+                "light": 3,
+                "moderate": 4.5
+            },
+            "Badminton": {
+                "moderate": 4.5,
+                "vigorous": 7.5
+            },
+            "Basketball": {
+                "moderate": 4.5,
+                "vigorous": 7.5
+            },
+            "Boxing": {
+                "moderate": 4.5,
+                "vigorous": 7.5,
+                "very_vigorous": 10.5
+            },
+            "Hockey": {
+                "vigorous": 7.5,
+                "very_vigorous": 10.5
+            },
+            "Paddleball": {
+                "vigorous": 7.5,
+                "very_vigorous": 10.5
+            },
+            "Racquetball": {
+                "vigorous": 7.5,
+                "very_vigorous": 10.5
+            },
+            "Rollerblading": {
+                "vigorous": 7.5,
+                "very_vigorous": 10.5
+            },
+            "Soccer": {
+                "vigorous": 7.5,
+                "very_vigorous": 10.5
+            },
+            "Squash": {
+                "vigorous": 7.5,
+                "very_vigorous": 10.5
+            },
+            "Tennis": {
+                "moderate": 4.5,
+                "vigorous": 7.5
+            },
+            "Skating": {
+                "vigorous": 7.5,
+                "very_vigorous": 10.5
+            },
+            "Skiing, cross country": {
+                "moderate": 4.5,
+                "vigorous": 7.5,
+                "very_vigorous": 10.5
+            },
+            "Snow shoeing": {
+                "moderate": 4.5,
+                "vigorous": 7.5
+            },
+            "Swimming": {
+                "light": 3,
+                "moderate": 4.5,
+                "vigorous": 7.5,
+                "very_vigorous": 10.5
+            },
+            "Water walking": {
+                "light": 3,
+                "moderate": 4.5
+            },
+            "Water aerobics": {
+                "moderate": 4.5
+            }
+        };
+
+        let activityCount = 0;
+
+        <!-- Add this inside the script tags, after the activityCount variable -->
+
+        function addActivity() {
+    const formContainer = document.getElementById("activities-container");
+    const summaryContainer = document.getElementById("activity-summary-container");
+
+    // Wrapper for the card
+    const wrapper = document.createElement("div");
+    wrapper.className = "activity-wrapper";
+    wrapper.id = `activity-wrapper-${activityCount}`;
+
+    const div = document.createElement("div");
+    div.className = "activity-card";
+    div.id = `activity-${activityCount}`;
+
+    div.innerHTML = `
+        <label>Select the type of exercise you perform:</label>
+        <select id="activity-${activityCount}-type" onchange="updateIntensityOptions(${activityCount}); calculateMETMinutes();">
+            ${Object.keys(activityList).map(activity => `<option value="${activity}">${activity}</option>`).join("")}
+        </select>
+
+        <label>How many days per week do you usually perform this exercise?</label>
+        <input type="number" id="activity-${activityCount}-frequency" placeholder="e.g., 3" oninput="calculateMETMinutes();">
+
+        <label>On days when you perform this exercise, how many minutes do you typically spend doing it?</label>
+        <input type="number" id="activity-${activityCount}-duration" placeholder="e.g., 45" oninput="calculateMETMinutes();">
+
+        <label>How would you rate the intensity of this exercise?</label>
+        <div class="intensity-options" id="activity-${activityCount}-intensity-options"></div>
+
+        <button type="button" onclick="doneActivity(${activityCount})">Done</button>
+    `;
+
+    const editDiv = document.createElement("div");
+    editDiv.id = `edit-activity-${activityCount}`;
+    editDiv.style.display = "none";
+    const selectedActivity = document.getElementById(`activity-${activityCount}-type`)?.value || "Not selected";
+
+editDiv.innerHTML = `
+    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 16px; font-weight: 500; padding: 8px 4px;">
+        <span style="color: #000;">Exercise Entry: <span id="summary-activity-${activityCount}">${selectedActivity}</span></span>
+        <a href="#" onclick="editActivity(${activityCount}); return false;" style="color: #ee8e00; font-style: italic; text-decoration: none;">Edit this activity</a>
+    </div>
+`;
+
+
+    wrapper.appendChild(div);
+    formContainer.appendChild(wrapper);       // The form (stays above Add)
+    summaryContainer.appendChild(editDiv);    // Summary line (below Add)
+
+    updateIntensityOptions(activityCount);
+    activityCount++;
+
+    // Change button text after the first activity is added
+const addButton = document.getElementById("add-exercise-button");
+if (activityCount === 1) {
+    addButton.textContent = "Add Another Exercise";
+}
+
+}
+
+
+const originalActivitiesData = [];
+
+
+
+function doneActivity(index) {
+    const activityCard = document.getElementById(`activity-${index}`);
+    activityCard.style.display = "none";
+
+    const editLink = document.getElementById(`edit-activity-${index}`);
+    if (editLink) {
+        editLink.style.display = "block";
+    }
+
+    // ✅ NEW: Store the data for reuse in step 4
+    const type = document.getElementById(`activity-${index}-type`).value;
+    const frequency = document.getElementById(`activity-${index}-frequency`).value;
+    const duration = document.getElementById(`activity-${index}-duration`).value;
+    const intensityInput = document.querySelector(`input[name="activity-${index}-intensity"]:checked`);
+    const intensity = intensityInput ? intensityInput.value : null;
+
+    // Ensure intensity exists before storing
+    if (type && frequency && duration && intensity) {
+        originalActivitiesData.push({ type, frequency, duration, intensity });
+    }
+
+    calculateMETMinutes();
+    document.getElementById(`summary-activity-${index}`).textContent =
+    document.getElementById(`activity-${index}-type`).value;
+
+}
+
+
+function editActivity(index) {
+    const activityCard = document.getElementById(`activity-${index}`);
+    activityCard.style.display = "block";
+
+    const editLink = document.getElementById(`edit-activity-${index}`);
+    if (editLink) {
+        editLink.style.display = "none";
+    }
+}
+
+
+
+function updateIntensityOptions(activityIndex) {
+    const activityType = document.getElementById(`activity-${activityIndex}-type`).value;
+    const intensityContainer = document.getElementById(`activity-${activityIndex}-intensity-options`);
+
+    intensityContainer.innerHTML = ''; // Clear existing options
+
+    const intensities = activityList[activityType];
+    for (let intensity in intensities) {
+        const id = `activity-${activityIndex}-intensity-${intensity}`;
+        const radio = `
+            <label>
+                <input type="radio" name="activity-${activityIndex}-intensity" value="${intensity}" onchange="calculateMETMinutes();" required>
+                ${intensity.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())} effort
+            </label>
+        `;
+        intensityContainer.innerHTML += radio;
+    }
+}
+
+
+        function removeActivity(index) {
+            const div = document.getElementById(`activity-${index}`);
+            div.remove();
+            calculateMETMinutes();
+        }
+
+        function calculateMETMinutes() {
+            let totalMETMinutes = 0;
+            for (let i = 0; i < activityCount; i++) {
+                const activityType = document.getElementById(`activity-${i}-type`);
+                const frequency = document.getElementById(`activity-${i}-frequency`);
+                const duration = document.getElementById(`activity-${i}-duration`);
+                const intensity = document.querySelector(`input[name="activity-${i}-intensity"]:checked`);
+
+                if (activityType && frequency && duration && intensity) {
+                    const metValue = activityList[activityType.value][intensity.value];
+                    const freqValue = parseFloat(frequency.value);
+                    const durValue = parseFloat(duration.value);
+                    const metMinutes = metValue * freqValue * durValue;
+                    totalMETMinutes += isNaN(metMinutes) ? 0 : metMinutes;
+                }
+
+            }
+
+            document.getElementById("total-met-minutes").innerText = totalMETMinutes.toFixed(2);
+        }
+
+        const survivalDataMale = [
+            0.99529, 0.99974, 0.99981, 0.99985, 0.99988, 0.99990, 0.99991, 0.99992, 0.99992, 0.99992,
+            0.99991, 0.99991, 0.99989, 0.99986, 0.99982, 0.99974, 0.99964, 0.99954, 0.99946, 0.99938,
+            0.99931, 0.99923, 0.99916, 0.99910, 0.99904, 0.99898, 0.99892, 0.99887, 0.99881, 0.99875,
+            0.99870, 0.99865, 0.99859, 0.99854, 0.99850, 0.99845, 0.99840, 0.99835, 0.99829, 0.99822,
+            0.99814, 0.99805, 0.99795, 0.99783, 0.99771, 0.99757, 0.99742, 0.99724, 0.99705, 0.99683,
+            0.99659, 0.99633, 0.99604, 0.99572, 0.99537, 0.99499, 0.99457, 0.99411, 0.99361, 0.99306,
+            0.99245, 0.99178, 0.99105, 0.99024, 0.98934, 0.98836, 0.98727, 0.98606, 0.98473, 0.98325,
+            0.98161, 0.97980, 0.97778, 0.97554, 0.97305, 0.97028, 0.96719, 0.96374, 0.95990, 0.95561,
+            0.95081, 0.94544, 0.93943, 0.93269, 0.92514, 0.91665, 0.90712, 0.89640, 0.88434, 0.87074,
+            0.85542, 0.83859, 0.82068, 0.80175, 0.78189, 0.76285, 0.74223, 0.72099, 0.69928, 0.67729
+        ];
+
+        const survivalDataFemale = [
+            0.99562, 0.99976, 0.99982, 0.99986, 0.99989, 0.99990, 0.99992, 0.99992, 0.99992, 0.99992,
+            0.99992, 0.99991, 0.99990, 0.99987, 0.99984, 0.99978, 0.99971, 0.99964, 0.99957, 0.99952,
+            0.99947, 0.99941, 0.99936, 0.99932, 0.99928, 0.99924, 0.99920, 0.99916, 0.99912, 0.99908,
+            0.99904, 0.99900, 0.99896, 0.99892, 0.99888, 0.99885, 0.99881, 0.99877, 0.99871, 0.99866,
+            0.99859, 0.99851, 0.99843, 0.99834, 0.99823, 0.99812, 0.99799, 0.99785, 0.99770, 0.99752,
+            0.99733, 0.99712, 0.99688, 0.99662, 0.99634, 0.99604, 0.99570, 0.99533, 0.99492, 0.99447,
+            0.99397, 0.99343, 0.99282, 0.99216, 0.99142, 0.99061, 0.98971, 0.98871, 0.98761, 0.98638,
+            0.98502, 0.98350, 0.98182, 0.97994, 0.97785, 0.97551, 0.97291, 0.96999, 0.96673, 0.96309,
+            0.95900, 0.95442, 0.94927, 0.94349, 0.93700, 0.92968, 0.92144, 0.91216, 0.90168, 0.88984,
+            0.87646, 0.86170, 0.84587, 0.82899, 0.81111, 0.79295, 0.77364, 0.75349, 0.73263, 0.71122,
+            0.68943, 0.66745, 0.64546, 0.62365, 0.60221, 0.58131, 0.56110, 0.54172, 0.52328, 0.50585,
+        ];
+
+        let survivalChart;
+
+        const RiskResultsWithVideo = () => {
+            return React.createElement('div', { className: 'risk-results-container' },
+                React.createElement('div', {
+                    className: 'video-wrapper',
+                    style: {
+                        width: '100%',
+                        maxWidth: '800px',
+                        margin: '20px auto',
+                        aspectRatio: '16/9'
+                    }
+                },
+                    React.createElement('iframe', {
+                        style: {
+                            width: '100%',
+                            height: '100%',
+                            border: 'none',
+                            borderRadius: '8px',
+                            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+                        },
+                        src: 'https://www.youtube.com/embed/lqLjrglpQS0?si=bi7PRkZiudS7wj0k',
+                        title: 'Understanding Your Cardiovascular Risk',
+                        allow: 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture',
+                        allowFullScreen: true
+                    })
+                )
+            );
+        };
+        
+        
+    
+        document.getElementById("next-button").addEventListener("click", function () {
+    if (!validateRequiredFields()) return; // ⛔ Stop here if fields are incomplete
+
+    let riskScore = calculateRisk(); // ✅ Only runs if validation passes
+    window.globalRiskScore = riskScore;
+
+    document.getElementById("risk-score").innerText = riskScore.toFixed(2);
+    document.getElementById("old-risk-score-value").innerText = riskScore.toFixed(2);
+    window.oldRiskScore = riskScore;
+
+    let riskCategory = "";
+    let color = "";
+    let borderColor = "";
+
+    if (riskScore <= 1) {
+        riskCategory = "Very Low Risk";
+        color = "#f3fadc";
+        borderColor = "#78ce00";
+    } else if (riskScore > 1 && riskScore <= 10) {
+        riskCategory = "Low Risk";
+        color = "#f3fadc";
+        borderColor = "#78ce00";
+    } else if (riskScore > 10 && riskScore <= 20) {
+        riskCategory = "Intermediate Risk";
+        color = "#fff4e4";
+        borderColor = "#ffac4c";
+    } else {
+        riskCategory = "High Risk";
+        color = "#fab6b6";
+        borderColor = "#ff2020";
+    }
+
+    document.getElementById("risk-category").innerText = riskCategory;
+    document.getElementById("risk-category-box").style.backgroundColor = color;
+    document.getElementById("risk-category-box").style.border = `3px solid ${borderColor}`;
+    document.getElementById("risk-box").style.backgroundColor = color;
+    document.getElementById("risk-box").style.border = `3px solid ${borderColor}`;
+
+    document.getElementById("risk-score-container").style.display = "flex";
+    document.getElementById("comparison-next-button").style.display = "block";
+});
+
+
+
+
+document.getElementById("comparison-next-button").addEventListener("click", function() {
+    let riskScore = calculateRisk(); // Get the user's calculated 10-year risk
+
+    // Get the user's age and gender
+    let userAge = parseFloat(document.getElementById('age').value) || 0;
+    let gender = document.getElementById('gender').value;
+
+    // Select the appropriate survival dataset (blue line) based on gender
+    let survivalData = gender === 'male' ? survivalDataMale : survivalDataFemale;
+    
+    // Get the **Canadian survival probability** at the user's age (blue line)
+    let canadianSurvival = survivalData[Math.floor(userAge)] * 100; 
+
+    // Calculate the **Adjustment Factor** based on risk score
+    let adjustmentFactor = 1 - (riskScore / 10 * 0.01);
+
+    // Compute the **User’s predicted survival probability** (red line)
+    let userSurvival = canadianSurvival * adjustmentFactor;
+
+    // Compute the absolute survival difference
+    let survivalDifference = (canadianSurvival - userSurvival).toFixed(2);
+
+    // Ensure no negative values (shouldn't happen, but just in case)
+    survivalDifference = Math.max(0, survivalDifference);
+
+    // Generate appropriate message
+    let message = `Your 1-year survival compared to the average Canadian is ${survivalDifference}% lower.`;
+
+    // Hide the risk score box and Next button
+    document.getElementById("risk-box").style.display = "none";
+    document.getElementById("comparison-next-button").style.display = "none";
+
+    // Update the comparison result box
+    document.getElementById("comparison-result").innerText = message;
+    
+    // Display the comparison box
+    document.getElementById("comparison-box").style.backgroundColor = "#fff4e5"; // Change to your preferred color
+    document.getElementById("comparison-box").style.color = "black"; // Adjust text color
+    document.getElementById("comparison-box").style.border = "3px solid #fbae4c"; // Optional: Red border
+
+
+    // Generate and show the survival graph
+    generateSurvivalChart(userAge, riskScore, gender);
+    
+    // Show the graph
+    document.getElementById("survivalChart").style.display = "block";
+
+    // Show the next button for MET calculations
+    document.getElementById("met-next-button").style.display = "block";
+});
+
+
+
+
+
+
+
+
+
+
+
+
+document.getElementById("met-next-button").addEventListener("click", function() {
+    // Hide previous sections (e.g., the comparison box and the third Next button)
+    document.getElementById("comparison-box").style.display = "none";
+    document.getElementById("met-next-button").style.display = "none";
+    
+    // (Existing code to clone and show the exercise summary remains here)
+    let originalActivities = document.getElementById("activities-container");
+    let clone = originalActivities.cloneNode(true);
+    let removeButtons = clone.querySelectorAll("button");
+    removeButtons.forEach(function(btn) {
+        btn.remove();
+    });
+    let fields = clone.querySelectorAll("input, select");
+    fields.forEach(function(field) {
+        field.disabled = true;
+    });
+    let summaryContainer = document.getElementById("exercise-summary-container");
+    summaryContainer.innerHTML = "";
+    summaryContainer.appendChild(clone);
+    document.getElementById("exercise-summary").style.display = "block";
+
+    // Now, show the final risk score section
+    document.getElementById("final-risk-score-value").innerText = window.globalRiskScore.toFixed(2);
+    document.getElementById("final-risk-score").style.display = "block";
+});
+
+function preloadExerciseForStep4() {
+    const container = document.getElementById("new-activities-container");
+    container.innerHTML = ""; // Clear previous entries
+    newActivityCount = 0;
+
+    originalActivitiesData.forEach((data) => {
+        const div = document.createElement("div");
+        div.className = "activity-card";
+        div.id = `new-activity-${newActivityCount}`;
+
+        div.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 16px; font-weight: 600; margin-bottom: 10px;">
+                <span style="color: #000;">Exercise Entry #${newActivityCount + 1}</span>
+                <a href="#" onclick="editNewActivity(${newActivityCount}); return false;" style="color: #ee8e00; font-style: italic; text-decoration: none;">Edit this activity</a>
+            </div>
+
+            <label>Select the type of physical activity you perform:</label>
+            <select id="new-activity-${newActivityCount}-type">
+                ${Object.keys(activityList).map(activity => `
+                    <option value="${activity}" ${activity === data.type ? "selected" : ""}>${activity}</option>
+                `).join("")}
+            </select>
+
+            <label>How many days per week do you usually perform this activity?</label>
+            <input type="number" id="new-activity-${newActivityCount}-frequency" value="${data.frequency}" placeholder="e.g., 3" oninput="calculateNewMETMinutes();">
+
+            <label>On days when you perform this activity, how many minutes do you typically spend doing it?</label>
+            <input type="number" id="new-activity-${newActivityCount}-duration" value="${data.duration}" placeholder="e.g., 45" oninput="calculateNewMETMinutes();">
+
+            <label>How would you rate the typical intensity of this activity?</label>
+            <div class="intensity-options" id="new-activity-${newActivityCount}-intensity-options"></div>
+
+            <button type="button" onclick="doneNewActivity(${newActivityCount})">Done</button>
+        `;
+
+        container.appendChild(div);
+
+        // Add listener manually
+        const selectEl = document.getElementById(`new-activity-${newActivityCount}-type`);
+        selectEl.addEventListener("change", () => {
+            updateNewIntensityOptions(newActivityCount);
+            calculateNewMETMinutes();
+        });
+
+        // Manually call with preselected intensity
+        updateNewIntensityOptions(newActivityCount, data.intensity);
+        console.log("Selected intensity for entry", newActivityCount, "is", data.intensity);
+
+        newActivityCount++;
+    });
+
+    calculateNewMETMinutes();
+}
+
+
+
+
+
+let newActivityCount = 0;
+function addNewActivity(prefill = {}) {
+    const container = document.getElementById("new-activities-container");
+
+    const div = document.createElement("div");
+    div.className = "activity-card";
+    div.id = `new-activity-${newActivityCount}`;
+
+    const activityOptions = Object.keys(activityList)
+        .map(activity => `<option value="${activity}" ${prefill.type === activity ? 'selected' : ''}>${activity}</option>`)
+        .join("");
+
+    div.innerHTML = `
+        <label>Select the type of physical activity you perform:</label>
+        <select id="new-activity-${newActivityCount}-type">
+            ${activityOptions}
+        </select>
+
+        <label>How many days per week do you usually perform this activity?</label>
+        <input type="number" id="new-activity-${newActivityCount}-frequency" placeholder="e.g., 3" value="${prefill.frequency || ''}" oninput="calculateNewMETMinutes();">
+
+        <label>On days when you perform this activity, how many minutes do you typically spend doing it?</label>
+        <input type="number" id="new-activity-${newActivityCount}-duration" placeholder="e.g., 45" value="${prefill.duration || ''}" oninput="calculateNewMETMinutes();">
+
+        <label>How would you rate the typical intensity of this activity?</label>
+        <div class="intensity-options" id="new-activity-${newActivityCount}-intensity-options"></div>
+
+        <button type="button" onclick="doneNewActivity(${newActivityCount})">Done</button>
+    `;
+
+    container.appendChild(div);
+    updateNewIntensityOptions(newActivityCount);
+
+    // Set intensity AFTER rendering options
+    if (prefill.intensity) {
+        setTimeout(() => {
+            const intensityRadio = document.querySelector(`input[name="new-activity-${newActivityCount}-intensity"][value="${prefill.intensity}"]`);
+            if (intensityRadio) intensityRadio.checked = true;
+            calculateNewMETMinutes();
+        }, 0);
+    }
+
+    newActivityCount++;
+}
+
+
+function doneNewActivity(index) {
+    const activityCard = document.getElementById(`new-activity-${index}`);
+    if (activityCard) {
+        activityCard.style.display = "none";
+    }
+    calculateNewMETMinutes();
+}
+
+
+function updateNewIntensityOptions(activityIndex, selectedIntensity = null) {
+    const activityType = document.getElementById(`new-activity-${activityIndex}-type`).value;
+    const container = document.getElementById(`new-activity-${activityIndex}-intensity-options`);
+    container.innerHTML = "";
+
+    const intensities = activityList[activityType];
+    for (let intensity in intensities) {
+        const id = `new-activity-${activityIndex}-intensity-${intensity}`;
+        const isChecked = selectedIntensity === intensity ? 'checked' : '';
+        const radio = `
+            <label>
+                <input type="radio" name="new-activity-${activityIndex}-intensity" value="${intensity}" onchange="calculateNewMETMinutes();" required ${isChecked}>
+                ${intensity.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())} effort
+            </label>
+        `;
+        container.innerHTML += radio;
+    }
+}
+
+
+
+function doneNewActivity(index) {
+    const card = document.getElementById(`new-activity-${index}`);
+    card.style.display = "none";
+    const editLink = document.getElementById(`new-edit-activity-${index}`);
+    if (editLink) editLink.style.display = "block";
+    calculateNewMETMinutes();
+}
+
+function editNewActivity(index) {
+    const card = document.getElementById(`new-activity-${index}`);
+    card.style.display = "block";
+    const editLink = document.getElementById(`new-edit-activity-${index}`);
+    if (editLink) editLink.style.display = "none";
+}
+
+
+
+function removeNewActivity(index) {
+    const div = document.getElementById(`new-activity-${index}`);
+    div.remove();
+    calculateNewMETMinutes();
+}
+function calculateNewMETMinutes() {
+    let totalMETMinutes = 0;
+    for (let i = 0; i < newActivityCount; i++) {
+        const activityType = document.getElementById(`new-activity-${i}-type`);
+        const frequency = document.getElementById(`new-activity-${i}-frequency`);
+        const duration = document.getElementById(`new-activity-${i}-duration`);
+        const intensity = document.querySelector(`input[name="new-activity-${i}-intensity"]:checked`);
+
+
+        if (activityType && frequency && duration && intensity) {
+            const metValue = activityList[activityType.value][intensity.value];
+            const freqValue = parseFloat(frequency.value);
+            const durValue = parseFloat(duration.value);
+            const metMinutes = metValue * freqValue * durValue;
+            totalMETMinutes += isNaN(metMinutes) ? 0 : metMinutes;
+        }
+
+    }
+    document.getElementById("new-total-met-minutes").innerText = totalMETMinutes.toFixed(2);
+    return totalMETMinutes;
+}
+function calculateNewRisk() {
+    const age = parseFloat(document.getElementById('age').value) || 0;
+    const gender = document.getElementById('gender').value;
+    const smoker = document.getElementById('smoker').value === 'yes';
+    const systolic_bp = parseFloat(document.getElementById('systolic_bp').value) || 0;
+    const bp_medication = document.getElementById('bp_medication').value === 'yes' ? true : false;
+    const diabetes = document.getElementById('diabetes').value === 'yes' ? true : false;
+    const has_cholesterol = document.getElementById('cholesterol').value === 'yes';
+    const total_cholesterol = has_cholesterol ? parseFloat(document.getElementById('total_cholesterol').value) || 0 : 0;
+    const hdl_cholesterol = has_cholesterol ? parseFloat(document.getElementById('hdl_cholesterol').value) || 0 : 0;
+    const bmi = calculateBMI() || 0;
+    // Get the new MET minutes from the new exercise section:
+    const met_minutes = parseFloat(document.getElementById('new-total-met-minutes').innerText) || 0;
+    const has_cvd = document.getElementById('cvd').value === 'yes' ? true : false;
+
+    let risk_score = 0;
+
+    if (has_cvd) {
+        risk_score = 30;
+    } else {
+        if (has_cholesterol) {
+            risk_score = calculateFraminghamWithCholesterol(age, gender, smoker, systolic_bp, bp_medication, total_cholesterol, hdl_cholesterol, diabetes);
+        } else {
+            risk_score = calculateFraminghamWithoutCholesterol(age, gender, smoker, systolic_bp, bp_medication, bmi, diabetes);
+        }
+    }
+
+    const met_target = 1000;
+    let risk_reduction = (met_minutes / met_target) * 0.3;
+    risk_reduction = Math.min(risk_reduction, 0.3);
+
+    const adjusted_risk = risk_score * (1 - risk_reduction);
+
+    return adjusted_risk;
+}
+document.getElementById("calculate-new-risk-button").addEventListener("click", function() {
+    let newRiskScore = calculateNewRisk(); // Get new risk score
+    let oldRiskScore = window.oldRiskScore || 0; // Retrieve stored old risk
+
+    let riskDifference = (newRiskScore - oldRiskScore).toFixed(2); // Difference
+
+    let changeText, color, borderColor;
+
+    if (riskDifference > 0) {
+        changeText = "increased";
+        color = "#fab6b6"; // Red for increased risk
+        borderColor = "#ff2020"; 
+    } else if (riskDifference < 0) {
+        changeText = "decreased";
+        color = "#f3fadc"; // Green for decreased risk
+        borderColor = "#78ce00";
+    } else {
+        changeText = "remained the same";
+        color = "#f3fadc"; 
+        borderColor = "#78ce00"; 
+    }
+
+    // Update UI elements
+    document.getElementById("risk-change-text").innerText = changeText;
+    document.getElementById("risk-change-value").innerText = Math.abs(riskDifference);
+    
+    // Update the old and new risk score values in the UI
+    document.getElementById("old-risk-score-value").innerText = oldRiskScore.toFixed(2);
+    document.getElementById("new-risk-score-value").innerText = newRiskScore.toFixed(2);
+
+    // Update styling
+    let riskChangeBox = document.getElementById("risk-change-box");
+    riskChangeBox.style.color = "black";
+    riskChangeBox.style.backgroundColor = color;
+    riskChangeBox.style.border = `3px solid ${borderColor}`;
+    
+    document.getElementById("new-risk-box").style.border = `3px solid ${borderColor}`;
+
+    // Make the section visible
+    riskChangeBox.style.display = "block";
+
+    // Compute additional health benefits
+    computeHealthBenefits();
+});
+
+
+
+
+
+
+
+
+function computeHealthBenefits() {
+    // Get initial and new MET minutes
+    let initialMET = parseFloat(document.getElementById("total-met-minutes").innerText) || 0;
+    let newMET = parseFloat(document.getElementById("new-total-met-minutes").innerText) || 0;
+    let difference = newMET - initialMET; // Positive if increase, negative if decrease
+
+    // Initialize benefit variables
+    let cancerRiskReduction = 0;
+    let depressionReduction = 0;
+    let hfRiskReduction = 0;
+
+    // Apply risk reduction (positive for increase, negative for decrease)
+    if (difference !== 0) {
+        let adjustmentFactor = difference / 1000; // Scale based on 1000 MET-minutes
+
+        // Coefficients for reductions based on literature
+        cancerRiskReduction = (23.41 * adjustmentFactor).toFixed(2);
+        depressionReduction = (60.20 * adjustmentFactor).toFixed(2);
+        hfRiskReduction = (33.44 * adjustmentFactor).toFixed(2);
+    }
+
+    // Function to format the message dynamically
+    function getFormattedMessage(percentage, condition) {
+        let absPercentage = Math.abs(percentage); // Remove the sign for display
+        if (percentage < 0) {
+            return `By decreasing your activity, your risk of developing ${condition} has <strong style="color: red;">increased</strong> by ${absPercentage}%.`;
+        } else if (percentage > 0) {
+            return `By increasing your activity, your risk of developing ${condition} has <strong style="color: green;">decreased</strong> by ${absPercentage}%.`;
+        } else {
+            return `No change in your risk of developing ${condition}.`;
+        }
+    }
+
+    // Update UI dynamically
+    document.getElementById("cancer-risk-benefit").innerHTML = getFormattedMessage(cancerRiskReduction, "cancer");
+    document.getElementById("depression-risk-benefit").innerHTML = getFormattedMessage(depressionReduction, "depression");
+    document.getElementById("hf-risk-benefit").innerHTML = getFormattedMessage(hfRiskReduction, "heart failure");
+}
+
+
+
+
+
+
+function calculateDifference() {
+    const currentMet = parseFloat(document.getElementById('current-met').value);
+    const goalMet = parseFloat(document.getElementById('goal-met').value);
+
+    if (isNaN(currentMet) || isNaN(goalMet)) {
+        document.getElementById('met-results').innerText = "Please enter valid numbers.";
+        document.getElementById('risk-reduction-results').style.display = "none";
+        return;
+    }
+
+    let cappedGoalMet = Math.min(goalMet, 1000);
+    const difference = cappedGoalMet - currentMet;
+    document.getElementById('met-results').innerHTML = `Difference: <strong>${difference}</strong> MET-Minutes`;
+
+    let cancerRiskReduction = 0;
+    let cvdRiskReduction = 0;
+    let chdRiskReduction = 0;
+    let hfRiskReduction = 0;
+    let acmRiskReduction = 0;
+    let cvdMortalityReduction = 0;
+    let cancerMortalityReduction = 0;
+    let depressionReduction = 0;
+
+    if (difference > 0) {
+        if (currentMet >= 0 && currentMet <= 299) {
+            const rangeDifference = Math.min(difference, 299 - currentMet);
+            cancerRiskReduction += rangeDifference * 0.02341;
+            cvdRiskReduction += rangeDifference * 0.056856187;
+            chdRiskReduction += rangeDifference * 0.046822742;
+            hfRiskReduction += rangeDifference * 0.033444816;
+            acmRiskReduction += rangeDifference * 0.076923077;
+            cvdMortalityReduction += rangeDifference * 0.063545151;
+            cancerMortalityReduction += rangeDifference * 0.033444816;
+            depressionReduction += rangeDifference * 0.060200669;
+        }
+        if (currentMet < 600 && cappedGoalMet > 300) {
+            const start = Math.max(300, currentMet);
+            const end = Math.min(600, cappedGoalMet);
+            if (start < end) {
+                cancerRiskReduction += (end - start) * 0.01667;
+                cvdRiskReduction += (end - start) * 0.033333333;
+                chdRiskReduction += (end - start) * 0.023333333;
+                hfRiskReduction += (end - start) * 0.02;
+                acmRiskReduction += (end - start) * 0.026666667;
+                cvdMortalityReduction += (end - start) * 0.033333333;
+                cancerMortalityReduction += (end - start) * 0.016666667;
+                depressionReduction += (end - start) * 0.023333333;
+            }
+        }
+        if (currentMet < 1000 && cappedGoalMet > 600) {
+            const start = Math.max(601, currentMet);
+            const end = Math.min(1000, cappedGoalMet);
+            if (start < end) {
+                cancerRiskReduction += (end - start) * 0.00752;
+                cvdRiskReduction += (end - start) * 0.015037594;
+                chdRiskReduction += (end - start) * 0.012531328;
+                hfRiskReduction += (end - start) * 0.01754386;
+                acmRiskReduction += (end - start) * 0.007518797;
+                cvdMortalityReduction += (end - start) * 0.015037594;
+                cancerMortalityReduction += (end - start) * 0.007518797;
+                depressionReduction += (end - start) * 0.007518797;
+            }
+        }
+    }
+
+    // Display risk reductions
+    document.getElementById('cancer-risk').innerText = cancerRiskReduction.toFixed(4);
+    document.getElementById('cvd-risk').innerText = cvdRiskReduction.toFixed(4);
+    document.getElementById('chd-risk').innerText = chdRiskReduction.toFixed(4);
+    document.getElementById('hf-risk').innerText = hfRiskReduction.toFixed(4);
+    document.getElementById('acm-risk').innerText = acmRiskReduction.toFixed(4);
+    document.getElementById('cvd-mortality-risk').innerText = cvdMortalityReduction.toFixed(4);
+    document.getElementById('cancer-mortality-risk').innerText = cancerMortalityReduction.toFixed(4);
+    document.getElementById('depression-risk').innerText = depressionReduction.toFixed(4);
+
+    document.getElementById('risk-reduction-results').style.display = "block";
+}
+
+
+
+
+
+function calculateRisk() {
+    const age = parseFloat(document.getElementById('age').value) || 0;
+    const gender = document.getElementById('gender').value;
+    const smoker = document.getElementById('smoker').value === 'yes';
+    const systolic_bp = parseFloat(document.getElementById('systolic_bp').value) || 0;
+    const bp_medication = document.getElementById('bp_medication').value === 'yes';
+    const diabetes = document.getElementById('diabetes').value === 'yes';
+    const has_cholesterol = document.getElementById('cholesterol').value === 'yes';
+    const total_cholesterol = has_cholesterol ? parseFloat(document.getElementById('total_cholesterol').value) || 0 : 0;
+    const hdl_cholesterol = has_cholesterol ? parseFloat(document.getElementById('hdl_cholesterol').value) || 0 : 0;
+    const bmi = calculateBMI() || 0;
+    const met_minutes = parseFloat(document.getElementById('total-met-minutes').innerText) || 0;
+    const has_cvd = document.getElementById('cvd').value === 'yes';
+
+    let risk_score = 0;
+
+    if (has_cvd) {
+        risk_score = 30;
+    } else {
+        if (has_cholesterol) {
+            risk_score = calculateFraminghamWithCholesterol(age, gender, smoker, systolic_bp, bp_medication, total_cholesterol, hdl_cholesterol, diabetes);
+        } else {
+            risk_score = calculateFraminghamWithoutCholesterol(age, gender, smoker, systolic_bp, bp_medication, bmi, diabetes);
+        }
+    }
+
+    const met_target = 1000;
+    let risk_reduction = (met_minutes / met_target) * 0.3;
+    risk_reduction = Math.min(risk_reduction, 0.3);
+
+    const adjusted_risk = risk_score * (1 - risk_reduction);
+
+    return adjusted_risk; // Return the risk score
+}
+
+
+        function generateStoredRiskGraph() {
+            if (storedRiskData.risk === null) {
+                alert('Please calculate your risk score first in the Risk Calculator tab.');
+                return;
+            }
+
+            generateSurvivalChart(storedRiskData.age, storedRiskData.risk, storedRiskData.gender);
+        }
+
+        function generateSurvivalChart(startAge, adjustedRisk, gender) {
+    const survivalData = gender === 'male' ? survivalDataMale : survivalDataFemale;
+
+    const ages = [];
+    const originalProbabilities = [];
+    const adjustedProbabilities = [];
+
+    const adjustmentFactor = 1 - (adjustedRisk / 10 / 100);
+
+    for (let i = Math.floor(startAge); i <= 99; i++) {
+        const ageIndex = i;
+        const originalSurvival = survivalData[ageIndex];
+
+        const adjustedSurvival = originalSurvival * adjustmentFactor;
+
+        ages.push(i);
+        originalProbabilities.push((originalSurvival * 100).toFixed(2));
+        adjustedProbabilities.push((adjustedSurvival * 100).toFixed(2));
+    }
+
+    if (survivalChart) {
+        survivalChart.destroy();
+    }
+
+    const ctx = document.getElementById('survivalChart').getContext('2d');
+
+    survivalChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ages,
+            datasets: [
+                {
+                    label: 'Survival Probability by Age',
+                    data: originalProbabilities,
+                    borderColor: 'blue',
+                    backgroundColor: 'rgba(0, 0, 255, 0.1)',  // Light blue fill
+                    fill: false,
+                    pointRadius: 0,
+                },
+                {
+                    label: 'Your Predicted Probability of Survival',
+                    data: adjustedProbabilities,
+                    borderColor: 'red',
+                    backgroundColor: 'rgba(255, 0, 0, 0.1)',  // Light red fill
+                    fill: false,
+                    pointRadius: 0,
+                }
+            ],
+        },
+        options: {
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Age (Years)',
+                    },
+                    ticks: {
+                        stepSize: 1
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Probability of Survival (%)',
+                    },
+                    min: 90,
+                    max: 100,
+                },
+
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                },
+                annotation: {
+                    annotations: {
+                        verticalLine: {
+                            type: 'line',
+                            xMin: startAge,  // User's age
+                            xMax: startAge,  // Same as xMin to make it a vertical line
+                            borderColor: 'purple',
+                            borderWidth: 2,
+                            borderDash: [6, 6],  // Dashed line
+                            label: {
+                                content: `Age ${startAge}`,
+                                enabled: true,
+                                position: 'top',
+                                backgroundColor: 'purple',
+                                color: 'white',
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    document.getElementById('survivalChart').style.backgroundColor = "white";
+
+}
+
+
+        function calculateFraminghamWithCholesterol(age, gender, smoker, systolic_bp, bp_medication, total_cholesterol, hdl_cholesterol, diabetes) {
+            let ln_age, ln_total_cholesterol, ln_hdl, ln_systolic_bp, smoker_coef, diabetes_coef, sum_of_coefficients, risk_score;
+
+            if (gender === 'male') {
+                ln_age = Math.log(age) * 3.06117;
+                ln_total_cholesterol = Math.log(total_cholesterol) * 1.12370;
+                ln_hdl = Math.log(hdl_cholesterol) * (-0.93263);
+                ln_systolic_bp = Math.log(systolic_bp) * (bp_medication ? 1.93303 : 1.99881);
+                smoker_coef = smoker ? 0.65451 : 0;
+                diabetes_coef = diabetes ? 0.57367 : 0;
+                sum_of_coefficients = ln_age + ln_total_cholesterol + ln_hdl + ln_systolic_bp + smoker_coef + diabetes_coef;
+                risk_score = 1 - Math.pow(0.88936, Math.exp(sum_of_coefficients - 23.9802));
+            } else {
+                ln_age = Math.log(age) * 2.32888;
+                ln_total_cholesterol = Math.log(total_cholesterol) * 1.20904;
+                ln_hdl = Math.log(hdl_cholesterol) * (-0.70833);
+                ln_systolic_bp = Math.log(systolic_bp) * (bp_medication ? 2.76157 : 2.82263);
+                smoker_coef = smoker ? 0.52873 : 0;
+                diabetes_coef = diabetes ? 0.69154 : 0;
+                sum_of_coefficients = ln_age + ln_total_cholesterol + ln_hdl + ln_systolic_bp + smoker_coef + diabetes_coef;
+                risk_score = 1 - Math.pow(0.95012, Math.exp(sum_of_coefficients - 26.1931));
+            }
+
+            return risk_score * 100;
+        }
+
+        function calculateFraminghamWithoutCholesterol(age, gender, smoker, systolic_bp, bp_medication, bmi, diabetes) {
+            let ln_age, ln_bmi, ln_systolic_bp, smoker_coef, diabetes_coef, sum_of_coefficients, risk_score;
+
+            if (gender === 'male') {
+                ln_age = Math.log(age) * 3.11296;
+                ln_bmi = Math.log(bmi) * 0.79277;
+                ln_systolic_bp = Math.log(systolic_bp) * (bp_medication ? 1.85508 : 1.92672);
+                smoker_coef = smoker ? 0.70953 : 0;
+                diabetes_coef = diabetes ? 0.5316 : 0;
+                sum_of_coefficients = ln_age + ln_bmi + ln_systolic_bp + smoker_coef + diabetes_coef;
+                risk_score = 1 - Math.pow(0.88936, Math.exp(sum_of_coefficients - 23.9388));
+            } else {
+                ln_age = Math.log(age) * 2.72107;
+                ln_bmi = Math.log(bmi) * 0.51125;
+                ln_systolic_bp = Math.log(systolic_bp) * (bp_medication ? 2.81291 : 2.88267);
+                smoker_coef = smoker ? 0.61868 : 0;
+                diabetes_coef = diabetes ? 0.77763 : 0;
+                sum_of_coefficients = ln_age + ln_bmi + ln_systolic_bp + smoker_coef + diabetes_coef;
+                risk_score = 1 - Math.pow(0.94833, Math.exp(sum_of_coefficients - 26.0145));
+            }
+
+            return risk_score * 100;
+        }
+
+        document.getElementById('weight').addEventListener('input', calculateBMI);
+        document.getElementById('height-cm').addEventListener('input', calculateBMI);
+        document.getElementById('height-ft').addEventListener('input', calculateBMI);
+        document.getElementById('height-in').addEventListener('input', calculateBMI);
+        document.getElementById('height-inches').addEventListener('input', calculateBMI);
+        document.getElementById('weight-unit').addEventListener('change', calculateBMI);
+        document.getElementById('height-unit').addEventListener('change', calculateBMI);
+        document.querySelectorAll("details").forEach((details) => {
+    details.addEventListener("toggle", function () {
+        // When a dropdown is opened, update the values
+        if (this.open) {
+            calculateRisk();
+        }
+    });
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+    updateStep(1); // Show first section
+
+    const nextBtn = document.getElementById("next-button");
+    if (nextBtn) {
+        nextBtn.addEventListener("click", function () {
+            console.log("Next button clicked"); // TEMP for testing
+            if (validateRequiredFields()) {
+                updateStep(2); // Go to results
+            }
+        });
+    } else {
+        console.error("Next button not found");
+    }
+});
+
+
+    </script>
+<details class="disclaimer" style="max-width: 800px; margin: 30px auto;">
+    <summary><strong style="color: #ee8e00;">Disclaimer: Click to Read</strong></summary>
+    <div style="padding-top: 10px;">
+      <p>
+        This health risk assessment incorporates a modified version of the Framingham Risk Score, integrating physical activity based on associations derived from published scientific literature. However, this modification has not been formally validated. Similarly, the relationship between changes in physical activity and changes in other health outcomes is based on existing research but has not been clinically validated. The values presented are estimates and projections intended to provide general population-level insights rather than precise individual risk assessments. This risk score is designed for discussion, awareness and educational purposes only. It is not intended for medical diagnosis, treatment, or decision-making and does not replace consultation with your doctor. Please consult your healthcare provider for personalized medical advice.
+      </p>
+    </div>
+  </details>
+  
+  
+<!-- Floating Video in Bottom-Right Corner -->
+<div id="floating-video-container" style="
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 320px;
+    height: 180px;
+    background-color: black;
+    border-radius: 8px;
+    overflow: hidden;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+    <iframe id="floating-video-frame"
+            width="320" height="180"
+            frameborder="0"
+            allowfullscreen
+            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            style="width:100%; height:100%; border:none; border-radius: 8px;">
+    </iframe>
+</div>
+
+
+</body>
+</html>
