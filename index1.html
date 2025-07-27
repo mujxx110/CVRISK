@@ -73,9 +73,9 @@
 
 .card {
   background-color: #fff;
-  padding: 20px 40px;
+  padding: 1px 22px;
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(1, 84, 95, 0.5);  /* ✅ Move the shadow here */
+  box-shadow: 0 0px 0px rgba(1, 84, 95, 0.5);  /* ✅ Move the shadow here */
   transition: box-shadow 2s ease
 }
 
@@ -330,6 +330,22 @@
 
 
 #comparison-box {
+  width: 100%;           /* fill whatever its parent allows */
+  max-width: 800px;      /* same max-width as .progress-card */
+  margin: 20px auto;     /* center it and give a bit of vertical spacing */
+  box-sizing: border-box;/* include its padding in the width */
+}
+
+#comparison-next-button {
+  display: block;            /* make it fill its own line */
+  width: 100%;               /* let it stretch to its container */
+  max-width: 800px;          /* match the card‑section’s width */
+  margin: 20px auto 0 auto;  /* center it and give a little top spacing */
+  box-sizing: border-box;    /* include padding in the width */
+}
+
+
+#comparison-box {
     background-color: #FFD700; /* Change this to your preferred color */
     color: black; /* Adjust text color for contrast */
     padding: 20px;
@@ -345,13 +361,10 @@
 
         .logo-container {
     text-align: center; /* Centers the image */
-    margin-bottom: 20px; /* Space between logo and heading */
+    margin-bottom: 4px; /* Space between logo and heading */
 }
 
-.logo-container img {
-    max-width: 800px; /* Adjust the logo size */
-    height: auto; /* Maintain aspect ratio */
-}
+
 
 
         #risk-change-box {
@@ -614,6 +627,8 @@ select {
   appearance: none;
   height: 48px;
 }
+
+
 
 
 
@@ -890,21 +905,23 @@ input:focus, select:focus {
 }
 
 h1 {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 700;
-  font-size: clamp(2.2rem, 5vw, 3.2rem);
-  letter-spacing: -0.5px;
-  color: #222;
+    font-style: italic;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    letter-spacing: -0.5px;
+    color: #FFF;
+
   margin-bottom: 1rem;
 }
 
 h1 {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 700;
-  font-size: clamp(2.2rem, 5vw, 3.2rem);
-  letter-spacing: -0.5px;
-  color: #222;
-  margin-bottom: 1rem;
+    font-style: italic;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    letter-spacing: -0.5px;
+    color: #FFF;
 }
 
 h1 {
@@ -929,156 +946,327 @@ h1 {
 
 /* Fullscreen popup with frosted-glass style */
 /* Light blue frosted overlay */
+
+
+/* Glassy inner card */
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  body {
+  background-image: url('7df08de0-53f7-405f-85c8-12f375da2cb1.png');
+  background-size: cover; /* Fill the screen */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed; /* Optional: keeps the image in place while scrolling */
+  font-family: 'Poppins', sans-serif; /* Keep existing styles */
+  margin: 0;
+  padding: 0;
+}
+
+.hero-header {
+  text-align: center;
+  margin-top: 40px;
+  color: white;
+}
+
+.logo-container img {
+  max-width: 140px;
+  height: auto;
+  margin-bottom: 4px;
+}
+
+.brand-subtitle {
+  font-size: 36px;
+  font-weight: 500;
+  letter-spacing: 10px;
+  color: #ffffffcc;
+  text-transform: uppercase;
+  margin-top: 0;          /* Ensure no top margin */
+  margin-bottom: 10px;
+}
+
+.main-title {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 700;
+  font-style: italic;
+  color: white;
+  margin: 0;
+  line-height: 0.9;
+}
+
+.hero-subtext {
+  font-size: 1rem;
+  color: #ffffffcc;
+  margin-top: 8px;
+}
+
+#progress-bar-container {
+  margin-bottom: 40px; /* Or adjust to your preference */
+}
+
+.card-section {
+  background-color: #FFF;
+  padding: 20px 20px;
+  border-radius: 8px;
+  margin: 20px auto;
+  max-width: 800px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+}
+
+.card-section.hidden {
+  transform: translateX(100%);
+  opacity: 0;
+  pointer-events: none;
+  height: 0;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.progress-card {
+  background-color: #fff;
+  padding: 0px 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  max-width: 800px;
+  margin: 0 auto 30px auto; /* bottom margin adds the spacing */
+}
+
+
+
+/* Full‑screen overlay */
 #welcome-popup {
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background: rgba(232, 235, 252, 0.8);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(0,0,0,0.6);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 9999;
-  transition: opacity 0.5s ease;
 }
 
-/* Glassy inner card */
+/* Center card */
 .popup-content {
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 20px;
-  width: 80vw;         /* NEW: 80% of screen width */
-  height: 80vh;        /* NEW: 80% of screen height */
-  padding: 40px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  background: #fff;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 900px;
+  padding: 30px;
+  display: flex;
+  gap: 40px;
+  position: relative;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+
+/* Close “X” */
+.popup-close {
+  position: absolute;
+  top: 15px; right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Left column */
+.popup-text {
+  flex: 1;
+}
+
+.popup-text h1 {
+  font-size: 2.4rem;
+  margin: 0 0 10px;
+}
+
+.popup-text h1 strong {
+  font-weight: 700;
+}
+
+.popup-text h2 {
+  font-size: 1.6rem;
+  color: #0056b3;  /* your blue */
+  margin: 0 0 20px;
+}
+
+.popup-text p {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.popup-tagline {
+  font-size: 1.1rem;
+  font-style: italic;
   color: #333;
-  text-align: center;
-  font-family: 'Poppins', sans-serif;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-
-  display: flex;           /* Enable flex layout */
-  flex-direction: column;
-  justify-content: center; /* Vertically center content */
-  align-items: center;     /* Horizontally center content */
 }
 
-
-.popup .popup-heading h1 {
-  font-size: clamp(7.2rem, 8vw, 6rem) !important;
-  letter-spacing: -0.5px !important;
-  font-weight: 700 !important;
-  margin: 0 !important;
-}
-
-
-
-
-
-
-.popup-content h1 span {
-  color: #f7941e; /* MHF orange */
-}
-
-/* Body text */
-.popup-content p {
-  font-size: clamp(14px, 2vw, 20px);
-  max-width: 90%;
-  margin-bottom: 30px;
-  color: #333;
-}
-/* Begin button */
-.popup-content button {
-  padding: 12px 30px;
-  font-size: 16px;
-  background-color: #ffb152d8;
+/* CTA button */
+.popup-cta {
+  background-color: #ee8e00;   /* your orange */
   color: white;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
+  padding: 14px 24px;
+  font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  padding: 16px 32px;
-  font-size: clamp(16px, 2vw, 20px);
-  width: 12%;
+  display: inline-flex;
+  align-items: center;
+  transition: background 0.2s;
 }
 
-.popup-content button:hover {
-  background-color: #cc5200;
+.popup-cta .arrow {
+  margin-left: 8px;
+  font-size: 1.2rem;
 }
 
-<style>
-  #main-popup-heading {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 700;
-    font-size: clamp(7rem, 8vw, 6rem);
-    line-height: 1.1;
-    letter-spacing: -7px;
-    margin: 0;
-    color: #222;
-  }
+.popup-cta:hover {
+  background-color: #cc7000;
+}
 
-  #main-popup-subheading {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 700;
-    font-size: clamp(7rem, 10vw, 7rem);
-    line-height: 1.1;
-    letter-spacing: -7px;
-    margin: 0;
-    color: #f7931e; /* MHF orange */
-  }
+/* Right column */
+.popup-image {
+  flex: 0 0 240px;
+  text-align: center;
+}
 
-  
+.popup-image img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.popup-image small {
+  display: block;
+  font-size: 0.75rem;
+  color: #666;
+}
+
+/* at the very bottom of your existing <style> */
+    #activity-summary-container {
+  display: none !important;
+}
+
+/* --- Subtle outline style for the Add Exercise button --- */
+#add-exercise-button {
+  background-color: transparent;
+  color: #ee8e00;                /* same orange text */
+  border: 2px solid #ee8e00;     /* outline in orange */
+  border-radius: 8px;
+  padding: 12px 24px;            /* match your other button padding */
+  box-shadow: none;              /* remove default shadow */
+  font-weight: 600;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+#add-exercise-button:hover {
+  background-color: rgba(238, 142, 0, 0.15); /* light orange hover */
+  color: #ee8e00;
+}
+
+#met-next-button {
+  display: none !important;
+}
+
+
+#final-next-button {
+  display: none !important;
+}
+
+#submit-data-button {
+  display: none;        /* still hidden by default */
+  margin-top: 10px;
+  display: block;       /* when you JS-show it, it’ll be block */
+  width: 100%;          /* stretch full width of its container */
+  box-sizing: border-box; /* include padding/border in that width */
+}
+
+
 </style>
 
 
 
-    </style>
+   
 </head>
 <body>
 
     <div id="welcome-popup">
-        <div class="popup-content">      
-            <div class="popup-heading">
-                <h1 id="main-popup-heading">Welcome to</h1>
-                <h1 id="main-popup-subheading">Calculate My Risk</h1>
-              </div>
-              <br> 
-          <p>
-            Powered by <strong>My Heart Fitness</strong><br><br>
-            Learn how your habits affect your cardiovascular risk <br> and how small changes can make a big difference.
-          </p>
-          <button onclick="closePopup()">Begin</button>
+        <div class="popup-content">
+          <!-- LEFT SIDE: text -->
+          <div class="popup-text">
+            <h1>Welcome to <strong>Calculate My Risk</strong></h1>
+            <h2>Why Does Your Heart Risk Matter?</h2>
+            <p>
+              Most people don’t realize they’re at risk for heart disease — until it’s too late. 
+              Calculating your cardiovascular risk helps you understand what’s happening beneath 
+              the surface and gives you the power to take control before problems start. In just 
+              a few clicks, get a clearer picture of your heart health and the steps that could 
+              change your future.
+            </p>
+            <p class="popup-tagline">
+              <em>Because small changes today can mean a healthier tomorrow.</em>
+            </p>
+            <button class="popup-cta" onclick="closePopup()">
+              Calculate My Risk  <span class="arrow">→</span>
+            </button>
+          </div>
+      
+          <!-- RIGHT SIDE: image or illustration -->
+          <div class="popup-image">
+            <img src="/Users/mujtaba/Desktop/Jobs/MHF/your-logo.png" alt="Heart illustration">
+            <small>Created by: My Heart Fitness</small>
+          </div>
+      
+          <!-- “X” close icon in top right -->
+          <button class="popup-close" onclick="closePopup()">✕</button>
+        </div>
+      </div>
+      
+      
+
+
+      <div class="hero-header">
+        <div class="logo-container">
+          <img src="/Users/mujtaba/Desktop/Jobs/MHF/your-logo.png" alt="My Heart Fitness Logo" />
+        </div>
+        <p class="brand-subtitle">MY HEART FITNESS</p>
+        <h1 class="main-title">CARDIOVASCULAR<br>RISK CALCULATOR</h1>
+        <p class="hero-subtext">Calculate My Risk</p>
+      </div>
+      
+              
+
+        
+      <div class="progress-card">
+        <div id="progress-bar-container">
+          <div class="progress-steps">
+            <div class="step" data-step="1">Basic Information</div>
+            <div class="step" data-step="2">BMI</div>
+            <div class="step" data-step="3">Risk Factors</div>
+            <div class="step" data-step="4">Exercise</div>
+            <div class="step" data-step="5">Risk Score</div>
+            <div class="step" data-step="6">Risk Chart</div>
+            <div class="step" data-step="7">Benefits</div>
+            <div class="step" data-step="8">Learn More</div>
+          </div>
         </div>
       </div>
       
 
-    <div class="calculator-component section active" id="calculator-component">
-        <div class="container">
-            <h1 class="fade-slide-in"><span>Cardiovascular Risk Calculator</span></h1>
-            <p class="subtitle fade-slide-in">
-                Get a personalized score and actionable steps to improve your heart health.
-              </p>
-              
-
-        
-            
-            <div id="progress-bar-container">
-  <div class="progress-steps">
-    <div class="step" data-step="1">Basic Information</div>
-    <div class="step" data-step="2">BMI</div>
-    <div class="step" data-step="3">Risk Factors</div>
-    <div class="step" data-step="4">Exercise</div>
-    <div class="step" data-step="5">Risk Score</div>
-    <div class="step" data-step="6">Risk Chart</div>
-    <div class="step" data-step="7">Benefits</div>
-    <div class="step" data-step="8">Learn More</div>
-  </div>
-</div>
-
             <div id="input-section">
-            <div id="basic-info-card" class="section">
+            <div id="basic-info-card" class="card-section">
                 <div class="card">
                 <h2 style="color: #ee8e00; font-size: 20px;">Let's get started by collecting some basic information:</h2>
                 <label for="age">Age (How old are you?) </label>
@@ -1102,7 +1290,7 @@ h1 {
             
             <div id="bmi-fields">
                 
-                <div id="height-weight-card" class="section hidden">
+                <div id="height-weight-card" class="card-section hidden">
                     <div class="card">
                     <summary><strong>Please enter your Height and Weight below:</strong></summary>
                 
@@ -1151,7 +1339,7 @@ h1 {
             </div>
     
 
-            <div id="cvd-risk-card" class="section hidden">
+            <div id="cvd-risk-card" class="card-section hidden">
                 <div class="card">
                 <summary><strong> Your doing great! Now just a couple questions on your Cardiovascular Health: </strong></summary>
 
@@ -1221,11 +1409,26 @@ h1 {
 
             
 
-            <div id="exercise-calculator-card" class="section hidden">
+            <div id="exercise-calculator-card" class="card-section hidden">
                 <div class="card">
                 <summary><strong> Please Enter your exercise information below: </strong></summary>
             
-                <label for="met_minutes">Exercise (MET Minute Calculator)</label>
+                <label for="met_minutes"></label>
+                <!-- Exercise summary table -->
+                    <table id="exercise-summary-table" style="width:100%; margin-bottom:16px; border-collapse: collapse;">
+                        <thead>
+                        <tr>
+                            <th style="border-bottom:1px solid #ddd; padding:8px; text-align:left;">Activity</th>
+                            <th style="border-bottom:1px solid #ddd; padding:8px; text-align:right;">Days/Wk</th>
+                            <th style="border-bottom:1px solid #ddd; padding:8px; text-align:right;">Mins/Day</th>
+                            <th style="border-bottom:1px solid #ddd; padding:8px; text-align:left;">Intensity</th>
+                            <th style="border-bottom:1px solid #ddd; padding:8px; text-align:center;">MET‑mins</th>
+                            <th></th> 
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+  
                 <div id="activities-container"></div>
                 <button type="button" id="add-exercise-button" onclick="addActivity()">Add Exercise</button>
                 <div id="activity-summary-container"></div>
@@ -1254,7 +1457,7 @@ h1 {
     
 
         <!-- Container for both boxes; it is hidden initially -->
-        <div id="risk-score-container" style="display: none; margin-top: 20px; gap: 20px; flex-direction: column; align-items: center;">
+        <div id="risk-score-container" class="card-section" style="display: none; margin-top: 20px; gap: 20px; flex-direction: column; align-items: center;">
             <!-- Risk Score Box -->
             <div id="risk-box" style="background-color: red; color: black; padding: 20px; text-align: center; font-size: 24px; font-weight: bold;">
                 Your Calculated 10-year risk of heart attack, stroke, or death is : <span id="risk-score">0</span>%
@@ -1270,6 +1473,13 @@ h1 {
                 <strong>Risk Classifications:</strong><br>
                 Low Risk: &lt;10% &nbsp; | &nbsp; Intermediate Risk: 10–20% &nbsp; | &nbsp; High Risk: &gt;20%
             </div>
+
+                            <canvas
+                    id="survivalChart"
+                    width="600"
+                    height="300"
+                    style="display:none; margin-top:1rem; background:white;"
+                ></canvas>
         </div>
         
         
@@ -1347,6 +1557,21 @@ h1 {
                     </p>
 
                 <div id="new-activities-container"></div>
+                <!-- NEW: Summary table for the “new” activities -->
+<table id="new-exercise-summary-table" style="width:100%; margin-bottom:16px; border-collapse: collapse;">
+    <thead>
+      <tr>
+        <th style="border-bottom:1px solid #ddd; padding:8px; text-align:left;">Activity</th>
+        <th style="border-bottom:1px solid #ddd; padding:8px; text-align:right;">Days/Wk</th>
+        <th style="border-bottom:1px solid #ddd; padding:8px; text-align:right;">Mins/Day</th>
+        <th style="border-bottom:1px solid #ddd; padding:8px; text-align:left;">Intensity</th>
+        <th style="border-bottom:1px solid #ddd; padding:8px; text-align:right;">MET‑mins</th>
+        <th style="border-bottom:1px solid #ddd; padding:8px; text-align:center;"></th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  
 <button type="button" onclick="addNewActivity()">Add Activity</button>
 <div id="new-activity-summary-container"></div>
 
@@ -1581,32 +1806,11 @@ function showMissingFieldWarnings() {
 
 
 
-function openVideoModal() {
-    const videoFrame = document.getElementById("floating-video-frame");
-
-    let videoUrl = "";
-
-    if (currentStep === 1) {
-        videoUrl = "https://www.youtube.com/embed/qRCU54MwYYw?rel=0";
-    } else if (currentStep === 2 || currentStep === 3) {
-        videoUrl = "https://www.youtube.com/embed/ZlGFt6sliv0?rel=0";
-    } else if (currentStep === 4) {
-        videoUrl = "https://www.youtube.com/embed/axBtxAl0lhU?rel=0";
-    } else {
-        videoUrl = "https://www.youtube.com/embed/LFpLcttUhgQ?rel=0";
-    }
-
-    videoFrame.src = videoUrl;
-}
 
 
 
-function closeVideoModal() {
-    const videoModal = document.getElementById("video-modal");
-    const videoFrame = document.getElementById("dynamic-video");
-    videoModal.style.display = "none";
-    videoFrame.src = ""; // Clear the video to stop it from playing
-}
+
+
 
         function handleFinalStep() {
     // Submit data to Google Sheets first
@@ -1770,9 +1974,18 @@ document.getElementById("next-button").addEventListener("click", function () {
 });
 
 
-document.getElementById("comparison-next-button").addEventListener("click", function() {
-    updateStep(3);
-});
+document
+  .getElementById("comparison-next-button")
+  .addEventListener("click", function() {
+    // populate the “new exercise” form with their original entries
+    preloadExerciseForStep4();
+
+    // jump straight to step 4 (“exercise improvement”)
+    updateStep(4);
+
+    // optional: scroll back to top
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
 
 document.getElementById("met-next-button").addEventListener("click", function() {
     preloadExerciseForStep4(); // ⬅️ add this line BEFORE updateStep
@@ -2178,6 +2391,7 @@ function updateIntensityOptions(activityIndex) {
             }
 
             document.getElementById("total-met-minutes").innerText = totalMETMinutes.toFixed(2);
+            updateExerciseTable(); // ← add this line
         }
 
         const survivalDataMale = [
@@ -2279,8 +2493,90 @@ function updateIntensityOptions(activityIndex) {
 
     document.getElementById("risk-score-container").style.display = "flex";
     document.getElementById("comparison-next-button").style.display = "block";
+
+    const age    = parseFloat(document.getElementById("age").value) || 0;
+  const gender = document.getElementById("gender").value;
+  generateSurvivalChart(age, riskScore, gender);
+  document.getElementById("survivalChart").style.display = "block";
 });
 
+function updateExerciseTable() {
+  const tbody = document.querySelector('#exercise-summary-table tbody');
+  tbody.innerHTML = '';
+
+  for (let i = 0; i < activityCount; i++) {
+    const typeEl      = document.getElementById(`activity-${i}-type`);
+    const freqEl      = document.getElementById(`activity-${i}-frequency`);
+    const durEl       = document.getElementById(`activity-${i}-duration`);
+    const intensityEl = document.querySelector(`input[name="activity-${i}-intensity"]:checked`);
+
+    if (typeEl && freqEl && durEl && intensityEl) {
+      const metValue = activityList[typeEl.value][intensityEl.value];
+      const freq     = parseFloat(freqEl.value)   || 0;
+      const dur      = parseFloat(durEl.value)    || 0;
+      const metMin   = (metValue * freq * dur).toFixed(2);
+
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td style="padding:8px; border-bottom:1px solid #eee;">${typeEl.value}</td>
+        <td style="padding:8px; border-bottom:1px solid #eee; text-align:right;">${freq}</td>
+        <td style="padding:8px; border-bottom:1px solid #eee; text-align:right;">${dur}</td>
+        <td style="padding:8px; border-bottom:1px solid #eee;">${intensityEl.value.replace('_',' ')}</td>
+        <td style="padding:8px; border-bottom:1px solid #eee; text-align:right;">${metMin}</td>
+        <td style="padding:8px; border-bottom:1px solid #eee; text-align:center;">
+          <button onclick="deleteActivity(${i})">Remove</button>
+        </td>
+      `;
+      tbody.appendChild(row);
+    }
+  }
+}
+
+function updateNewExerciseTable() {
+  const tbody = document.querySelector('#new-exercise-summary-table tbody');
+  tbody.innerHTML = '';              // clear out old rows
+
+  for (let i = 0; i < newActivityCount; i++) {
+    const typeEl      = document.getElementById(`new-activity-${i}-type`);
+    const freqEl      = document.getElementById(`new-activity-${i}-frequency`);
+    const durEl       = document.getElementById(`new-activity-${i}-duration`);
+    const intensityEl = document.querySelector(`input[name="new-activity-${i}-intensity"]:checked`);
+
+    if (typeEl && freqEl && durEl && intensityEl) {
+      const metValue = activityList[typeEl.value][ intensityEl.value ];
+      const freq     = parseFloat(freqEl.value)   || 0;
+      const dur      = parseFloat(durEl.value)    || 0;
+      const metMin   = (metValue * freq * dur).toFixed(2);
+
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td style="padding:8px; border-bottom:1px solid #eee;">${typeEl.value}</td>
+        <td style="padding:8px; border-bottom:1px solid #eee; text-align:right;">${freq}</td>
+        <td style="padding:8px; border-bottom:1px solid #eee; text-align:right;">${dur}</td>
+        <td style="padding:8px; border-bottom:1px solid #eee;">${intensityEl.value.replace('_',' ')}</td>
+        <td style="padding:8px; border-bottom:1px solid #eee; text-align:right;">${metMin}</td>
+        <td style="padding:8px; border-bottom:1px solid #eee; text-align:center;">
+            <button onclick="removeNewActivity(${i})">Remove</button>
+        </td>
+      `;
+      tbody.appendChild(row);
+    }
+  }
+}
+
+
+function deleteActivity(index) {
+  // 1) Remove the form card
+  const wrapper = document.getElementById(`activity-wrapper-${index}`);
+  if (wrapper) wrapper.remove();
+
+  // 2) Remove the “Edit this activity” summary line
+  const editDiv = document.getElementById(`edit-activity-${index}`);
+  if (editDiv) editDiv.remove();
+
+  // 3) Recompute totals & refresh the table
+  calculateMETMinutes();    // this also calls updateExerciseTable()
+}
 
 
 
@@ -2347,6 +2643,7 @@ document.getElementById("comparison-next-button").addEventListener("click", func
 
 
 document.getElementById("met-next-button").addEventListener("click", function() {
+    document.getElementById("exercise-calculator-card").classList.add("hidden");
     // Hide previous sections (e.g., the comparison box and the third Next button)
     document.getElementById("comparison-box").style.display = "none";
     document.getElementById("met-next-button").style.display = "none";
@@ -2408,6 +2705,9 @@ function preloadExerciseForStep4() {
         `;
 
         container.appendChild(div);
+
+        div.style.display = 'none';
+
 
         // Add listener manually
         const selectEl = document.getElementById(`new-activity-${newActivityCount}-type`);
@@ -2547,6 +2847,7 @@ function calculateNewMETMinutes() {
 
     }
     document.getElementById("new-total-met-minutes").innerText = totalMETMinutes.toFixed(2);
+    updateNewExerciseTable();
     return totalMETMinutes;
 }
 function calculateNewRisk() {
@@ -3011,9 +3312,7 @@ window.onload = function () {
   }
     </script>
 
-<div class="disclaimer">
-    <p><strong>Data Privacy Notice:</strong> Your data is stored securely and used solely for educational and personal wellness purposes. We do not share or sell your information. For more details, contact us at support@mhfcare.ca.</p>
-</div>
+
 
 <details class="disclaimer" style="max-width: 800px; margin: 30px auto;">
     <summary><strong style="color: #ee8e00;">Disclaimer: Click to Read</strong></summary>
@@ -3022,29 +3321,13 @@ window.onload = function () {
         This health risk assessment incorporates a modified version of the Framingham Risk Score, integrating physical activity based on associations derived from published scientific literature. However, this modification has not been formally validated. Similarly, the relationship between changes in physical activity and changes in other health outcomes is based on existing research but has not been clinically validated. The values presented are estimates and projections intended to provide general population-level insights rather than precise individual risk assessments. This risk score is designed for discussion, awareness and educational purposes only. It is not intended for medical diagnosis, treatment, or decision-making and does not replace consultation with your doctor. Please consult your healthcare provider for personalized medical advice.
       </p>
     </div>
+    <div class="disclaimer">
+        <p><strong>Data Privacy Notice:</strong> Your data is stored securely and used solely for educational and personal wellness purposes. We do not share or sell your information. For more details, contact us at support@mhfcare.ca.</p>
+    </div>
   </details>
   
   
 <!-- Floating Video in Bottom-Right Corner -->
-<div id="floating-video-container" style="
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 320px;
-    height: 180px;
-    background-color: black;
-    border-radius: 8px;
-    overflow: hidden;
-    z-index: 1000;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
-    <iframe id="floating-video-frame"
-            width="320" height="180"
-            frameborder="0"
-            allowfullscreen
-            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            style="width:100%; height:100%; border:none; border-radius: 8px;">
-    </iframe>
-</div>
 
 
 </body>
