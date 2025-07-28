@@ -1186,12 +1186,13 @@ h1 {
 }
 
 #submit-data-button {
-  display: none;        /* still hidden by default */
-  margin-top: 10px;
-  display: block;       /* when you JS-show it, it’ll be block */
-  width: 100%;          /* stretch full width of its container */
-  box-sizing: border-box; /* include padding/border in that width */
+  display: none;          /* stay hidden until JS shows it */
+  margin: 20px auto 0;    /* 20px up top, auto left/right to center */
+  width: 100%;            /* fill its own parent’s content‑box */
+  max-width: 650px;       /* same as your white card’s width */
+  box-sizing: border-box; /* include its padding in that width */
 }
+
 
 
 </style>
@@ -1257,9 +1258,8 @@ h1 {
             <div class="step" data-step="3">Risk Factors</div>
             <div class="step" data-step="4">Exercise</div>
             <div class="step" data-step="5">Risk Score</div>
-            <div class="step" data-step="6">Risk Chart</div>
-            <div class="step" data-step="7">Benefits</div>
-            <div class="step" data-step="8">Learn More</div>
+            <div class="step" data-step="6">Benefits</div>
+            <div class="step" data-step="7">Learn More</div>
           </div>
         </div>
       </div>
@@ -1473,7 +1473,9 @@ h1 {
                 <strong>Risk Classifications:</strong><br>
                 Low Risk: &lt;10% &nbsp; | &nbsp; Intermediate Risk: 10–20% &nbsp; | &nbsp; High Risk: &gt;20%
             </div>
-
+            <p>The graph below compares your survival probability (red) to the average survival probability of Canadians (blue).</p>
+            <p>It illustrates how your survival probability changes with age, assuming no changes in disease status, stress levels, or other health factors.</p>
+            <p>Hover over the red line to view your survival probability at each age.</p>
                             <canvas
                     id="survivalChart"
                     width="600"
@@ -1713,6 +1715,53 @@ h1 {
 
 
     <script>
+
+
+
+// 1. disable all “next” buttons up‑front
+document.getElementById("basic-next-button").disabled = true;
+document.getElementById("bmi-next-button").disabled   = true;
+document.getElementById("cvd-next-button").disabled   = true;
+
+// 2. Basic Info card: require age + gender
+function checkBasic() {
+  const age    = document.getElementById("age").value.trim();
+  const gender = document.getElementById("gender").value;
+  document.getElementById("basic-next-button").disabled = !(age && gender);
+}
+document.getElementById("age").addEventListener("input",   checkBasic);
+document.getElementById("gender").addEventListener("change", checkBasic);
+checkBasic();
+
+// 3. BMI card: require a computed BMI
+function checkBMI() {
+  const bmi = calculateBMI();           // your existing function
+  document.getElementById("bmi-next-button").disabled = !(bmi > 0);
+}
+// whenever any height/weight field or unit toggles, re‑check
+["weight","height-cm","height-ft","height-in","height-inches"]
+  .forEach(id => document.getElementById(id).addEventListener("input", checkBMI));
+["weight-unit","height-unit"]
+  .forEach(id => document.getElementById(id).addEventListener("change", checkBMI));
+checkBMI();
+
+// 4. CVD Risk card: require all five selects/text
+function checkCVD() {
+  const cvd          = document.getElementById("cvd").value;
+  const bpMed        = document.getElementById("bp_medication").value;
+  const diabetes     = document.getElementById("diabetes").value;
+  const smoker       = document.getElementById("smoker").value;
+  const systolic_bp  = document.getElementById("systolic_bp").value.trim();
+  const ok = cvd && bpMed && diabetes && smoker && systolic_bp;
+  document.getElementById("cvd-next-button").disabled = !ok;
+}
+["cvd","bp_medication","diabetes","smoker"]
+  .forEach(id => document.getElementById(id).addEventListener("change", checkCVD));
+document.getElementById("systolic_bp").addEventListener("input", checkCVD);
+checkCVD();
+
+
+
         
         const stepMapping = {
   "basic-info-card": "1",
@@ -1720,9 +1769,8 @@ h1 {
   "cvd-risk-card": "3",
   "exercise-calculator-card": "4",
   "risk-score-container": "5",
-  "chart-container": "6",
-  "benefits-section": "7",
-  "final-results": "8"
+  "benefits-section": "6",
+  "final-results": "7"
 };
 
 
@@ -1801,6 +1849,8 @@ function showMissingFieldWarnings() {
     } else {
         document.getElementById("missing-fields-warning").style.display = "none";
     }
+
+    updateProgressBar("benefits-section")
 }
 
 
@@ -2304,6 +2354,10 @@ if (activityCount === 1) {
 
 const originalActivitiesData = [];
 
+document
+  .getElementById("submit-data-button")
+  .style.display = "block";
+
 
 
 function doneActivity(index) {
@@ -2493,6 +2547,7 @@ function updateIntensityOptions(activityIndex) {
 
     document.getElementById("risk-score-container").style.display = "flex";
     document.getElementById("comparison-next-button").style.display = "block";
+    updateProgressBar("risk-score-container")
 
     const age    = parseFloat(document.getElementById("age").value) || 0;
   const gender = document.getElementById("gender").value;
@@ -2626,6 +2681,8 @@ document.getElementById("comparison-next-button").addEventListener("click", func
     
     // Show the graph
     document.getElementById("survivalChart").style.display = "block";
+
+    updateProgressBar("chart-container")
 
     // Show the next button for MET calculations
     document.getElementById("met-next-button").style.display = "block";
@@ -2928,6 +2985,8 @@ document.getElementById("calculate-new-risk-button").addEventListener("click", f
 
     // Compute additional health benefits
     computeHealthBenefits();
+
+    updateProgressBar("benefits-section")
 });
 
 
