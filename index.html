@@ -13,6 +13,121 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
+
+
+
+       .nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.glass-next-button,
+.glass-back-button {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-weight: 600;
+  font-size: 16px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  border: none;
+  background-clip: padding-box;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Orange "Next" button */
+.glass-next-button {
+  background: rgba(255, 165, 0, 0.15);
+  color: #ee8e00;
+}
+
+.glass-next-button:hover {
+  background: rgba(255, 165, 0, 0.25);
+}
+
+/* Blue "Back" button */
+.glass-back-button {
+  background: rgba(70, 130, 180, 0.15); /* SteelBlue tint */
+  color: #4682b4;
+}
+
+.glass-back-button:hover {
+  background: rgba(70, 130, 180, 0.25);
+}
+
+
+
+.glass-next-button:hover {
+  background: rgba(255, 165, 0, 0.2);
+  transform: translateY(-1px);
+}
+
+.next-button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+#modal-effort-range {
+  width: 100%;
+  margin: 16px 0;
+  appearance: none;
+  height: 8px;
+  background: #efbf77fb;
+  border-radius: 5px;
+  outline: none;
+}
+
+#modal-effort-range::-webkit-slider-thumb {
+  appearance: none;
+  height: 20px;
+  width: 20px;
+  background: #76a7fd;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
+
+#modal-effort-range::-moz-range-thumb {
+  height: 20px;
+  width: 20px;
+  background: #ef9918;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.card {
+  background-color: #fff;
+  padding: 1px 22px;
+  border-radius: 8px;
+  box-shadow: 0 0px 0px rgba(1, 84, 95, 0.5);  /* ✅ Move the shadow here */
+  transition: box-shadow 2s ease
+}
+
+
+    .section {
+    position: relative;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.section.hidden {
+    transform: translateX(100%);
+    opacity: 0;
+    pointer-events: none;
+    height: 0;
+    overflow: hidden;
+    margin: 0; /* Optional: Remove margin if you used any */
+    padding: 0; /* Optional: Remove padding if applied *
+}
+
+
+
+
 .total-met-box {
     background-color: #ee8e00;
     color: white;
@@ -243,6 +358,22 @@
 
 
 #comparison-box {
+  width: 100%;           /* fill whatever its parent allows */
+  max-width: 800px;      /* same max-width as .progress-card */
+  margin: 20px auto;     /* center it and give a bit of vertical spacing */
+  box-sizing: border-box;/* include its padding in the width */
+}
+
+#comparison-next-button {
+  display: block;            /* make it fill its own line */
+  width: 100%;               /* let it stretch to its container */
+  max-width: 800px;          /* match the card‑section’s width */
+  margin: 20px auto 0 auto;  /* center it and give a little top spacing */
+  box-sizing: border-box;    /* include padding in the width */
+}
+
+
+#comparison-box {
     background-color: #FFD700; /* Change this to your preferred color */
     color: black; /* Adjust text color for contrast */
     padding: 20px;
@@ -258,13 +389,10 @@
 
         .logo-container {
     text-align: center; /* Centers the image */
-    margin-bottom: 20px; /* Space between logo and heading */
+    margin-bottom: 4px; /* Space between logo and heading */
 }
 
-.logo-container img {
-    max-width: 800px; /* Adjust the logo size */
-    height: auto; /* Maintain aspect ratio */
-}
+
 
 
         #risk-change-box {
@@ -408,7 +536,6 @@
   background-color: #fff;
   padding: 20px 40px;
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   margin: 20px auto;
   max-width: 800px;
 }
@@ -438,7 +565,7 @@ details[open] {
             font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 20px;
-            background-color: #e3f0fe;
+            background-color: #fff;
             background-image: url('https://www.transparenttextures.com/patterns/heart-pattern.png');
             background-size: contain;
         }
@@ -517,15 +644,21 @@ details[open] {
         }
 
         input[type="number"],
-        select {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 16px;
-        }
+select {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+  background-color: #fff;
+  appearance: none;
+  height: 48px;
+}
+
+
+
+
 
         button {
             width: 100%;
@@ -666,31 +799,651 @@ details[open] {
     transition: width 0.5s ease-in-out;
 }
 
-    </style>
+input:focus, select:focus {
+  outline: none;
+  box-shadow: 0 0 6px rgba(238, 142, 0, 0.5); /* soft orange glow */
+  transition: box-shadow 0.3s ease;
+}
+
+.glass-next-button:active,
+.glass-back-button:active {
+  transform: scale(0.96);
+  transition: transform 1s ease;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card > * {
+  opacity: 0;
+  animation: fadeInUp 0.4s ease forwards;
+}
+
+/* Optional: stagger each element in the card */
+.card > *:nth-child(1) { animation-delay: 0.1s; }
+.card > *:nth-child(2) { animation-delay: 0.2s; }
+.card > *:nth-child(3) { animation-delay: 0.3s; }
+.card > *:nth-child(4) { animation-delay: 0.4s; }
+.card > *:nth-child(5) { animation-delay: 0.5s; }
+.card > *:nth-child(6) { animation-delay: 0.6s; }
+.card > *:nth-child(7) { animation-delay: 0.7s; }
+
+.progress-steps {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: relative;
+  padding: 10px 0;
+  counter-reset: step;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.step {
+  position: relative;
+  flex: 1;
+  text-align: center;
+  font-size: 13px;
+  color: #bbb;
+  font-weight: 500;
+  min-width: 90px;
+}
+
+.step::before {
+  content: counter(step);
+  counter-increment: step;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  background-color: white;
+  color: #ccc;
+  display: block;
+  margin: 0 auto 6px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.step::after {
+  content: '';
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  width: 100%;
+  height: 2px;
+  background-color: #e0e0e0;
+  z-index: -1;
+}
+
+.step:last-child::after {
+  display: none;
+}
+
+.step.active {
+  color: #ee8e00;
+}
+
+.step.active::before {
+  background-color: #ee8e00;
+  color: white;
+  border-color: #ee8e00;
+}
+
+.step.completed {
+  color: #72b5f8;
+}
+
+.step.completed::before {
+  background-color: #72b5f8;
+  color: white;
+  border-color: #72b5f8;
+}
+
+.step.active {
+  font-weight: bold;
+  color: #ee8e00;
+  border-bottom: 2px solid #ee8e00;
+}
+
+.step.completed {
+  color: #aaa;
+  opacity: 0.6;
+}
+
+.fade-slide-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeSlideIn 1.2s ease-out forwards;
+}
+
+@keyframes fadeSlideIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+h1 {
+    font-style: italic;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    letter-spacing: -0.5px;
+    color: #FFF;
+
+  margin-bottom: 1rem;
+}
+
+h1 {
+    font-style: italic;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    letter-spacing: -0.5px;
+    color: #FFF;
+}
+
+h1 {
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.05);
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #555;
+  font-weight: 400;
+  margin-top: -0.5rem;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Freeze animations before Begin is clicked */
+.hold-animations * {
+  animation-play-state: paused !important;
+  transition: none !important;
+}
+
+/* Fullscreen popup with frosted-glass style */
+/* Light blue frosted overlay */
+
+
+/* Glassy inner card */
+
+/* 1) Vertically center text & image in the flex container */
+.popup-content {
+  display: flex;
+  align-items: center;   /* <-- adds vertical centering */
+}
+
+/* 2) Horizontally center the image within its column */
+.popup-image img {
+  display: block;
+  margin: 0 auto;       /* <-- centers the img inside .popup-image */
+}
+
+
+
+
+
+
+/* target the popup’s heading */
+#welcome-popup .popup-text h1 {
+  color: #5094fc;
+}
+
+
+/* align the popup heading left */
+#welcome-popup .popup-text h1 {
+  text-align: left;
+}
+
+
+
+
+
+  
+  body {
+  background-image: url('7df08de0-53f7-405f-85c8-12f375da2cb1.png');
+  background-size: cover; /* Fill the screen */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed; /* Optional: keeps the image in place while scrolling */
+  font-family: 'Poppins', sans-serif; /* Keep existing styles */
+  margin: 0;
+  padding: 0;
+}
+
+.hero-header {
+  text-align: center;
+  margin-top: 40px;
+  color: white;
+}
+
+.logo-container img {
+  max-width: 140px;
+  height: auto;
+  margin-bottom: 4px;
+}
+
+.brand-subtitle {
+  font-size: 36px;
+  font-weight: 500;
+  letter-spacing: 10px;
+  color: #ffffffcc;
+  text-transform: uppercase;
+  margin-top: 0;          /* Ensure no top margin */
+  margin-bottom: 10px;
+}
+
+.main-title {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 700;
+  font-style: italic;
+  color: white;
+  margin: 0;
+  line-height: 0.9;
+}
+
+.hero-subtext {
+  font-size: 1rem;
+  color: #ffffffcc;
+  margin-top: 8px;
+}
+
+#progress-bar-container {
+  margin-bottom: 40px; /* Or adjust to your preference */
+}
+
+.card-section {
+  background-color: #FFF;
+  padding: 20px 20px;
+  border-radius: 8px;
+  margin: 20px auto;
+  max-width: 800px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+}
+
+.card-section.hidden {
+  transform: translateX(100%);
+  opacity: 0;
+  pointer-events: none;
+  height: 0;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.progress-card {
+  background-color: #fff;
+  padding: 0px 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  max-width: 800px;
+  margin: 0 auto 30px auto; /* bottom margin adds the spacing */
+}
+
+
+
+/* Full‑screen overlay */
+#welcome-popup {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* Center card */
+.popup-content {
+  background: #fff;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 900px;
+  padding: 30px;
+  display: flex;
+  gap: 40px;
+  position: relative;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+
+/* Close “X” */
+.popup-close {
+  position: absolute;
+  top: 15px; right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Left column */
+.popup-text {
+  flex: 1;
+}
+
+.popup-text h1 {
+  font-size: 2.4rem;
+  margin: 0 0 10px;
+}
+
+.popup-text h1 strong {
+  font-weight: 700;
+}
+
+.popup-text h2 {
+  font-size: 1.6rem;
+  color: #0056b3;  /* your blue */
+  margin: 0 0 20px;
+}
+
+.popup-text p {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.popup-tagline {
+  font-size: 1.1rem;
+  font-style: italic;
+  color: #333;
+}
+
+/* CTA button */
+.popup-cta {
+  background-color: #ee8e00;   /* your orange */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 14px 24px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: background 0.2s;
+}
+
+.popup-cta .arrow {
+  margin-left: 8px;
+  font-size: 1.2rem;
+}
+
+.orange-btn {
+  background-color: #529cfb;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 14px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 24px;
+  transition: background-color 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+}
+
+.orange-btn:hover {
+  background-color: #d65a14;
+}
+
+.full-width-btn {
+  width: 100%;
+  text-align: center;
+}
+
+.popup-cta:hover {
+  background-color: #cc7000;
+}
+
+/* Right column */
+.popup-image {
+  flex: 0 0 240px;
+  text-align: center;
+}
+
+.popup-image img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.popup-image small {
+  display: block;
+  font-size: 0.75rem;
+  color: #666;
+}
+
+
+
+/* at the very bottom of your existing <style> */
+    #activity-summary-container {
+  display: none !important;
+}
+
+/* --- Subtle outline style for the Add Exercise button --- */
+#add-exercise-button {
+  background-color: transparent;
+  color: #ee8e00;                /* same orange text */
+  border: 2px solid #ee8e00;     /* outline in orange */
+  border-radius: 8px;
+  padding: 12px 24px;            /* match your other button padding */
+  box-shadow: none;              /* remove default shadow */
+  font-weight: 600;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+#add-exercise-button:hover {
+  background-color: rgba(238, 142, 0, 0.15); /* light orange hover */
+  color: #ee8e00;
+}
+
+#met-next-button {
+  display: none !important;
+}
+
+
+#final-next-button {
+  display: none !important;
+}
+
+#submit-data-button {
+  display: none;          /* stay hidden until JS shows it */
+  margin: 20px auto 0;    /* 20px up top, auto left/right to center */
+  width: 100%;            /* fill its own parent’s content‑box */
+  max-width: 650px;       /* same as your white card’s width */
+  box-sizing: border-box; /* include its padding in that width */
+}
+
+#benefits-dropdown summary {
+  cursor: pointer;
+  padding: 12px;
+  background-color: #fff4e5;
+  border: 2px solid #ee8e00;
+  border-radius: 8px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+#benefits-content {
+  padding: 12px 16px;
+  background: #fff;
+  border: 1px solid #f0c080;
+  border-radius: 0 0 8px 8px;
+}
+
+/* 1. Full-page overlay that blurs the background */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.3);
+  display: none;           /* hidden by default */
+  z-index: 2000;
+  justify-content: center; /* center its child */
+  align-items: center;
+}
+
+/* 2. The white box that pops up */
+/* Ensure the modal box is the positioning context */
+.modal-content {
+  position: relative;   /* ← This must be here! */
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* Pin the close button into the top-right corner */
+.modal-content .close-btn {
+  position: absolute;
+  top: 4px;    /* distance from the top edge of .modal-content */
+  right: -302px;  /* distance from the right edge */
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+  z-index: 2001;
+}
+
+/* Ensure the modal box is the positioning context */
+.modal-content {
+  position: relative !important;
+}
+
+/* Pin the × in the top-right corner */
+.modal-content .close-btn {
+  position: absolute !important;
+  top: 4px !important;
+  right: -302px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  color: #333;
+  z-index: 2001;
+}
+
+/* Fade overlay and scale content */
+.modal-overlay {
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out;
+}
+.modal-overlay.show {
+  opacity: 1;
+}
+
+.modal-content {
+  transform: scale(0.8);
+  transition: transform 0.4s ease-out;
+}
+.modal-overlay.show .modal-content {
+  transform: scale(1);
+}
+
+.modal-overlay {
+  will-change: opacity;
+  transition: opacity 0.4s ease-in-out;
+}
+
+.modal-content {
+  will-change: transform;
+  transition: transform 0.4s ease-out;
+}
+
+
+
+</style>
+
+
+
+   
 </head>
 <body>
-    <div class="progress-container">
-        <div class="progress-bar" id="progress-bar"></div>
-    </div>
-    
-    <div class="logo-container">
-        <img src="CV Tool Banner Draft 1.png" alt="MHF Logo">
-    </div>
-    
+
+    <div id="welcome-popup">
+        <div class="popup-content">
+          <!-- LEFT SIDE: text -->
+          <div class="popup-text">
+            <h1>Welcome to <strong>Calculate My Risk</strong></h1>
+            <h2>Why Does Your Heart Risk Matter?</h2>
+            <p>
+              Most people don’t realize they’re at risk for heart disease — until it’s too late. 
+              Calculating your cardiovascular risk helps you understand what’s happening beneath 
+              the surface and gives you the power to take control before problems start. In just 
+              a few clicks, get a clearer picture of your heart health and the steps that could 
+              change your future.
+            </p>
+            <p class="popup-tagline">
+              <em>Because small changes today can mean a healthier tomorrow.</em>
+            </p>
+            <button class="popup-cta" onclick="closePopup()">
+              Calculate My Risk  <span class="arrow">→</span>
+            </button>
+          </div>
+      
+          <!-- RIGHT SIDE: image or illustration -->
+          <div class="popup-image">
+            <img src="/Users/mujtaba/Desktop/Jobs/MHF/your-logo.png" alt="Heart illustration">
+            <small>Created by: My Heart Fitness</small>
+          </div>
+      
+          <!-- “X” close icon in top right -->
+          <button class="popup-close" onclick="closePopup()">✕</button>
+        </div>
+      </div>
+      
+      
 
 
+      <div class="hero-header">
+        <div class="logo-container">
+          <img src="/Users/mujtaba/Desktop/Jobs/MHF/your-logo.png" alt="My Heart Fitness Logo" />
+        </div>
+        <p class="brand-subtitle">MY HEART FITNESS</p>
+        <h1 class="main-title">CARDIOVASCULAR<br>RISK CALCULATOR</h1>
+        <p class="hero-subtext">Calculate My Risk</p>
+      </div>
+      
+              
 
-    <div class="calculator-component section active" id="calculator-component">
-        <div class="container">
-            <h1>Cardiovascular Risk Calculator</h1>
-            <div class="disclaimer">
-                <p><strong>Data Privacy Notice:</strong> Your data is stored securely and used solely for educational and personal wellness purposes. We do not share or sell your information. For more details, contact us at support@mhfcare.ca.</p>
-            </div>
-            
-            
+        
+      <div class="progress-card">
+        <div id="progress-bar-container">
+          <div class="progress-steps">
+            <div class="step" data-step="1">Basic Information</div>
+            <div class="step" data-step="2">BMI</div>
+            <div class="step" data-step="3">Risk Factors</div>
+            <div class="step" data-step="4">Exercise</div>
+            <div class="step" data-step="5">Risk Score</div>
+            <div class="step" data-step="6">Benefits</div>
+            <div class="step" data-step="7">Learn More</div>
+          </div>
+        </div>
+      </div>
+      
+
             <div id="input-section">
-            <details>
-                <summary><strong>Basic Information</strong></summary>
+            <div id="basic-info-card" class="card-section">
+                <div class="card">
+                <h2 style="color: #ee8e00; font-size: 20px;">Let's get started by collecting some basic information:</h2>
                 <label for="age">Age (How old are you?) </label>
                 <input type="number" id="age" placeholder="Enter your age" required>
             
@@ -701,12 +1454,20 @@ details[open] {
                     <option value="female">Female</option>
 
                 </select>
-            
-            </details>
+                <div class="nav-buttons">
+  
+  <button id="basic-next-button" class="glass-next-button">Next →</button>
+</div>
+
+
+                </div>
+            </div>
             
             <div id="bmi-fields">
-                <details>
-                    <summary><strong>Height and Weight</strong></summary>
+                
+                <div id="height-weight-card" class="card-section hidden">
+                    <div class="card">
+                    <summary><strong>Please enter your Height and Weight below:</strong></summary>
                 
                     <label for="height">Height (Click on the dropdown menu below to select your preferred units)</label>
                     <select id="height-unit" onchange="toggleHeightFields()">
@@ -740,16 +1501,22 @@ details[open] {
                             </a>
                         </p>
                         
+                       <div class="nav-buttons">
+  <button id="bmi-back-button" class="glass-back-button">← Back</button>
+  <button id="bmi-next-button" class="glass-next-button">Next →</button>
+</div>
+
 
                     </div>
                 
-                </details>
-                
+                    </div>
+                </div>
             </div>
     
 
-            <details>
-                <summary><strong> Cardiovascular Risk Factors </strong></summary>
+            <div id="cvd-risk-card" class="card-section hidden">
+                <div class="card">
+                <summary><strong> Your doing great! Now just a couple questions on your Cardiovascular Health: </strong></summary>
 
                 <label for="cvd">Have you been diagnosed with blockages in your heart arteries, had a previous heart attack, received heart stents, or undergone heart bypass surgery (CABG)? Has a doctor or medical professional informed you that you have cardiovascular disease?</label>
                     <select id="cvd">
@@ -802,15 +1569,41 @@ details[open] {
                         <option value="yes">Yes</option>
                         <option value="no">No</option>
                     </select>
-            </details>
+            
+                    <div class="nav-buttons">
+  <button id="cvd-back-button" class="glass-back-button">← Back</button>
+  <button id="cvd-next-button" class="glass-next-button">Next →</button>
+</div>
+
+
+
+            
+                </div>
+            </div>
             
 
             
 
-            <details>
-                <summary><strong> Exercise Calculator </strong></summary>
+            <div id="exercise-calculator-card" class="card-section hidden">
+                <div class="card">
+                <summary><strong> Please Enter your exercise information below: </strong></summary>
             
-                <label for="met_minutes">Exercise (MET Minute Calculator)</label>
+                <label for="met_minutes"></label>
+                <!-- Exercise summary table -->
+                    <table id="exercise-summary-table" style="width:100%; margin-bottom:16px; border-collapse: collapse;">
+                        <thead>
+                        <tr>
+                            <th style="border-bottom:1px solid #ddd; padding:8px; text-align:left;">Activity</th>
+                            <th style="border-bottom:1px solid #ddd; padding:8px; text-align:right;">Days/Wk</th>
+                            <th style="border-bottom:1px solid #ddd; padding:8px; text-align:right;">Mins/Day</th>
+                            <th style="border-bottom:1px solid #ddd; padding:8px; text-align:left;">Intensity</th>
+                            <th style="border-bottom:1px solid #ddd; padding:8px; text-align:center;">MET‑mins</th>
+                            <th></th> 
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+  
                 <div id="activities-container"></div>
                 <button type="button" id="add-exercise-button" onclick="addActivity()">Add Exercise</button>
                 <div id="activity-summary-container"></div>
@@ -825,16 +1618,21 @@ details[open] {
                 </p>
                 
                 
-            
-            </details>
+                <button id="next-button"> Let’s see your results </button>
+                <div class="nav-buttons">
+  <button id="exercise-back-button" class="glass-back-button">← Back</button>
+</div>
+                </div>
+
+            </div>
         </div>
 
             
-        <button id="next-button"> Let’s see your results </button>
+        
     
 
         <!-- Container for both boxes; it is hidden initially -->
-        <div id="risk-score-container" style="display: none; margin-top: 20px; gap: 20px; flex-direction: column; align-items: center;">
+        <div id="risk-score-container" class="card-section" style="display: none; margin-top: 20px; gap: 20px; flex-direction: column; align-items: center;">
             <!-- Risk Score Box -->
             <div id="risk-box" style="background-color: red; color: black; padding: 20px; text-align: center; font-size: 24px; font-weight: bold;">
                 Your Calculated 10-year risk of heart attack, stroke, or death is : <span id="risk-score">0</span>%
@@ -850,6 +1648,15 @@ details[open] {
                 <strong>Risk Classifications:</strong><br>
                 Low Risk: &lt;10% &nbsp; | &nbsp; Intermediate Risk: 10–20% &nbsp; | &nbsp; High Risk: &gt;20%
             </div>
+            <p>The graph below compares your survival probability (red) to the average survival probability of Canadians (blue).</p>
+            <p>It illustrates how your survival probability changes with age, assuming no changes in disease status, stress levels, or other health factors.</p>
+            <p>Hover over the red line to view your survival probability at each age.</p>
+                            <canvas
+                    id="survivalChart"
+                    width="600"
+                    height="300"
+                    style="display:none; margin-top:1rem; background:white;"
+                ></canvas>
         </div>
         
         
@@ -860,7 +1667,7 @@ details[open] {
 
         </div>
         
-        <button id="comparison-next-button" style="display: none;"> Check how your results stack up to the national average </button>
+        <button id="comparison-next-button" style="display: none;"> Let's how this score can change by increasing your exercise </button>
         
 
 
@@ -917,9 +1724,30 @@ details[open] {
   
     
             </div>
+
+            
+          
+
+            
+
+  
        
         <div id="exercise-improvement-section">
+
+            <h2 class="section-title" style="text-align:center; margin-bottom:16px;">
+                Lets See How Changes in Exercise Affect Your Heart Risk
+              </h2>
+              
+
+
+            
+              
+
+
+
             <!-- New Exercise Calculator Section -->
+           
+              
             <div id="new-exercise-calculator" style="margin-top: 20px; background-color: #fff; padding: 20px 40px; border-radius: 8px;">
                 <h3>Exercise Calculator</h3>
                     <p style="margin-top: -10px; margin-bottom: 20px;">
@@ -927,6 +1755,21 @@ details[open] {
                     </p>
 
                 <div id="new-activities-container"></div>
+                <!-- NEW: Summary table for the “new” activities -->
+<table id="new-exercise-summary-table" style="width:100%; margin-bottom:16px; border-collapse: collapse;">
+    <thead>
+      <tr>
+        <th style="border-bottom:1px solid #ddd; padding:8px; text-align:left;">Activity</th>
+        <th style="border-bottom:1px solid #ddd; padding:8px; text-align:right;">Days/Wk</th>
+        <th style="border-bottom:1px solid #ddd; padding:8px; text-align:right;">Mins/Day</th>
+        <th style="border-bottom:1px solid #ddd; padding:8px; text-align:left;">Intensity</th>
+        <th style="border-bottom:1px solid #ddd; padding:8px; text-align:right;">MET‑mins</th>
+        <th style="border-bottom:1px solid #ddd; padding:8px; text-align:center;"></th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  
 <button type="button" onclick="addNewActivity()">Add Activity</button>
 <div id="new-activity-summary-container"></div>
 
@@ -983,7 +1826,7 @@ details[open] {
                     </ul>
                 </div>
             </details>
-            
+    
         </div>
         
           
@@ -1033,28 +1876,20 @@ details[open] {
 <!-- Final Next Button and Final Results Container (now outside) -->
 <button id="final-next-button" style="margin-top: 10px; display: none;"> Click Here to learn more about this from our Cardiologist : Dr. David Alter</button>
 
+
 <div id="final-results" class="section" style="display: none;">
+
+    <div id="missing-fields-warning" style="display: none; background-color: #fff3cd; color: #856404; padding: 20px; border: 2px solid #ffeeba; border-radius: 8px; font-size: 16px; margin-top: 20px;">
+        <strong>Heads up!</strong>
+        <p id="missing-fields-list" style="margin-top: 10px;"></p>
+        <p style="margin-top: 10px;">Understanding these values is important for assessing your cardiovascular health. <strong>Joining My Heart Fitness (MHF)</strong> can help you learn more about your blood pressure, cholesterol, and overall risk—and how to improve it.</p>
+      </div>
     <!-- Video Container -->
     <h2 class="video-title">Learn about what this means from our cardiologist</h2>
 
     <div id="video-container"></div>
     <!-- Testimonial Section -->
-    <div style="background-color: #fffaf3; padding: 25px; margin: 30px auto; border-left: 5px solid #ee8e00; max-width: 800px; border-radius: 10px; font-size: 16px; line-height: 1.7; color: #333; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);">
-    <h3 style="color: #ee8e00; font-weight: 600; margin-top: 0; margin-bottom: 10px;">Participant Testimonial</h3>
-    <p style="font-style: italic; margin: 0;">
-        “After working six days a week, and commuting 2 hrs+ each day, for 25 years plus, I became very sedentary. 
-        And after a couple of years with health issues and not being able to change my sedentary ways, I had become 
-        very weak. I am now walking an hour or more a day on hiking trails and I am no longer experiencing daily chest pain. 
-        I understand the importance of adding resistance training as tolerated within my personal limitations. 
-        The program has taught me that being physically active in life is not the same as participating in daily exercise.”
-    </p>
-</div>
-
-<div id="missing-fields-warning" style="display: none; background-color: #fff3cd; color: #856404; padding: 20px; border: 2px solid #ffeeba; border-radius: 8px; font-size: 16px; margin-top: 20px;">
-    <strong>Heads up!</strong>
-    <p id="missing-fields-list" style="margin-top: 10px;"></p>
-    <p style="margin-top: 10px;">Understanding these values is important for assessing your cardiovascular health. <strong>Joining My Heart Fitness (MHF)</strong> can help you learn more about your blood pressure, cholesterol, and overall risk—and how to improve it.</p>
-  </div>
+    
   
 
     <!-- Registration Form -->
@@ -1062,12 +1897,129 @@ details[open] {
         <div class="_form_18"></div>
         <script src="https://contactmyheartfitness.activehosted.com/f/embed.php?id=18" charset="utf-8"></script>
     </div>
+
+
+    <div style="background-color: #fffaf3; padding: 25px; margin: 30px auto; border-left: 5px solid #ee8e00; max-width: 800px; border-radius: 10px; font-size: 16px; line-height: 1.7; color: #333; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);">
+        <h3 style="color: #ee8e00; font-weight: 600; margin-top: 0; margin-bottom: 10px;">Participant Testimonial</h3>
+        <p style="font-style: italic; margin: 0;">
+            “After working six days a week, and commuting 2 hrs+ each day, for 25 years plus, I became very sedentary. 
+            And after a couple of years with health issues and not being able to change my sedentary ways, I had become 
+            very weak. I am now walking an hour or more a day on hiking trails and I am no longer experiencing daily chest pain. 
+            I understand the importance of adding resistance training as tolerated within my personal limitations. 
+            The program has taught me that being physically active in life is not the same as participating in daily exercise.”
+        </p>
+    </div>
 </div>
 
 
 
 
     <script>
+
+
+
+// 1. disable all “next” buttons up‑front
+document.getElementById("basic-next-button").disabled = true;
+document.getElementById("bmi-next-button").disabled   = true;
+document.getElementById("cvd-next-button").disabled   = true;
+
+// 2. Basic Info card: require age + gender
+function checkBasic() {
+  const age    = document.getElementById("age").value.trim();
+  const gender = document.getElementById("gender").value;
+  document.getElementById("basic-next-button").disabled = !(age && gender);
+}
+document.getElementById("age").addEventListener("input",   checkBasic);
+document.getElementById("gender").addEventListener("change", checkBasic);
+checkBasic();
+
+// 3. BMI card: require a computed BMI
+function checkBMI() {
+  const bmi = calculateBMI();           // your existing function
+  document.getElementById("bmi-next-button").disabled = !(bmi > 0);
+}
+// whenever any height/weight field or unit toggles, re‑check
+["weight","height-cm","height-ft","height-in","height-inches"]
+  .forEach(id => document.getElementById(id).addEventListener("input", checkBMI));
+["weight-unit","height-unit"]
+  .forEach(id => document.getElementById(id).addEventListener("change", checkBMI));
+checkBMI();
+
+// 4. CVD Risk card: require all five selects/text
+function checkCVD() {
+  const cvd          = document.getElementById("cvd").value;
+  const bpMed        = document.getElementById("bp_medication").value;
+  const diabetes     = document.getElementById("diabetes").value;
+  const smoker       = document.getElementById("smoker").value;
+  const systolic_bp  = document.getElementById("systolic_bp").value.trim();
+  const ok = cvd && bpMed && diabetes && smoker && systolic_bp;
+  document.getElementById("cvd-next-button").disabled = !ok;
+}
+["cvd","bp_medication","diabetes","smoker"]
+  .forEach(id => document.getElementById(id).addEventListener("change", checkCVD));
+document.getElementById("systolic_bp").addEventListener("input", checkCVD);
+checkCVD();
+
+
+
+        
+        const stepMapping = {
+  "basic-info-card": "1",
+  "height-weight-card": "2",
+  "cvd-risk-card": "3",
+  "exercise-calculator-card": "4",
+  "risk-score-container": "5",
+  "benefits-section": "6",
+  "final-results": "7"
+};
+
+
+       // NEXT BUTTONS
+document.getElementById("basic-next-button").addEventListener("click", function () {
+    document.getElementById("basic-info-card").classList.add("hidden");
+    document.getElementById("height-weight-card").classList.remove("hidden");
+    updateProgressBar("height-weight-card");
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+document.getElementById("bmi-next-button").addEventListener("click", function () {
+    document.getElementById("height-weight-card").classList.add("hidden");
+    document.getElementById("cvd-risk-card").classList.remove("hidden");
+    updateProgressBar("cvd-risk-card");
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+document.getElementById("cvd-next-button").addEventListener("click", function () {
+    document.getElementById("cvd-risk-card").classList.add("hidden");
+    document.getElementById("exercise-calculator-card").classList.remove("hidden");
+    updateProgressBar("exercise-calculator-card");
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// BACK BUTTONS
+document.getElementById("bmi-back-button").addEventListener("click", function () {
+    document.getElementById("height-weight-card").classList.add("hidden");
+    document.getElementById("basic-info-card").classList.remove("hidden");
+    updateProgressBar("basic-info-card")
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+document.getElementById("cvd-back-button").addEventListener("click", function () {
+    document.getElementById("cvd-risk-card").classList.add("hidden");
+    document.getElementById("height-weight-card").classList.remove("hidden");
+    updateProgressBar("height-weight-card")
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+document.getElementById("exercise-back-button").addEventListener("click", function () {
+    document.getElementById("exercise-calculator-card").classList.add("hidden");
+    document.getElementById("cvd-risk-card").classList.remove("hidden");
+    updateProgressBar("cvd-risk-card")
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+
+
 
 function showMissingFieldWarnings() {
     const missingItems = [];
@@ -1097,37 +2049,18 @@ function showMissingFieldWarnings() {
     } else {
         document.getElementById("missing-fields-warning").style.display = "none";
     }
+
+    updateProgressBar("benefits-section")
 }
 
 
 
 
-function openVideoModal() {
-    const videoFrame = document.getElementById("floating-video-frame");
-
-    let videoUrl = "";
-
-    if (currentStep === 1) {
-        videoUrl = "https://www.youtube.com/embed/qRCU54MwYYw?rel=0";
-    } else if (currentStep === 2 || currentStep === 3) {
-        videoUrl = "https://www.youtube.com/embed/ZlGFt6sliv0?rel=0";
-    } else if (currentStep === 4) {
-        videoUrl = "https://www.youtube.com/embed/axBtxAl0lhU?rel=0";
-    } else {
-        videoUrl = "https://www.youtube.com/embed/LFpLcttUhgQ?rel=0";
-    }
-
-    videoFrame.src = videoUrl;
-}
 
 
 
-function closeVideoModal() {
-    const videoModal = document.getElementById("video-modal");
-    const videoFrame = document.getElementById("dynamic-video");
-    videoModal.style.display = "none";
-    videoFrame.src = ""; // Clear the video to stop it from playing
-}
+
+
 
         function handleFinalStep() {
     // Submit data to Google Sheets first
@@ -1180,7 +2113,7 @@ function sendDataToGoogleSheets() {
         },
         body: JSON.stringify(data)
     }).then(() => {
-        alert("Data successfully sent!");
+        alert("Thank you for taking a part in Calculate My Risk!");
     }).catch(error => {
         console.error("Error:", error);
     });
@@ -1291,9 +2224,18 @@ document.getElementById("next-button").addEventListener("click", function () {
 });
 
 
-document.getElementById("comparison-next-button").addEventListener("click", function() {
-    updateStep(3);
-});
+document
+  .getElementById("comparison-next-button")
+  .addEventListener("click", function() {
+    // populate the “new exercise” form with their original entries
+    preloadExerciseForStep4();
+
+    // jump straight to step 4 (“exercise improvement”)
+    updateStep(4);
+
+    // optional: scroll back to top
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
 
 document.getElementById("met-next-button").addEventListener("click", function() {
     preloadExerciseForStep4(); // ⬅️ add this line BEFORE updateStep
@@ -1411,27 +2353,46 @@ document.getElementById("final-next-button").addEventListener("click", function(
         }
         let progress = 0; // Initial progress
 
-function updateProgress(step) {
-    progress = step * 25; // Increments in 25% steps
-    document.getElementById("progress-bar").style.width = progress + "%";
+function updateProgressBar(currentCardId) {
+  const stepMapping = {
+    "basic-info-card": "1",
+    "height-weight-card": "2",
+    "cvd-risk-card": "3",
+    "exercise-calculator-card": "4",
+    "risk-score-container": "5",
+    "chart-container": "6",
+    "benefits-section": "7",
+    "final-results": "8"
+  };
+
+  const currentStep = stepMapping[currentCardId];
+  const steps = document.querySelectorAll(".progress-steps .step");
+
+  steps.forEach((step) => {
+    const stepNum = step.getAttribute("data-step");
+
+    if (parseInt(stepNum) < parseInt(currentStep)) {
+      step.classList.add("completed");
+      step.classList.remove("active");
+    } else if (stepNum === currentStep) {
+      step.classList.add("active");
+      step.classList.remove("completed");
+    } else {
+      step.classList.remove("active", "completed");
+    }
+  });
+
+        // Auto‐open benefits modal when “6” lights up
+    const activeStep = document.querySelector('.progress-steps .step.active');
+    if (activeStep && activeStep.getAttribute('data-step') === '6') {
+  // wait 500ms after hitting step 6
+  setTimeout(openBenefitsModal, 500);
 }
 
-// Attach progress updates to the "Next" buttons
-document.getElementById("next-button").addEventListener("click", function() {
-    updateProgress(1); // Move progress to 25%
-});
 
-document.getElementById("comparison-next-button").addEventListener("click", function() {
-    updateProgress(2); // Move progress to 50%
-});
+  
+}
 
-document.getElementById("met-next-button").addEventListener("click", function() {
-    updateProgress(3); // Move progress to 75%
-});
-
-document.getElementById("final-next-button").addEventListener("click", function() {
-    updateProgress(4); // Move progress to 100%
-});
 
         const activityList = {
             "Walking": {
@@ -1556,9 +2517,13 @@ document.getElementById("final-next-button").addEventListener("click", function(
 
     div.innerHTML = `
         <label>Select the type of exercise you perform:</label>
-        <select id="activity-${activityCount}-type" onchange="updateIntensityOptions(${activityCount}); calculateMETMinutes();">
-            ${Object.keys(activityList).map(activity => `<option value="${activity}">${activity}</option>`).join("")}
-        </select>
+        <select id="activity-${activityCount}-type"
+          onchange="updateIntensityOptions(${activityCount}); calculateMETMinutes();">
+    <option value="" disabled selected hidden>Click here to select</option>
+    ${Object.keys(activityList)
+      .map(activity => `<option value="${activity}">${activity}</option>`)
+      .join("")}
+  </select>
 
         <label>How many days per week do you usually perform this exercise?</label>
         <input type="number" id="activity-${activityCount}-frequency" placeholder="e.g., 3" oninput="calculateMETMinutes();">
@@ -1602,6 +2567,10 @@ if (activityCount === 1) {
 
 
 const originalActivitiesData = [];
+
+document
+  .getElementById("submit-data-button")
+  .style.display = "block";
 
 
 
@@ -1690,6 +2659,7 @@ function updateIntensityOptions(activityIndex) {
             }
 
             document.getElementById("total-met-minutes").innerText = totalMETMinutes.toFixed(2);
+            updateExerciseTable(); // ← add this line
         }
 
         const survivalDataMale = [
@@ -1791,8 +2761,91 @@ function updateIntensityOptions(activityIndex) {
 
     document.getElementById("risk-score-container").style.display = "flex";
     document.getElementById("comparison-next-button").style.display = "block";
+    updateProgressBar("risk-score-container")
+
+    const age    = parseFloat(document.getElementById("age").value) || 0;
+  const gender = document.getElementById("gender").value;
+  generateSurvivalChart(age, riskScore, gender);
+  document.getElementById("survivalChart").style.display = "block";
 });
 
+function updateExerciseTable() {
+  const tbody = document.querySelector('#exercise-summary-table tbody');
+  tbody.innerHTML = '';
+
+  for (let i = 0; i < activityCount; i++) {
+    const typeEl      = document.getElementById(`activity-${i}-type`);
+    const freqEl      = document.getElementById(`activity-${i}-frequency`);
+    const durEl       = document.getElementById(`activity-${i}-duration`);
+    const intensityEl = document.querySelector(`input[name="activity-${i}-intensity"]:checked`);
+
+    if (typeEl && freqEl && durEl && intensityEl) {
+      const metValue = activityList[typeEl.value][intensityEl.value];
+      const freq     = parseFloat(freqEl.value)   || 0;
+      const dur      = parseFloat(durEl.value)    || 0;
+      const metMin   = (metValue * freq * dur).toFixed(2);
+
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td style="padding:8px; border-bottom:1px solid #eee;">${typeEl.value}</td>
+        <td style="padding:8px; border-bottom:1px solid #eee; text-align:right;">${freq}</td>
+        <td style="padding:8px; border-bottom:1px solid #eee; text-align:right;">${dur}</td>
+        <td style="padding:8px; border-bottom:1px solid #eee;">${intensityEl.value.replace('_',' ')}</td>
+        <td style="padding:8px; border-bottom:1px solid #eee; text-align:right;">${metMin}</td>
+        <td style="padding:8px; border-bottom:1px solid #eee; text-align:center;">
+          <button onclick="deleteActivity(${i})">Remove</button>
+        </td>
+      `;
+      tbody.appendChild(row);
+    }
+  }
+}
+
+function updateNewExerciseTable() {
+  const tbody = document.querySelector('#new-exercise-summary-table tbody');
+  tbody.innerHTML = '';              // clear out old rows
+
+  for (let i = 0; i < newActivityCount; i++) {
+    const typeEl      = document.getElementById(`new-activity-${i}-type`);
+    const freqEl      = document.getElementById(`new-activity-${i}-frequency`);
+    const durEl       = document.getElementById(`new-activity-${i}-duration`);
+    const intensityEl = document.querySelector(`input[name="new-activity-${i}-intensity"]:checked`);
+
+    if (typeEl && freqEl && durEl && intensityEl) {
+      const metValue = activityList[typeEl.value][ intensityEl.value ];
+      const freq     = parseFloat(freqEl.value)   || 0;
+      const dur      = parseFloat(durEl.value)    || 0;
+      const metMin   = (metValue * freq * dur).toFixed(2);
+
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td style="padding:8px; border-bottom:1px solid #eee;">${typeEl.value}</td>
+        <td style="padding:8px; border-bottom:1px solid #eee; text-align:right;">${freq}</td>
+        <td style="padding:8px; border-bottom:1px solid #eee; text-align:right;">${dur}</td>
+        <td style="padding:8px; border-bottom:1px solid #eee;">${intensityEl.value.replace('_',' ')}</td>
+        <td style="padding:8px; border-bottom:1px solid #eee; text-align:right;">${metMin}</td>
+        <td style="padding:8px; border-bottom:1px solid #eee; text-align:center;">
+            <button onclick="removeNewActivity(${i})">Remove</button>
+        </td>
+      `;
+      tbody.appendChild(row);
+    }
+  }
+}
+
+
+function deleteActivity(index) {
+  // 1) Remove the form card
+  const wrapper = document.getElementById(`activity-wrapper-${index}`);
+  if (wrapper) wrapper.remove();
+
+  // 2) Remove the “Edit this activity” summary line
+  const editDiv = document.getElementById(`edit-activity-${index}`);
+  if (editDiv) editDiv.remove();
+
+  // 3) Recompute totals & refresh the table
+  calculateMETMinutes();    // this also calls updateExerciseTable()
+}
 
 
 
@@ -1843,6 +2896,8 @@ document.getElementById("comparison-next-button").addEventListener("click", func
     // Show the graph
     document.getElementById("survivalChart").style.display = "block";
 
+    updateProgressBar("chart-container")
+
     // Show the next button for MET calculations
     document.getElementById("met-next-button").style.display = "block";
 });
@@ -1859,6 +2914,7 @@ document.getElementById("comparison-next-button").addEventListener("click", func
 
 
 document.getElementById("met-next-button").addEventListener("click", function() {
+    document.getElementById("exercise-calculator-card").classList.add("hidden");
     // Hide previous sections (e.g., the comparison box and the third Next button)
     document.getElementById("comparison-box").style.display = "none";
     document.getElementById("met-next-button").style.display = "none";
@@ -1920,6 +2976,9 @@ function preloadExerciseForStep4() {
         `;
 
         container.appendChild(div);
+
+        div.style.display = 'none';
+
 
         // Add listener manually
         const selectEl = document.getElementById(`new-activity-${newActivityCount}-type`);
@@ -2059,6 +3118,7 @@ function calculateNewMETMinutes() {
 
     }
     document.getElementById("new-total-met-minutes").innerText = totalMETMinutes.toFixed(2);
+    updateNewExerciseTable();
     return totalMETMinutes;
 }
 function calculateNewRisk() {
@@ -2139,6 +3199,8 @@ document.getElementById("calculate-new-risk-button").addEventListener("click", f
 
     // Compute additional health benefits
     computeHealthBenefits();
+
+    updateProgressBar("benefits-section")
 });
 
 
@@ -2492,10 +3554,300 @@ function calculateRisk() {
 });
 
 window.addEventListener("DOMContentLoaded", () => {
-    updateStep(1);
+    updateStep(1); // Show first section
+
+    const nextBtn = document.getElementById("next-button");
+    if (nextBtn) {
+        nextBtn.addEventListener("click", function () {
+            console.log("Next button clicked"); // TEMP for testing
+            if (validateRequiredFields()) {
+                updateStep(2); // Go to results
+            }
+        });
+    } else {
+        console.error("Next button not found");
+    }
 });
 
+window.onload = function () {
+    document.body.classList.add("hold-animations");
+    document.getElementById("welcome-popup").style.display = "flex";
+  };
+
+  function closePopup() {
+    const popup = document.getElementById("welcome-popup");
+    popup.style.opacity = "0";
+    popup.style.pointerEvents = "none";
+    setTimeout(() => {
+      popup.style.display = "none";
+      document.body.classList.remove("hold-animations");
+    }, 500); // Match transition time
+  }
+    
+  // 1) Data mapping from age bracket → healthy days
+const healthyDaysByAge = {
+  30: { min: 3650, max: 4380 },
+  35: { min: 3285, max: 4015 },
+  40: { min: 2920, max: 3650 },
+  45: { min: 2555, max: 3285 },
+  50: { min: 2190, max: 2920 },
+  55: { min: 1825, max: 2555 },
+  60: { min: 1460, max: 2190 },
+  65: { min: 1095, max: 1825 },
+  70: { min: 730,  max: 1460 },
+  75: { min: 365,  max: 1095 }
+};
+
+// 2) Find the correct bracket for any age
+function getBracket(age) {
+  return Object.keys(healthyDaysByAge)
+    .map(Number)
+    .sort((a, b) => b - a)
+    .find(br => age >= br) || 30;
+}
+
+// 3) Compute days gained given % effort
+function calculateDays(age, pct) {
+  const br = getBracket(age);
+  const { min, max } = healthyDaysByAge[br];
+  return { min: Math.round(min * pct/100), max: Math.round(max * pct/100) };
+}
+
+
+
+
+// grab all the pieces
+const slider = document.getElementById('effort-range-static');
+const outPct = document.getElementById('effort-output-static');
+const outDays = document.getElementById('effort-days-static');
+const ageEl  = document.getElementById('benefits-age');
+const daysEl = document.getElementById('benefits-days');
+const yrsEl  = document.getElementById('benefits-years');
+const ctaEl  = document.getElementById('benefits-years-cta');
+
+// helper to recalc and update
+function updateBenefits(pct) {
+  const ageInput = parseInt(document.getElementById('age')?.value, 10);
+  const age = Number.isFinite(ageInput)
+              ? ageInput
+              : parseInt(ageEl.innerText, 10);
+
+  // calculateDays must already exist on the page
+  const { min, max } = calculateDays(age, pct);
+
+  ageEl.innerText   = age;
+  daysEl.innerText  = `${min}–${max} days`;
+  yrsEl.innerText   = `${Math.round(min/365)}–${Math.round(max/365)} years`;
+  ctaEl.innerText   = `${Math.round(min/365)}–${Math.round(max/365)} more years`;
+
+  outPct.innerHTML  = `By putting in <strong>${pct}%</strong> effort you could gain up to:`;
+  outDays.innerText = `${min}–${max} days`;
+}
+
+// wire the slider
+slider.addEventListener('input', e => updateBenefits(e.target.value));
+
+// init on load
+document.addEventListener('DOMContentLoaded', () => updateBenefits(slider.value));
+
+// refresh when dropdown opens
+document.getElementById('benefits-dropdown')
+  .addEventListener('toggle', e => {
+    if (e.target.open) updateBenefits(slider.value);
+  });
+
+
+
+// 4) Build the inner HTML for the popup
+function renderImpactContent(age) {
+  const full = calculateDays(age, 100);
+  return `
+    <p>
+      At <strong>${age}</strong> years old, simple changes today—like getting active and eating well—could add up to an extra
+      <strong>${full.min}–${full.max} days</strong> of healthy living. That’s
+      <strong>${Math.round(full.min/365)}–${Math.round(full.max/365)} years</strong>
+      you won’t want to miss.
+    </p>
+
+    <p>
+      <strong>With 100% commitment, you stand to gain up to ${Math.round(full.min/365)}–${Math.round(full.max/365)}
+      extra years of moments you won’t want to miss.</strong>
+    </p>
+
+    <label for="effort-range" class="block">
+      Slide to see how your effort pays off
+    </label>
+    <input
+      type="range"
+      id="effort-range"
+      min="10"
+      max="100"
+      step="10"
+      value="100"
+      class="w-full"
+    />
+    <p id="effort-output" class="mt-1 text-sm">
+      By putting in <strong>100%</strong> effort you could gain up to
+      <strong>${Math.round(full.min/365)}–${Math.round(full.max/365)} years</strong>.
+    </p>
+
+    <p class="mt-4 italic text-sm">
+      “If you could unlock ${Math.round(full.min/365)}–${Math.round(full.max/365)} more years, what would you do?”
+    </p>
+  `;
+}
+
+
+
+function showImpactPopup(age) {
+  // 1. render the content
+  document.getElementById('impact-content').innerHTML = renderImpactContent(age);
+
+  // 2. reveal the modal
+  document.getElementById('impact-popup').classList.remove('hidden');
+
+  // 3. wire up the slider inside it
+  const slider = document.getElementById('effort-range');
+  const output = document.getElementById('effort-output');
+  slider.addEventListener('input', () => {
+    const d = calculateDays(age, +slider.value);
+    output.innerHTML = `By Putting in <strong>${slider.value}%</strong> effort, you could gain upto: <strong>${d.min}–${d.max} days</strong>.`;
+  });
+
+  // 4. wire up the close button
+  document.getElementById('impact-popup-close')
+    .addEventListener('click', () => document.getElementById('impact-popup').classList.add('hidden'));
+}
+
+document
+  .getElementById('impact-popup-trigger')
+  .addEventListener('click', () => {
+    // ← use the actual “age” field
+    const age = parseInt(document.getElementById('age').value, 10) || 40;
+    showImpactPopup(age);
+  });
+
+  
+  // … your other JS above …
+
+  function updateBenefits(pct) {
+    // 1) grab the elements fresh each call:
+    const ageEl     = document.getElementById('benefits-age');
+    const daysEl    = document.getElementById('benefits-days');
+    const yrsEl     = document.getElementById('benefits-years');
+    const ctaEl     = document.getElementById('benefits-years-cta');
+    const pctEl     = document.getElementById('effort-pct');
+    const outDaysEl = document.getElementById('effort-days');
+
+    // 2) derive the age (either from your main input or the span)
+    const rawAge = parseInt(document.getElementById('age')?.value, 10);
+    const age    = Number.isFinite(rawAge)
+                   ? rawAge
+                   : parseInt(ageEl.innerText, 10);
+
+    // 3) calculate days:
+    const { min, max } = calculateDays(age, pct);
+
+    // 4) update the UI:
+    ageEl.innerText     = age;
+    daysEl.innerText    = `${min}–${max} days`;
+    yrsEl.innerText     = `${Math.round(min/365)}–${Math.round(max/365)} years`;
+    ctaEl.innerText     = `${Math.round(min/365)}–${Math.round(max/365)} more years`;
+
+        // show just the number + “%”
+        pctEl.innerText = `${pct}%`;
+    outDaysEl.innerText = `${min}–${max} days`;
+  }
+
+  // … any other JS below …
+
+// once the DOM is ready:
+document.addEventListener('DOMContentLoaded', () => {
+  const slider = document.getElementById('effort-range');
+  // initialize on load:
+  updateBenefits(slider.value);
+
+  // update on slide:
+  slider.addEventListener('input', e => {
+    updateBenefits(e.target.value);
+  });
+});
+
+    
+// Show the benefits modal (blur + box)
+function openBenefitsModal() {
+  const overlay = document.getElementById('benefits-modal');
+  overlay.style.display = 'flex';
+  // Use rAF to ensure the browser sees the initial state before adding .show
+  requestAnimationFrame(() => overlay.classList.add('show'));
+}
+
+
+function closeBenefitsModal() {
+  const overlay = document.getElementById('benefits-modal');
+  overlay.classList.remove('show');
+  // Wait for fade‐out before hiding
+  setTimeout(() => overlay.style.display = 'none', 400);
+}
+
+
+// Mirror the logic of your existing updateBenefits()
+// but targeting the modal IDs
+function updateModalBenefits(value) {
+  const pct = parseInt(value);
+
+  const minDays = Math.round(1095 * (pct / 100));
+  const maxDays = Math.round(1460 * (pct / 100));
+  const minYears = Math.round(minDays / 365);
+  const maxYears = Math.round(maxDays / 365);
+
+  // Update effort percentage text
+  document.getElementById('modal-effort-pct').textContent = `${pct}%`;
+
+  // Update day range text
+  if (minDays === maxDays) {
+    document.getElementById('modal-effort-days').textContent = `${minDays} day${minDays === 1 ? '' : 's'}`;
+    document.getElementById('modal-benefits-days').textContent = `${minDays} day${minDays === 1 ? '' : 's'}`;
+  } else {
+    document.getElementById('modal-effort-days').textContent = `${minDays}–${maxDays} days`;
+    document.getElementById('modal-benefits-days').textContent = `${minDays}–${maxDays} days`;
+  }
+
+  // Update years section (for center paragraph)
+  if (minYears === maxYears) {
+    document.getElementById('modal-benefits-years').textContent = `${minYears} year${minYears === 1 ? '' : 's'}`;
+  } else {
+    document.getElementById('modal-benefits-years').textContent = `${minYears}–${maxYears} years`;
+  }
+
+  // Update CTA line with days if < 1 year, else use years
+  if (minYears < 1) {
+    const daysOutput = (minDays === maxDays)
+      ? `${minDays} day${minDays === 1 ? '' : 's'}`
+      : `${minDays}–${maxDays} days`;
+
+    document.getElementById('modal-benefits-years-cta').textContent = daysOutput;
+  } else {
+    const yearsOutput = (minYears === maxYears)
+      ? `${minYears} year${minYears === 1 ? '' : 's'}`
+      : `${minYears}–${maxYears} years`;
+
+    document.getElementById('modal-benefits-years-cta').textContent = yearsOutput;
+  }
+}
+
+
+
+
+
+
+</script>
+
+    
     </script>
+
+
+
 <details class="disclaimer" style="max-width: 800px; margin: 30px auto;">
     <summary><strong style="color: #ee8e00;">Disclaimer: Click to Read</strong></summary>
     <div style="padding-top: 10px;">
@@ -2503,30 +3855,54 @@ window.addEventListener("DOMContentLoaded", () => {
         This health risk assessment incorporates a modified version of the Framingham Risk Score, integrating physical activity based on associations derived from published scientific literature. However, this modification has not been formally validated. Similarly, the relationship between changes in physical activity and changes in other health outcomes is based on existing research but has not been clinically validated. The values presented are estimates and projections intended to provide general population-level insights rather than precise individual risk assessments. This risk score is designed for discussion, awareness and educational purposes only. It is not intended for medical diagnosis, treatment, or decision-making and does not replace consultation with your doctor. Please consult your healthcare provider for personalized medical advice.
       </p>
     </div>
+    <div class="disclaimer">
+        <p><strong>Data Privacy Notice:</strong> Your data is stored securely and used solely for educational and personal wellness purposes. We do not share or sell your information. For more details, contact us at support@mhfcare.ca.</p>
+    </div>
   </details>
   
   
 <!-- Floating Video in Bottom-Right Corner -->
-<div id="floating-video-container" style="
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 320px;
-    height: 180px;
-    background-color: black;
-    border-radius: 8px;
-    overflow: hidden;
-    z-index: 1000;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
-    <iframe id="floating-video-frame"
-            width="320" height="180"
-            frameborder="0"
-            allowfullscreen
-            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            style="width:100%; height:100%; border:none; border-radius: 8px;">
-    </iframe>
-</div>
 
+
+<!-- BEGIN: Benefits Modal -->
+<div id="benefits-modal" class="modal-overlay">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeBenefitsModal()">×</button>
+      <!-- Copy of your existing “extra healthy years” content: -->
+      <h2 class="modal-title">See How Small Changes Can Add Big Years To Your Life</h2>
+      <div id="benefits-modal-inner">
+        <p>
+          At your age,
+          simple changes today—like getting active and eating well—could add up
+          to an extra <strong id="modal-benefits-days">1,095–1,460 days</strong>
+          of healthy living. That’s <strong id="modal-benefits-years">3–4 years</strong>
+          you won’t want to miss.
+        </p>
+        <label for="modal-effort-range">Slide to see how your effort pays off</label>
+        <input
+          type="range"
+          id="modal-effort-range"
+          min="10" max="100" step="10"
+          value="100"
+          oninput="updateModalBenefits(this.value)"
+        />
+        <p id="modal-effort-output" style="margin-top:8px;">
+          By putting in <strong id="modal-effort-pct">100%</strong> effort you could gain up to:
+          <strong id="modal-effort-days">1,095–1,460 days</strong>.
+        </p>
+        <p style="font-style:italic; margin-top:12px;">
+          <em>If you could unlock <span id="modal-benefits-years-cta">3–4 more years</span>, what would you do?</em>
+        </p>
+
+        <button class="orange-btn full-width-btn" onclick="closeBenefitsModal()">
+            Now let’s see how increasing exercise can reduce your risk score
+          </button>
+          
+      </div>
+    </div>
+  </div>
+  <!-- END: Benefits Modal -->
+  
 
 </body>
 </html>
